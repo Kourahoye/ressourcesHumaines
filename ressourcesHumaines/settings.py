@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'theme',
     'evaluations',
     # 'django_icons',
-    'fontawesomefree'
+    'fontawesomefree',
+    'comptabilite',
 ]
 
 MIDDLEWARE = [

@@ -7,7 +7,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div
 class PaimentForm(forms.ModelForm):
     class Meta:
         model = Paiment
-        fields = '__all__'
+        # fields = '__all__'
         exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date',

@@ -44,3 +44,12 @@ class PaimentDeleteView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView)
     template_name = 'comptabilite/delete.html'
     success_url = reverse_lazy('paiment_list')
     context_object_name = 'paiment'
+    form_class = PaimentForm
+
+    def post(self, request, *args, **kwargs):
+
+        paiment = self.get_object()
+        if paiment:
+            paiment.delete()
+            return redirect(self.success_url)
+        return super().post(request, *args, **kwargs)

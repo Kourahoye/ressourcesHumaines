@@ -184,128 +184,189 @@
             {% if user.is_authenticated %}
             {% if user.avatar %}
             <div style="background-image: url('{% static user.avatar %}');"
-                class="h-28 w-full bg-cover bg-center flex justify-center items-end">
-                <p class="w-full text-center text-4xl glass text-black">
-                    {{user}}
-                    </span>
+            class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+            <p class="w-full text-center text-4xl glass text-black">
+                {{user}}
+                </span>
             </div>
             {% else %}
-            <i class=" fas fa-image-portrait text-5xl text-red-600"></i>
+            <i class="fas fa-image-portrait text-5xl" style="color: #ef4444;"></i>
             {% endif %}
             {% else %}
             <div id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
-                <p class="w-full text-center text-4xl glass text-black">
-                    {{user}}
-                    </span>
+            <p class="w-full text-center text-4xl glass text-black">
+                {{user}}
+                </span>
             </div>
             <li>
-                <a href="{% url 'login' %}" class="btn btn-info">LOGIN </a>
-
+            <a href="{% url 'login' %}" class="btn btn-info">
+                <i class="fas fa-sign-in-alt mr-2" style="color: #0ea5e9;"></i>
+                LOGIN
+            </a>
             </li>
-
             {% endif %}
 
             <li>
-                <a class="btn btn-block justify-between btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'dashbord' %}">Dashbord</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'dashbord' %}">
+                <i class="fas fa-tachometer-alt mr-2" style="color: #f59e42;"></i>
+                Dashbord
+            </a>
             </li>
 
             {% if user.is_authenticated %}
 
             {% if "employees.list_employee" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'employee_list' %}">Liste des employes</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'employee_list' %}">
+                <i class="fas fa-id-badge mr-2" style="color: #22c55e;"></i>
+                Liste des employes
+            </a>
             </li>
             {% endif %}
             {% if "Users.view_user" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'userList' %}">
-                    <i class="fa fa-users"></i>
-
-                    <span>Liste des users</span>
-                </a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'userList' %}">
+                <i class="fas fa-users mr-2" style="color: #a21caf;"></i>
+                <span>Liste des users</span>
+            </a>
             </li>
             {% endif %}
             {% if "departements.view_departements" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'liste_departements' %}">Liste des departements</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'liste_departements' %}">
+                <i class="fas fa-building mr-2" style="color: #2563eb;"></i>
+                <span class="text-white">Liste des departements</span>
+            </a>
             </li>
             {% endif %}
             {% if "conges.add_congesrequest" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'conges_request_create' %}">Demande de conge</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'conges_request_create' %}">
+                <i class="fas fa-calendar-plus mr-2" style="color: #fbbf24;"></i>
+                Demande de conge
+            </a>
             </li>
             {% endif %}
             {% if "conges.list_congesrequest" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'conges_request_list' %}">Liste des demandes de conges</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'conges_request_list' %}">
+                <i class="fas fa-calendar-alt mr-2" style="color: #f472b6;"></i>
+                Liste des demandes de conges
+            </a>
             </li>
             {% endif %}
             {% if "presences.view_presence" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'presence_page' %}">Fiches de presences</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'presence_page' %}">
+                <i class="fas fa-clipboard-list mr-2" style="color: #0ea5e9;"></i>
+                Fiches de presences
+            </a>
             </li>
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'subor_presences' %}">Liste Absences</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'subor_presences' %}">
+                <i class="fas fa-user-clock mr-2" style="color: #f43f5e;"></i>
+                Liste Absences
+            </a>
             </li>
             {% endif %}
             {% if "conges.list_conges" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'conges_list' %}">Liste conges</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'conges_list' %}">
+                <i class="fas fa-calendar-check mr-2" style="color: #22d3ee;"></i>
+                Liste conges
+            </a>
             </li>
             {% endif %}
             {% if "evaluations.add_employeerating" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'note_employee' %}">Evaluation employés</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'note_employee' %}">
+                <i class="fas fa-star mr-2" style="color: #facc15;"></i>
+                Evaluation employés
+            </a>
             </li>
             {% endif %}
             {% if "evaluations.add_departementrating" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'note_departement' %}">Evaluations departements</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'note_departement' %}">
+                <i class="fas fa-chart-line mr-2" style="color: #10b981;"></i>
+                Evaluations departements
+            </a>
             </li>
             {% endif %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'departements_notes' %}">Notes departement</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'departements_notes' %}">
+                <i class="fas fa-sticky-note mr-2" style="color: #f59e42;"></i>
+                Notes departement
+            </a>
             </li>
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'employees_notes' %}">Notes employee</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'employees_notes' %}">
+                <i class="fas fa-sticky-note mr-2" style="color: #a3e635;"></i>
+                Notes employee
+            </a>
             </li>
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'classement_departement' %}">Classement departement</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'classement_departement' %}">
+                <i class="fas fa-trophy mr-2" style="color: #fbbf24;"></i>
+                Classement departement
+            </a>
             </li>
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                    href="{% url 'classement_employees' %}">Classement employee</a>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                href="{% url 'classement_employees' %}">
+                <i class="fas fa-trophy mr-2" style="color: #f472b6;"></i>
+                Classement employee
+            </a>
             </li>
+            {% if "comptabilite.list_paiment" in permissions %}
+            <li>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+            href="{% url 'paiment_list' %}">
+                <i class="fas fa-money-check-alt mr-2" style="color: #16a34a;"></i>
+                Liste des paiments
+            </a>
+            </li>
+            {% endif %}
+            {% if "comptabilite.add_paiment" in permissions %}
+            <li>
+            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+            href="{% url 'paiment_create' %}">
+                <i class="fas fa-plus-circle mr-2" style="color: #eab308;"></i>
+                Ajout paiment
+            </a>
+            </li>
+            {% endif %}
+
             {% else %}
 
             <div class="flex flex-col gap-4 w-full">
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
-                <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
+            <div class="skeleton h-10 w-full rounded-md"></div>
             </div>
             {% endif %}
 
         </ul>
 
-    </div>
+        </div>
 </div>
 
 

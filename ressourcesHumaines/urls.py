@@ -27,4 +27,5 @@ urlpatterns = [
     path('core/',include("core.urls")),
     path('conges/',include("conges.urls")),
     path('evaluations/',include("evaluations.urls")),
+    path('paiments/',include("comptabilite.urls")),
 ]

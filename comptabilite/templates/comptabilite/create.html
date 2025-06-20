@@ -2,14 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block main %}
-    <div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
-    <h1 class="text-xl md:text-2xl font-bold mb-4">Enregistrer un paiment</h1>
-    <form method="post">
-      {% crispy form %}
+<div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
+    <h1 class="text-xl md:text-2xl font-bold mb-4 ">Enregistrer un paiment</h1>
+    <form method="post" class="dark:text-black">
+        {% crispy form %}
     </form>
-  </div>
-    <div class="flex justify-center mt-4">
-        <a href="{% url 'paiment_list' %}" class="btn btn-primary">Retour à la liste des paiment</a>
-    </div>
+</div>
+<div class="flex justify-center mt-4">
+    <a href="{% url 'paiment_list' %}" class="btn btn-primary">Retour à la liste des paiment</a>
+</div>
 {% endblock main %}
-    

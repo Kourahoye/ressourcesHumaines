@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from comptabilite.models import Paiment
 from conges.models import CongesRequest, User
 from departements.models import Departements
 from employees.models import Employee
@@ -77,7 +78,19 @@ class Dasbord(LoginRequiredMixin,TemplateView):
         for entry in qs:
             month_name = french_months.get(entry['month'], str(entry['month']))
             result[month_name] = entry['total']
-        
+
+
+        payed_employees = Employee.objects.filter(
+            user__is_active=True,
+            paiments__date__month=now().month,
+            paiments__date__year=now().year
+        ).distinct().count()
+
+        total_employees = Employee.objects.filter(user__is_active=True).count()
+        unpayed_employees = total_employees - payed_employees
+
+
+        # print("Payments stat:", payments_stat)
         context["general"] ={
             "actif_users": users.count(),
             "inactif_user": user_close.count(),
@@ -94,7 +107,11 @@ class Dasbord(LoginRequiredMixin,TemplateView):
                 'refused': qs2.get('refused', 0),
                 'pending': qs2.get('pending', 0),
                 'aborted': qs2.get('aborted', 0)
-            }
+            },
+            'payments_stat' : {
+            "payed": payed_employees,
+            "unpayed": unpayed_employees
+        }
         }
         context["prive"] = {
             "employees_added": employee_added.count(),
