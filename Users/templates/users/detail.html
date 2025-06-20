@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}
+Detail Utilisateur
+{% endblock %}
+{% load static %}
+{% block main %}
+
+<div class="w-3/5 p-1 mt-10 mx-auto card glass bg-blue-950 text-base-300">
+    <h1 class="card-title uppercase w-full text-center block">Informations de l'Utilisateur</h1>
+    <div class="flex gap-4 w-full container p-4 mx-auto card-body">
+        <div class="flex flex-col gap-4 justify-around flex-grow">
+            <div class="avatar">
+                <div class="w-24 rounded-xl">
+                    <img src="{% static object.avatar %}" alt='avatar'
+                        class="w-1/4  object-cover rounded-md shadow shadow-white border-2 border-black" />
+                </div>
+            </div>
+            <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
+                    class="uppercase font-bold text-lg">Username:</span><span>{{object.username}}</span></p>
+            <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
+                    class="uppercase font-bold text-lg">Nom:</span><span>{{object.last_name}}</span></p>
+            <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
+                    class="uppercase font-bold text-lg">Prénom:</span><span>{{object.first_name}}</span></p>
+            <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
+                    class="uppercase font-bold text-lg">Genre:</span><span>{{object.gender}}</span></p>
+            <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
+                    class="uppercase font-bold text-lg">Date de naissance:</span><span>{{object.birthday|date:"d F Y"}}</span></p>
+        </div>
+    </div>
+    <div class="card-actions">
+        <a href="{% url 'userEdit' object.id %}"
+            class="btn btn-warning">Edit
+            les informations</a>
+    </div>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="lg:w-3/4 glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
+  <h1 class="text-2xl font-bold mb-4 dark:text-white">Enregistrer un conge</h1>
+  <form method="post" class="dark:text-white">
+    {% crispy form %}
+  </form>
+</div>
+
+{% endblock main %}

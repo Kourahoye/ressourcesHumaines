@@ -1,0 +1,14 @@
+{% load static tailwind_tags %}
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  {% block title %}Site{% endblock %} </title>
+   {% tailwind_css %}
+</head>
+<body class="bg-gradient-to-br from-blue-600 to-blue-950 text-slate-950 dark:text-zinc-50 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-950">
+    {% block main %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="bg-primary/50  glass m-4 lg:mx-auto w-full p-3 card lg:w-2/3">
+   <h1 class="text-2xl font-bold mb-4 card-title">Details Employé {{ object.user }}</h1>
+   <section class="card-body flex flex-col gap-4 text-lg font-medium dark:text-white">
+      <p class="flex justify-between glass p-1">
+         <span class="font-semibold">Manager</span>
+         <span>
+            {% if object.manager %}
+            {{object.manager.user}}
+            {% else %}
+            ------
+            {% endif %}
+         </span>
+      </p>
+      <p class="flex justify-between glass p-1">
+         <span class="font-semibold">Poste</span>
+         <span>{{object.poste}}</span>
+      </p>
+      <p class="flex justify-between glass p-1">
+         <span class="font-semibold">Departement</span>
+         <span>{{object.departement}}</span>
+      </p>
+      <p class="flex justify-between glass p-1">
+         <span class="font-semibold">Date d'embauche</span>
+         <span>{{object.date_embauche}}</span>
+      </p>
+      <p class="flex justify-between glass p-1">
+         <span class="font-semibold">Date creation</span>
+         <span>{{object.created_at}}</span>
+      </p>
+
+   </section>
+</div>
+
+<div class="tabs tabs-lift dark:text-red-600">
+   <label class="tab">
+      <input type="radio" name="my_tabs_4" checked />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         class="size-4 me-2">
+         <path stroke-linecap="round" stroke-linejoin="round"
+            d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+      </svg>
+      <span class="ml-2 text-blue-600 ">Progression de l'annee</span>
+   </label>
+   <div class="tab-content bg-base-100 border-base-300 p-6">
+      <canvas id="progressionChart" width="700" height="400"></canvas>
+   </div>
+
+   <label class="tab">
+      <input type="radio" name="my_tabs_4" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         class="size-4 me-2">
+         <i class="fas fa-calendar"></i>
+      </svg>
+      <span class="ml-2 text-blue-600 ">Progression annuelle</span>
+   </label>
+   <div class="tab-content bg-base-100 border-base-300 p-6">
+      <canvas id="progressionChartYear" width="700" height="400"></canvas>
+   </div>
+   <label class="tab">
+      <input type="radio" name="my_tabs_4" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         class="size-4 me-2">
+         <i class=" fas fa-calendar"></i>
+      </svg>
+      <span class="ml-2 text-blue-600 ">
+         Absences
+      </span>
+   </label>
+   <div class="tab-content bg-base-100 border-base-300 p-6">
+      <canvas id="absences" width="700" height="400"></canvas>
+   </div>
+</div>
+
+
+{% endblock main %}
+{% block scripts %}
+<script>
+   const ctx = document.getElementById('progressionChart').getContext('2d');
+   const labels = {{ chart_labels| safe }};
+   const data = {{ chart_data| safe }};
+
+   new Chart(ctx, {
+      type: 'line',
+      data: {
+         labels: labels,
+         datasets: [{
+            label: 'Note  par mois',
+            data: data,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            tension: 0.3,
+         }]
+      },
+      options: {
+         scales: {
+            y: {
+               beginAtZero: true,
+               max: 10
+            }
+         }
+      }
+   });
+</script>
+<script>
+   const ctxYear = document.getElementById('progressionChartYear').getContext('2d');
+   const labelsYear = {{ chart_labels_year| safe }};
+   const dataYear = {{ chart_data_year| safe }};
+
+   new Chart(ctxYear, {
+      type: 'line',
+      data: {
+         labels: labelsYear,
+         datasets: [{
+            label: 'Note moyenne annuelle',
+            data: dataYear,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            fill: true,
+            tension: 0.3,
+         }]
+      },
+      options: {
+         scales: {
+            y: {
+               beginAtZero: true,
+               max: 10
+            }
+         }
+      }
+   });
+</script>
+<script>
+
+   const ctxabsence = document.getElementById("absences").getContext("2d");
+   const labels_absence = {{ absence_label | safe}};
+   const data_absence = {{ absence_data | safe}};
+   new Chart(ctxabsence, {
+      type: "line",
+      data: {
+         labels: labels_absence,
+         datasets: [{
+            label: "Absences",
+            data: data_absence,
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
+            borderColor: "red",
+            tension: 0.3,
+         }]
+      },
+      options: {
+
+         scales: {
+            y: {
+               beginAtZero: true,
+            }
+         }
+      }
+   });
+
+</script>
+{% endblock scripts %}

@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@plugin "daisyui";
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+/* @dark class; */
+/* @custom-variant dark (&:where(.dark, .dark *));
+ */
+@custom-variant dark (&:where(
+  [data-theme=dark],
+  [data-theme=night],
+  [data-theme=forest],
+  [data-theme=luxury],
+  [data-theme=dracula],
+  [data-theme=black],
+  [data-theme=dim],
+  [data-theme=business],
+  [data-theme=synthwave],
+  [data-theme=halloween],
+  [data-theme=coffee],
+  [data-theme=cyberpunk],
+  [data-theme=cmyk],
+  [data-theme=dark] *,
+  [data-theme=night] *,
+  [data-theme=forest] *,
+  [data-theme=luxury] *,
+  [data-theme=dracula] *,
+  [data-theme=black] *,
+  [data-theme=dim] *,
+  [data-theme=business] *,
+  [data-theme=synthwave] *,
+  [data-theme=halloween] *,
+  [data-theme=coffee] *,
+  [data-theme=cyberpunk] *,
+  [data-theme=sunset] *,
+  [data-theme=aqua] *,
+  [data-theme=cmyk] *
+));
+
+@plugin "daisyui" {
+  themes: all;
+};
+
+
+
+
+
+@plugin "daisyui/theme" {
+  name: "desk";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(96% 0.007 247.896);
+  --color-base-200: oklch(96% 0.003 264.542);
+  --color-base-300: oklch(92% 0.006 264.531);
+  --color-base-content: oklch(0% 0 0);
+  --color-primary: oklch(55% 0.046 257.417);
+  --color-primary-content: oklch(98% 0.003 247.858);
+  --color-secondary: oklch(66% 0.295 322.15);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(84% 0.143 164.978);
+  --color-accent-content: oklch(26% 0.051 172.552);
+  --color-neutral: oklch(27% 0.033 256.848);
+  --color-neutral-content: oklch(98% 0.002 247.839);
+  --color-info: oklch(68% 0.169 237.323);
+  --color-info-content: oklch(97% 0.013 236.62);
+  --color-success: oklch(77% 0.152 181.912);
+  --color-success-content: oklch(98% 0.014 180.72);
+  --color-warning: oklch(76% 0.188 70.08);
+  --color-warning-content: oklch(98% 0.022 95.277);
+  --color-error: oklch(63% 0.237 25.331);
+  --color-error-content: oklch(97% 0.013 17.38);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.28125rem;
+  --size-field: 0.25rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
+

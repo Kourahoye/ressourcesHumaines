@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="hero min-h-[89vh] glass">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold text-red-600">403 Forbiden</h1>
+      <p class="py-6 font-semibold text-lg">Vous n'êtes pas autorisé à acceder à cette page</p>
+      <a href="{% url 'dashbord' %}" class="btn btn-primary">Home</a>
+    </div>
+  </div>
+</div>
+{% endblock main %}

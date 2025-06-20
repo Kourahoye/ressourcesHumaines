@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<table class="table glass table-zebra m-1 md:w-1/2 lg:mx-auto rounded-md">
+    <thead class="font-bold text-black">
+        <tr>
+            <th class="px-6 py-3  text-lg uppercase tracking-wider">Date</th>
+            <th class="px-6 py-3  text-lg uppercase tracking-wider">Employé</th>
+            <th class="px-6 py-3  text-lg uppercase tracking-wide">Departement</th>
+        </tr>
+    </thead>
+    <tbody class="text-slate-950 text-base font-medium dark:text-white">
+        {% for object in absences %}
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+                {{object.date}}
+            </td>
+            <td>
+                {{ object.employee.user }}
+            </td>
+            <td>
+                {{ object.employee.departement }}
+            </td>
+          
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock main %}

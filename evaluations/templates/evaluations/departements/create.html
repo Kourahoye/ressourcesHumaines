@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="glass p-6 rounded shadow-md mx-auto w-full lg:w-1/2">
+  <h1 class="text-2xl font-bold mb-4">Noter un Departement</h1>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="m-3">
+      <label class="floating-label">
+        <span class="label font-bold text-2xl text-black">
+          {{ form.departement.label }}
+        </span>
+        {{ form.departement }}
+      </label>
+      {% if form.departement.errors %}
+      <span class="alert alert-error">
+        {{ form.departement.errors }}
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="m-3">
+      <label class="floating-label">
+        <span class="label font-bold text-2xl text-black">
+          {{ form.month.label }}
+        </span>
+        {{ form.month }}
+      </label>
+      {% if form.month.errors %}
+      <span class="alert alert-error">
+        {{ form.month.errors }}
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="m-3">
+      <label class="floating-label">
+        <span class="label font-bold text-2xl text-black">
+          {{ form.year.label }}
+        </span>
+        {{ form.year }}
+      </label>
+      {% if form.year.errors %}
+      <span class="alert alert-error">
+        {{ form.year.errors }}
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="m-3">
+      <label class="floating-label">
+        <span class="label font-bold text-2xl text-black">
+          {{ form.note.label }}
+        </span>
+        {{ form.note }}
+      </label>
+      {% if form.note.errors %}
+      <span class="alert alert-error">
+        {{ form.note.errors }}
+      </span>
+      {% endif %}
+    </div>
+    {% if form.non_field_errors %}
+    <div class="alert alert-error">
+      {{form.non_field_errors}}
+    </div>
+    {% endif %}
+    <input type="submit" class="btn btn-info mt-3" value="Noter">
+  </form>
+</div>
+
+{% endblock main %}

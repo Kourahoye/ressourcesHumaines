@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+<div class="w-full overflow-x-auto xl:w-4/5 mx-auto glass shadow-md rounded p-6">
+  <h1 class="text-2xl font-bold mb-6 inline-block">Liste des requettes</h1>
+  <a class="p-1 bg-blue-600 rounded-md space-x-4 inline-block text-white font-semibld ring ring-blue-900"
+    href="{% url 'conges_request_create' %}">Ajouter</a>
+
+  <table class="w-full glass min-w-full">
+    <thead>
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date de debut</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date de fin </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for congesRequest in congesRequests %}
+      <tr class="border-b-2 border-b-black">
+        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.employee.user }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.startDate|date:"d/m/Y" }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.endDate|date:"d/m/Y" }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">
+          {% if congesRequest.status == "accepted" %}
+          <div class="badge badge-success gap-2">
+            Autorisé
+          </div>
+          {% elif congesRequest.status == "refused" %}
+          <div class="badge badge-error gap-2">
+            Refusé
+          </div>
+          {% elif congesRequest.status == "pending" %}
+          <div class="badge badge-warning gap-2">
+            En attente
+          </div>
+          {% endif %}
+        </td>
+
+        <td class="dropdown dropdown-bottom">
+          <label tabindex=0 class="btn m-1">Actions</label>
+          <ul tabindex=0
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+            <li>
+              <a href="{% url 'conges_request_delete' congesRequest.pk %}" class="btn btn-error">Supprimer</a>
+            </li>
+            <li>
+              <a href="" class="btn btn-warning">Modifier</a>
+            </li>
+            <li>
+              <a href="{% url 'conges_request_details' congesRequest.pk %}" class="btn btn-info">Detail</a>
+            </li>
+            {% if "conges.accept_congesrequest" in permissions %}
+            {% if congesRequest.status == "refused" or congesRequest.status == "pending" %}
+            <li>
+              <a href="{% url 'conges_request_accept' congesRequest.pk  %}" class="btn btn-success">Accepter</a>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if "conges.refuse_congesrequest" in permissions %}
+            {% if congesRequest.status == "accepted" or congesRequest.status == "pending" %}
+            <li>
+              <a href="{% url 'conges_request_refuse' congesRequest.pk  %}" class="btn btn-error">Refuser</a>
+            </li>
+            {% endif %}
+            {% endif %}
+          </ul>
+        </td>
+
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun requette trouvé.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  {% if is_paginated %}
+  <div class="mt-4 flex justify-center space-x-2">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+      class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Précédent</a>
+    {% endif %}
+
+    <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Suivant</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock main %}

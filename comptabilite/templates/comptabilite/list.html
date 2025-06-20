@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
+    <h1 class="text-2xl font-bold mb-4">Liste des Paiments</h1>
+    <a href="{% url 'paiment_create' %}" class="btn btn-primary">Ajouter un nouveau paiement</a>
+
+    <div class="overflow-x-auto">
+        <table class="table w-full">
+            <thead>
+                <tr>
+                    <th>Employé</th>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paiment in paiments %}
+                <tr>
+                    <td>{{ paiment.employe.user }}</td>
+                    <td>{{ paiment.date|date:"d M Y" }}</td>
+                    <td>{{ paiment.montant }}</td>
+                    <td>
+                        <div class="dropdown dropdown-left">
+                            <button tabindex="0" class="btn btn-sm btn-ghost">
+                                Actions
+                            </button>
+                            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                                {% if 'comptabilite.view_paiment' in permissions %}
+                                <li>
+                                    <a href="" class="btn btn-info">Détail</a>
+                                </li>
+                                {% endif %}
+                                {% if 'comptabilite.change_paiment' in permissions %}
+                                <li>
+                                    <a href="" class="btn btn-warning">Modifier</a>
+                                </li>
+                                {% endif %}
+                                {% if 'comptabilite.delete_paiment' in permissions %}
+                                <li>
+                                    <a href="" class="btn btn-error">Supprimer</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucun paiement trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{% if is_paginated %}
+<div class="flex justify-center mt-6">
+    <nav class="join"></nav>
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="join-item btn btn-sm btn-outline">Première</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="join-item btn btn-sm btn-outline">Précédente</a>
+        {% endif %}
+
+        {% for num in paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="join-item btn btn-sm btn-primary">{{ num }}</span>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}" class="join-item btn btn-sm btn-outline">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="join-item btn btn-sm btn-outline">Suivante</a>
+            <a href="?page={{ paginator.num_pages }}" class="join-item btn btn-sm btn-outline">Dernière</a>
+        {% endif %}
+    </nav>
+</div>
+{% endif %}
+{% endblock main %}

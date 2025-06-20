@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% block title %}
+Login
+{% endblock %}
+{% block main %}
+<div class="w-full flex items-center align-middle h-full">
+    <form class="text-slate-900 font-bold w-4/5 mx-auto card glass p-2" method="post">
+        <h1 class="text-xl text-red-700 font-bold block w-full text-center">LOGIN NOW</h1>
+    {% csrf_token %}
+    {{form}}
+    <p class="empty:sr-only text-red-600 w-full text-center text-sm font-semibold  my-3 p-1 rounded-sm">{{error}}</p>
+    <input class="btn btn-info my-1" type="submit" value="Login">
+    <a class="btn btn-warning my-1" href="{% url 'register' %}">Register</a>
+</form>
+</>
+{% endblock %}

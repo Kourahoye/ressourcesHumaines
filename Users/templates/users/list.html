@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="w-3/4 mx-auto bg-blue-900/50 glass shadow-md rounded p-6">
+    <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des employés</h1>
+    {% if "users.add_user" in permissions %}
+    <a class="p-1 bg-blue-600 rounded-md space-x-4 inline-block text-white font-semibld ring ring-blue-900"
+        href="{% url 'user_add' %}">Ajouter</a>
+    {% endif %}
+
+    <table class="table min-w-full glass dark:text-white">
+        <thead>
+            <tr class="font-bold  dark:text-white">
+                <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Username</th>
+                <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Nom</th>
+                <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Prenom</th>
+                <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {% for person in users %}
+            <tr>
+                {% if 'Users.view_user' in permissions %}
+                <td class="px-6 py-4 whitespace-nowrap link"><a href="{{ person.get_absolute_url }}">{{ person}}</a></td>
+                {% else %}
+                <td class="px-6 py-4 whitespace-nowrap">{{ person }}</td>
+                {% endif %}
+                <td class="px-6 py-4 whitespace-nowrap">{{ person.email }}</td>
+
+                <td class="px-6 py-4 whitespace-nowrap">{{ person.last_name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ user.first_name}}</td>
+
+                <td class="dropdown dropdown-bottom">
+                    <label tabindex=0 class="btn m-1">Actions</label>
+                    <ul tabindex=0
+                        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+                        {% if "users.delete_user" in permissions %}
+                        <li>
+                            <a href="{% url 'user_delete' user.pk %} " class="btn btn-error">Supprimer</a>
+                        </li>
+                        {% endif %}
+                        {% if "users.change_user" in permissions %}
+                        <li>
+                            <a href="{% url 'user_update' user.pk %} " class="btn btn-warning">Modifier</a>
+                        </li>
+                        {% endif %}
+                        {% if "users.view_user" in permissions %}
+                        <li>
+                            <a href="{% url 'user_profil' user.pk %} " class="btn btn-info">Detail</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun employé trouvé.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination simple -->
+    {% if is_paginated %}
+    <div class="mt-4 flex justify-center space-x-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"
+            class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Précédent</a>
+        {% endif %}
+
+        <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"
+            class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Suivant</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock main %}

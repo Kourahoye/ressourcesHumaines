@@ -1,0 +1,372 @@
+{% load static %}
+<style>
+    #offline {
+        background-image: url("{% static 'noAvatar.png' %}");
+    }
+</style>
+
+<header class="navbar bg-base-100 shadow-sm mb-4 h-24 pr-5">
+    <div class="flex-1">
+        <label for="my-drawer" role="button" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+            </svg>
+        </label>
+        <a class="btn btn-ghost text-xl">Gestion RH/<span class="text-xs">daisyUI</span></a>
+    </div>
+    <div class="flex-none">
+        <li class="dropdown mx-5">
+            <div tabindex="0" role="button" class="btn btn-block justify-between btn-accent my-1">
+                Theme
+                <svg width="12px" height="12px" class="inline-block h-2 w-2 fill-current opacity-60"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+                    <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                </svg>
+            </div>
+            <ul tabindex="0"
+                class="dropdown-content bg-base-300 rounded-box w-64 p-2 shadow-2xl max-h-96 overflow-auto">
+                <!-- Light Themes -->
+                <li>
+                    <details>
+                        <summary class="cursor-pointer font-bold">☀️ Light</summary>
+                        <ul>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="Desk"
+                                    aria-label="Desk" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="light"
+                                    aria-label="Light" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="cupcake"
+                                    aria-label="Cupcake" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="bumblebee"
+                                    aria-label="Bumblebee" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="emerald"
+                                    aria-label="Emerald" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="corporate"
+                                    aria-label="Corporate" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="winter"
+                                    aria-label="Winter" /></li>
+                        </ul>
+                    </details>
+                </li>
+                <!-- Dark Themes -->
+                <li>
+                    <details>
+                        <summary class="cursor-pointer font-bold">🌙 Dark</summary>
+                        <ul>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dark"
+                                    aria-label="Dark" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="night"
+                                    aria-label="Night" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="sunset"
+                                    aria-label="Sunset" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="forest"
+                                    aria-label="Forest" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="luxury"
+                                    aria-label="Luxury" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dracula"
+                                    aria-label="Dracula" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="black"
+                                    aria-label="Black" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dim"
+                                    aria-label="Dim" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="business"
+                                    aria-label="Business" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="coffee"
+                                    aria-label="Coffee" /></li>
+                        </ul>
+                    </details>
+                </li>
+                <!-- Colorful / Smooth / Creative Themes -->
+                <li>
+                    <details>
+                        <summary class="cursor-pointer font-bold">🎨 Colorful</summary>
+                        <ul>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="synthwave"
+                                    aria-label="Synthwave" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="retro"
+                                    aria-label="Retro" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="valentine"
+                                    aria-label="Valentine" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="aqua"
+                                    aria-label="Aqua" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="cmyk"
+                                    aria-label="CMYK" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="halloween"
+                                    aria-label="Halloween" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="lofi"
+                                    aria-label="Lofi" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="pastel"
+                                    aria-label="Pastel" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="fantasy"
+                                    aria-label="Fantasy" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="wireframe"
+                                    aria-label="Wireframe" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="autumn"
+                                    aria-label="Autumn" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="garden"
+                                    aria-label="Garden" /></li>
+
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="nord"
+                                    aria-label="Nord" /></li>
+                            <li><input type="radio" name="theme-dropdown"
+                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="woodland"
+                                    aria-label="Woodland" /></li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+
+        </li>
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-circle btn-ghost avatar w-18">
+
+                <div class="w-20 rounded-full">
+                    <img alt="{{user}} image" src="{% static user.avatar %}" />
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                {% if user.is_authenticated %}
+
+                <li>
+                    <a class="justify-between" href="{{user.get_absolute_url}}">Profil</a>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
+                </li>
+                {% else %}
+                <a href="{% url 'login' %}">LOGIN </a>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class="drawer z-30">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <!-- <label for="my-drawer" class="btn btn-accent drawer-button">🍔</label> -->
+
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-80 min-h-full flex flex-col gap-3 items-stretch glass text-base-content">
+            {% if user.is_authenticated %}
+            {% if user.avatar %}
+            <div style="background-image: url('{% static user.avatar %}');"
+                class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+                <p class="w-full text-center text-4xl glass text-black">
+                    {{user}}
+                    </span>
+            </div>
+            {% else %}
+            <i class=" fas fa-image-portrait text-5xl text-red-600"></i>
+            {% endif %}
+            {% else %}
+            <div id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+                <p class="w-full text-center text-4xl glass text-black">
+                    {{user}}
+                    </span>
+            </div>
+            <li>
+                <a href="{% url 'login' %}" class="btn btn-info">LOGIN </a>
+
+            </li>
+
+            {% endif %}
+
+            <li>
+                <a class="btn btn-block justify-between btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'dashbord' %}">Dashbord</a>
+            </li>
+
+            {% if user.is_authenticated %}
+
+            {% if "employees.list_employee" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'employee_list' %}">Liste des employes</a>
+            </li>
+            {% endif %}
+            {% if "Users.view_user" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'userList' %}">
+                    <i class="fa fa-users"></i>
+
+                    <span>Liste des users</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if "departements.view_departements" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'liste_departements' %}">Liste des departements</a>
+            </li>
+            {% endif %}
+            {% if "conges.add_congesrequest" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'conges_request_create' %}">Demande de conge</a>
+            </li>
+            {% endif %}
+            {% if "conges.list_congesrequest" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'conges_request_list' %}">Liste des demandes de conges</a>
+            </li>
+            {% endif %}
+            {% if "presences.view_presence" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'presence_page' %}">Fiches de presences</a>
+            </li>
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'subor_presences' %}">Liste Absences</a>
+            </li>
+            {% endif %}
+            {% if "conges.list_conges" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'conges_list' %}">Liste conges</a>
+            </li>
+            {% endif %}
+            {% if "evaluations.add_employeerating" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'note_employee' %}">Evaluation employés</a>
+            </li>
+            {% endif %}
+            {% if "evaluations.add_departementrating" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'note_departement' %}">Evaluations departements</a>
+            </li>
+            {% endif %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'departements_notes' %}">Notes departement</a>
+            </li>
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'employees_notes' %}">Notes employee</a>
+            </li>
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'classement_departement' %}">Classement departement</a>
+            </li>
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
+                    href="{% url 'classement_employees' %}">Classement employee</a>
+            </li>
+            {% else %}
+
+            <div class="flex flex-col gap-4 w-full">
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+            </div>
+            {% endif %}
+
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+{% block sripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Charger les thèmes depuis les cookies
+        const savedTheme = getCookie("theme") || "cupcake";
+        //const savedMode = getCookie("mode") || "light";
+
+        // Appliquer data-theme
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        // Appliquer dark/light mode via class
+        /*if (savedMode === "dark") {
+            document.documentElement.classList.add("dark");
+            document.getElementById("theme").checked = true;
+        }*/
+
+        // Mettre à jour les radio boutons
+        const themeInputs = document.querySelectorAll('input[name="theme-dropdown"]');
+        themeInputs.forEach(input => {
+            if (input.value === savedTheme) {
+                input.checked = true;
+            }
+            input.addEventListener("change", (e) => {
+                const selectedTheme = e.target.value;
+                document.documentElement.setAttribute("data-theme", selectedTheme);
+                setCookie("theme", selectedTheme, 365);
+            });
+        });
+
+        // Switch dark/light
+        /*document.getElementById("theme").addEventListener("change", (e) => {
+            const isDark = e.target.checked;
+            if (isDark) {
+                document.documentElement.classList.add("dark");
+                setCookie("mode", "dark", 365);
+            } else {
+                document.documentElement.classList.remove("dark");
+                setCookie("mode", "light", 365);
+            }
+        });
+        */
+    });
+
+    // Cookies helpers
+    function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+    }
+
+    function getCookie(name) {
+        return document.cookie.split('; ').reduce((r, v) => {
+            const parts = v.split('=');
+            return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+        }, '');
+    }
+</script>
+
+
+{% endblock sripts %}

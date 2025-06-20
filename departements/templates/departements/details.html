@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="glass p-6 rounded shadow-md m-2 lg:mx-auto w-full lg:w-3/4">
+  <h1 class="text-2xl font-bold mb-4 dark:text-white uppercase">Details du departement <span
+      class="text-red-600">{{object.name}}</span></h1>
+  <section class="card-body flex flex-col gap-4 text-lg font-medium dark:text-white">
+    <p class="flex justify-between glass p-1">
+      <span class="font-semibold">Date creation</span>
+      <span>{{object.created_at}}</span>
+    </p>
+    <p class="flex justify-between glass p-1">
+      <span class="font-semibold">Date de modification</span>
+      <span>{{object.updated_at}}</span>
+    </p>
+  </section>
+  {% if "employees.list_employee" in permissions %}
+
+  <section class="overflow-x-auto">
+    <table class="table min-w-full glass  dark:text-white">
+      <thead>
+        <tr class="font-bold text-black dark:text-white">
+          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Utilisateur</th>
+          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Poste</th>
+          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Manager</th>
+          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Département</th>
+          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Date Embauche</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="">
+        {% for employee in employees %}
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap">{{ employee.user.username }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ employee.poste }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {% if employee.manager %}
+            {{ employee.manager.user.username }}
+            {% else %} — {% endif %}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ employee.departement }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ employee.date_embauche|date:"d/m/Y" }}</td>
+          {% if user.is_staff %}
+          <td class="dropdown dropdown-bottom">
+            <label tabindex=0 class="btn m-1">Actions</label>
+            <ul tabindex=0
+              class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+              {% if "employees.delete_employee" in permissions %}
+              <li>
+                <a href="{% url 'employee_delete' employee.pk %} " class="btn btn-error">Supprimer</a>
+              </li>
+              {% endif %}
+              {% if "employees.change_employee" in permissions %}
+              <li>
+                <a href="{% url 'employee_update' employee.pk %} " class="btn btn-warning">Modifier</a>
+              </li>
+              {% endif %}
+              {% if "employees.view_employee" in permissions %}
+              <li>
+                <a href="{% url 'employee_profil' employee.pk %} " class="btn btn-info">Detail</a>
+              </li>
+              {% endif %}
+            </ul>
+          </td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun employé</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+</div>
+</div>
+<!-- name of each tab group should be unique -->
+<div class="tabs tabs-lift">
+  <label class="tab">
+    <input type="radio" name="my_tabs_4" />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="size-4 me-2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+    </svg>
+    Progression de l'annee
+  </label>
+  <div class="tab-content bg-base-100 border-base-300 p-6">
+    <canvas id="progressionChart" width="700" height="400"></canvas>
+  </div>
+
+  <label class="tab">
+    <input type="radio" name="my_tabs_4" checked="checked" />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="size-4 me-2">
+      <i class=" fas fa-calendar"></i>
+    </svg>
+    Progression annuelle</h2>
+  </label>
+  <div class="tab-content bg-base-100 border-base-300 p-6">
+    <canvas id="progressionChartYear" width="700" height="400"></canvas>
+  </div>
+</div>
+
+
+
+{% endblock main %}
+{% block scripts %}
+<script>
+  const ctx = document.getElementById('progressionChart').getContext('2d');
+  const labels = {{ chart_labels| safe }};
+  const data = {{ chart_data| safe }};
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Note  par mois',
+        data: data,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.3,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 10
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const ctxYear = document.getElementById('progressionChartYear').getContext('2d');
+  const labelsYear = {{ chart_labels_year| safe }};
+  const dataYear = {{ chart_data_year| safe }};
+
+  new Chart(ctxYear, {
+    type: 'line',
+    data: {
+      labels: labelsYear,
+      datasets: [{
+        label: 'Note moyenne annuelle',
+        data: dataYear,
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: true,
+        tension: 0.3,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 10
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock scripts %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="card glass m-3 md:mx-auto md:w-2/3 lg:w-1/2 ">
+    <h1 class="text-3xl font-bold mb-4 card-title text-red-500 justify-center">Evaluation Employee Update</h1>
+    <form class="card-body" method="post" action="">
+        {% csrf_token %}
+        {{form | crispy}}
+        <input type="submit" class="btn btn-warning my-2" value="Modifier">
+    </form>
+</div>
+
+{% endblock main %}

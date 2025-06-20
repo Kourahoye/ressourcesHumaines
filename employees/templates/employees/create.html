@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="p-6 rounded shadow-md mx-auto w-full max-w-2xl card bg-base-300/40 glass">
+  <h1 class="text-2xl font-bold mb-4 card-title text-slate-950 dark:text-zinc-50">Enregistrer un Employé</h1>
+  <form class="flex flex-col gap-5 w-full card-body" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label class="floating-label w-full">
+      {{ form.user }}
+      <span class="bg-transparent font-bold text-2xl">Utilisateur</span>
+    </label>
+    {% if form.user.errors %}
+    <span class="alert alert-error mt-1 text-sm">
+      {{ form.user.errors }}
+    </span>
+    {% endif %}
+
+    <label class="floating-label w-full">
+      {{ form.poste }}
+      <span class="bg-transparent font-bold text-2xl">Poste</span>
+    </label>
+    {% if form.poste.errors %}
+    <span class="alert alert-error mt-1 text-sm">
+      {{ form.poste.errors }}
+    </span>
+    {% endif %}
+
+    <label class="floating-label w-full">
+      {{ form.manager }}
+      <span class="bg-transparent font-bold text-2xl">Manager</span>
+    </label>
+    {% if form.manager.errors %}
+    <span class="alert alert-error mt-1 text-sm">
+      {{ form.manager.errors }}
+    </span>
+    {% endif %}
+
+    <label class="floating-label w-full">
+      {{ form.departement }}
+      <span class="bg-transparent font-bold text-2xl">Département</span>
+    </label>
+    {% if form.departement.errors %}
+    <span class="alert alert-error mt-1 text-sm">
+      {{ form.departement.errors }}
+    </span>
+    {% endif %}
+
+    <label class="floating-label w-full">
+      {{ form.date_embauche }}
+      <span class="bg-transparent font-bold text-2xl">Date d'embauche</span>
+    </label>
+    {% if form.date_embauche.errors %}
+    <span class="alert alert-error mt-1 text-sm">
+      {{ form.date_embauche.errors }}
+    </span>
+    {% endif %}
+
+    <div class="mt-6">
+      <button type="submit" class="btn btn-primary w-full">Enregistrer</button>
+    </div>
+  </form>
+</div>
+{% endblock main %}

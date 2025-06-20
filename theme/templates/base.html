@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% load static tailwind_tags %}
+	<title>Django Tailwind</title>
+	<meta charset=" UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+	<script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+	<script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+
+	{% tailwind_css %}
+	<script>
+		(function () {
+			const theme = document.cookie.split('; ').find(row => row.startsWith('theme='));
+			if (theme) {
+				document.documentElement.setAttribute('data-theme', decodeURIComponent(theme.split('=')[1]));
+			}
+		})();
+	</script>
+
+
+</head>
+
+<body class=" bg-base-100 dark:text-white font-serif leading-normal tracking-normal min-h-screen text-slate-950">
+	<!-- <div class="container mx-auto">
+		<section class="flex items-center justify-center h-20">
+			<h1 class="text-4xl lg:text-5xl dark:text-amber-50">Django + Tailwind = <span
+					class="motion-safe:animate-ping ease-in-out delay-75 duration-1000">❤️</span></h1>
+		</section>
+	</div> -->
+	{% include 'header.html' %}
+	{% block main %}{% endblock main %}
+	<script src='{% static "jquery\jquery.min.js" %}'></script>
+	<script src='{% static "chart.umd.js" %}'></script>
+	<script src='{% static "sweetalert2\sweetalert2.all.min.js" %}'></script>
+	{% block scripts %}
+	{% endblock scripts %}
+</body>
+
+</html>

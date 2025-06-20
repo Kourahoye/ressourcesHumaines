@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load static %}
+{% block main %}
+{% if user.is_authenticated %}
+<div class="grid grid-cols-1 gap-4 mx-auto ">
+    <!-- General Stats -->
+    <div class="p-6 card glass dark:text-white lg:flex-2/3">
+        <h2 class="text-xl font-bold mb-4 card-title">Statistiques Générales</h2>
+        <div class="stats shadow stats-vertical grid md:grid-cols-3  gap-4 card-body">
+            <div class="flex flex-col justify-center items-center p-1 h-62 md:col-span-2 md:row-span-2 shadow-md">
+                <!-- <div class="stat-title font-semibold text-sm dark:text-white">Repartition Employé</div> -->
+                <canvas id="repartitiongenre" class="stat-figure"></canvas>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Utilisateurs Actifs</div>
+                <div class="stat-value text-primary">{{ general.actif_users }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Utilisateurs Inactifs</div>
+                <div class="stat-value text-secondary">{{ general.inactif_user }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Départements</div>
+                <div class="stat-value text-accent">{{ general.departemts }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Employés</div>
+                <div class="stat-value text-info">{{ general.employees }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Employés disponibles</div>
+                <div class="stat-value text-info">{{ general.disponible }}</div>
+            </div>
+            <div class="flex flex-col justify-center items-center p-3 h-72 md:col-span-1 md:row-span-2 shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Stats requettes conges</div>
+                <canvas id="statRequetteConges" class="stat-figure"></canvas>
+            </div>
+            <div class="flex flex-col justify-center items-center p-3 h-72 md:col-span-2 md:row-span-2 shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Absences</div>
+                <canvas id="absences_evolution" class="stat-figure"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Private Stats -->
+    <div class="glass rounded-xl shadow p-6 card">
+        <h2 class="text-xl font-bold mb-4 card-title">Vos Statistiques</h2>
+        <div class="stats shadow grid grid-cols-1 gap-4 card-body">
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Employés Ajoutés</div>
+                <div class="stat-value text-primary">{{ prive.employees_added }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Départements Ajoutés</div>
+                <div class="stat-value text-accent">{{ prive.departement_added }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Absences du mois</div>
+                <div class="stat-value text-error">{{ prive.absences_personnel }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('repartitiongenre').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Hommes', 'Femmes'],
+            datasets: [{
+                data: "[{{ general.hommes|safe|escapejs }}, {{ general.femmes|safe|escapejs }}]",
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition par Genre'
+                }
+            }
+        },
+    });
+</script>
+<script>
+    const ctxAbsences = document.getElementById('absences_evolution').getContext('2d');
+    const labels = {{ general.absence_label| safe }};
+    const data = {{ general.absence_data | safe | escapejs }};
+
+    new Chart(ctxAbsences, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Evolutions absences par mois',
+                data: data,
+                borderColor: 'red',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: false,
+                tension: 0.3,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const ctx4 = document.getElementById('statRequetteConges').getContext('2d');
+    new Chart(ctx4, {
+        type: 'doughnut',
+        data: {
+            labels: ['Acceptés', 'Refusés', 'En attente', 'Annulés'],
+            datasets: [{
+                data: "[{{ general.conges_stats.accepted|default:0|safe|escapejs }}, {{ general.conges_stats.refused|default:0|safe|escapejs }}, {{ general.conges_stats.pending|default:0|safe|escapejs }}, {{ general.conges_stats.aborted|default:0|safe|escapejs }}]",
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.2)',  // vert
+                    'rgba(239, 68, 68, 0.2)',  // rouge
+                    'rgba(250, 204, 21, 0.2)', // jaune
+                    'rgba(107, 114, 128, 0.2)' // gris
+                ],
+                borderColor: [
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(239, 68, 68, 1)',
+                    'rgba(250, 204, 21, 1)',
+                    'rgba(107, 114, 128, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Répartition des demandes de congés'
+                }
+            }
+        },
+    });
+
+</script>
+{% endblock scripts %}

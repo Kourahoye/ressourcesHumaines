@@ -1,0 +1,21 @@
+<table class="table glass w-full table-auto border-collapse">
+  <thead>
+    <tr>
+      <th class="border px-4 py-2 text-left">Employé</th>
+      <th class="border px-4 py-2 text-center">Absent ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for form in forms %}
+    <tr>
+      <td class="border px-4 py-2">
+        {{ form.initial.employee_name }}
+        <input type="hidden" name="employee_id" value="{{ form.initial.employee }}">
+      </td>
+      <td class="border px-4 py-2 text-center">
+        <input type="checkbox" name="is_absent_{{ forloop.counter0 }}" {% if form.initial.is_absent %}checked{% endif %}>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

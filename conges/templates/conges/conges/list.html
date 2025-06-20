@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="card glass bg-base-300 mx-4 overflow-x-auto p-3">
+  <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des conges</h1>
+
+    <table class="table glass ">
+      <thead class="">
+        <tr class="font-bold dark:text-white">
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Employee</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Debut</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Fin</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour
+          </th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="">
+        {% for conge in conges %}
+        <tr class="">
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.employee.user }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.startDate }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.endDate }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_by.username }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_at|date:"d/m/Y" }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ conge.updated_at|date:"d/m/Y" }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {% if conge.created_by == request.user %}
+            myself
+            {% else %}
+            {{ conge.created_by.username }}
+            {% endif %}
+          </td>
+          <td class="dropdown dropdown-left">
+            <label tabindex=0 class="btn m-1">Actions</label>
+            
+            <ul tabindex=0
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+            {% if "conges.delete_conges" in permissions %}
+            <li>
+              <a  href="{% url 'deleteConges' %}" class="btn btn-error delete">Supprimer</a>
+            </li>
+            {% endif %}
+            {% if "conges.change_conges" in permissions %}
+              <li>
+                <a href="" class="btn btn-warning">Modifier</a>
+              </li>
+            {% endif %}
+            {% if "conges.view_conges" in permissions %}  
+              <li>
+                <a href="" class="btn btn-info">Detail</a>
+              </li>
+            {% endif %}
+            {% if "conges.finish_conges" in permissions %}
+              <li>
+                <a href="{% url 'conges_finish' %}" class="btn btn-success">Terminer</a>
+              </li>
+            {% endif %}
+            {% if "conges.unfinish_conges" in permissions %}
+              <li>
+                <a href="{% url 'conges_unfinish' %}" class="btn btn-secondary">Annuler</a>
+              </li>
+            {% endif %}
+
+            </ul>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun conges trouvé.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+  <!-- Pagination simple -->
+  {% if is_paginated %}
+  <div class="mt-4 flex justify-center space-x-2">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+      class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Précédent</a>
+    {% endif %}
+
+    <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Suivant</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock main %}
+
+{% block scripts %}
+<script>  
+  $(document).ready(function () {
+    $('.delete').on('click', function (e) {
+      e.preventDefault();
+      const url = $(this).attr('href');
+      Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Vous ne pourrez pas revenir en arrière !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Oui, supprimer !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+      });
+    });
+  });
+</script>
+{% endblock scripts %}
