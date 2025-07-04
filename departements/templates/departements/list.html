@@ -3,21 +3,21 @@
 
 {% block main %}
 
-<div class="xl:w-5/6 mx-auto glass overflow-x-auto shadow-md rounded p-6 min-h-fit">
+<div class="xl:w-5/6 mx-auto glass overflow-x-auto shadow-md rounded p-6 md:3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des départements</h1>
   {% if "departements.add_departements" in permissions %}
-  <a class="btn btn-info" href="{% url 'departement_add' %}">Ajouter</a>
+  <a class="btn btn-info btn-sm" href="{% url 'departement_add' %}">Ajouter</a>
   {% endif %}
 
-  <table class="table glass w-full min-w-full text-black dark:text-white ">
+  <table class="table  w-full min-w-full text-black dark:text-white ">
     <thead class="table-header-group">
-      <tr class="dark:text-white border-b-2 text-black">
-        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nom</th>
-        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Créé par</th>
-        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Date de création</th>
-        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Date de mise à jour
+      <tr class="dark:text-white border-b-2 text-black font-bold">
+        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Nom</th>
+        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
+        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
+        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour
         </th>
-        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Mis à jour par</th>
+        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
         <th></th>
       </tr>
     </thead>
@@ -37,17 +37,17 @@
         </td>
 
         <td class="dropdown dropdown-bottom">
-          <label tabindex=0 class="btn m-1">Actions</label>
+          <label tabindex=0 class="btn m-1 btn-outline btn-ghost btn-error">Actions</label>
           <ul tabindex=0
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+            class="dropdown-content z-[1] bg-base-100 menu p-2 shadow rounded-box flex flex-col gap-2">
             <li>
-              <a href="{% url 'departements_delete' departement.pk %} " class="btn btn-error">Supprimer</a>
+              <a href="{% url 'departements_delete' departement.pk %} " class="btn btn-error btn-outline btn-ghost btn-sm">Supprimer</a>
             </li>
             <li>
-              <a href="{% url 'departements_update' departement.pk %} " class="btn btn-warning">Modifier</a>
+              <a href="{% url 'departements_update' departement.pk %} " class="btn btn-warning btn-outline btn-ghost btn-sm">Modifier</a>
             </li>
             <li>
-              <a href="{% url 'departements_profil' departement.pk %} " class="btn btn-info">Detail</a>
+              <a href="{% url 'departements_profil' departement.pk %} " class="btn btn-info btn-outline btn-ghost btn-sm">Detail</a>
             </li>
           </ul>
         </td>
@@ -62,17 +62,17 @@
   </table>
 
   <!-- Pagination simple -->
-  {% if is_paginated %}
+   {% if is_paginated %}
   <div class="mt-4 flex justify-center space-x-2">
     {% if page_obj.has_previous %}
     <a href="?page={{ page_obj.previous_page_number }}"
-      class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Précédent</a>
+      class="btn btn-info btn-sm btn-outline">Précédent</a>
     {% endif %}
 
-    <span class="px-3 py-1">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    <span class="px-3 py-1 btn btn-outline btn-ghost btn-sm">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
     {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Suivant</a>
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-error btn-sm btn-outline">Suivant</a>
     {% endif %}
   </div>
   {% endif %}

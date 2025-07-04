@@ -5,7 +5,7 @@
 
 
 <!-- name of each tab group should be unique -->
-<div class="tabs tabs-lift">
+<div class="tabs tabs-lift w-full overflow-x-auto xl:w-4/5 mx-auto  glass shadow-md rounded p-6 md:3/4">
     <label class="tab">
         <input type="radio" name="my_tabs_4" checked="checked" />
         <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 me-2">
@@ -13,11 +13,11 @@
         </svg>
         <span class="pl-4">This year</span>
     </label>
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content p-6">
         <div class="overflow-x-auto">
             <table class="table">
                 <thead>
-                    <tr>
+                    <tr class="text-black dark:text-white">
                         <th>#</th>
                         <th>Employee</th>
                         <th>Mois</th>
@@ -28,7 +28,7 @@
                 <tbody>
 
                     {% for note in current %}
-                    <tr>
+                    <tr class="text-black dark:text-white">
                         <th>{{note.id}}</th>
                         <td>{{note.employee.user}}</td>
                         <td>{{note.month}}</td>
@@ -40,7 +40,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr>
+                    <tr class="text-black dark:text-white">
                         <td colspan="5" class="text-red-600 text-2xl text-center">Aucune note trouvé</td>
                     </tr>
                     {% endfor %}
@@ -58,14 +58,14 @@
         <span class="pl-4">All years</span>
 
     </label>
-    <div class="tab-content bg-base-100 border-base-300 p-6">
+    <div class="tab-content p-6">
         {% for annee, notes in grouped_by_year %}
         <div class="mb-10 divider-horizontal">
             <h2 class="text-xl font-bold mb-4">Classement pour l'année {{ annee }}</h2>
             <div class="overflow-x-auto">
                 <table class="table">
                     <thead>
-                        <tr>
+                        <tr class="text-black dark:text-white">
                             <th>Employee</th>
                             <th>Année</th>
                             <th>Moyenne</th>
@@ -73,7 +73,7 @@
                     </thead>
                     <tbody>
                         {% for note in notes %}
-                        <tr>
+                        <tr class="text-black dark:text-white">
                             <td>{{ note.employee }}</td>
                             <td>{{ note.year }}</td>
                             <td>
@@ -86,7 +86,7 @@
                             </td>
                         </tr>
                         {% empty %}
-                        <tr>
+                        <tr class="text-black dark:text-white">
                             <td colspan="3" class="text-red-600 text-2xl text-center">Aucune note trouvée</td>
                         </tr>
                         {% endfor %}
@@ -108,9 +108,7 @@
         </svg>
         Love
     </label>
-    <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div> -->
+    <div class="tab-content p-6">Tab content 3</div> -->
 </div>
-<pre>
-    {{notes}}
-</pre>
+
 {% endblock main %}

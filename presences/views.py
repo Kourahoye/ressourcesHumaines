@@ -81,6 +81,7 @@ class PresenceList(ListView):
     model = Presence
     context_object_name = 'absences'
     template_name='presences/absences.html'
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

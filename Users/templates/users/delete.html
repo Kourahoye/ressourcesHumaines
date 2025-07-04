@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="glass card md:w-1/2 mx-auto">
+    <h1 class="text-xl card-title p-2">Voulez-vous supprimer {{ object }} ?</h1>
+    <form class="card-body" method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+        <button class="btn btn-outline btn-ghost btn-error" type="submit">Supprimer</button>
+        <a class="btn btn-outline btn-info" href="{% url 'userList' %}">Annuler</a>
+    </form>
+</div>
+
+
+{% endblock %}

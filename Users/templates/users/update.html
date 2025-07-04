@@ -4,12 +4,17 @@ Modification
 {% endblock %}
 {% block main %}
 
-    <form class="w-3/5 p-1 mt-10 mx-auto card glass bg-blue-950 text-base-300" method="post" enctype="multipart/form-data"">
-        <h1 class="text-xl text-red-700 font-bold block w-full text-center">Edition</h1> 
-        {% csrf_token %}
-        {{form.as_div}}
-        <p class="empty:sr-only text-red-600 w-full text-center text-sm font-semibold bg-white my-3 p-1 rounded-sm">{{error}}</p>
-        <input class="btn btn-primary my-1.5 btn-soft" type="submit" value="Modifier">
-    </form>
+<form class="w-3/5 p-1 mt-10 mx-auto card glass text-black dark:text-white" method="post"
+    enctype="multipart/form-data"">
+        <h1 class=" text-xl text-red-700 font-bold block w-full text-center">Edition</h1>
+    {% csrf_token %}
+    {{form.as_div}}
+    {% if error %}
+    <p class="alert alert-horizontal alert-error">
+        {{error}}
+    </p>
+    {% endif %}
+    <input class="btn btn-primary my-1.5 btn-soft" type="submit" value="Modifier" />
+</form>
 
 {% endblock %}

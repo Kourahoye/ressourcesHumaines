@@ -5,7 +5,7 @@ Detail Utilisateur
 {% load static %}
 {% block main %}
 
-<div class="w-3/5 p-1 mt-10 mx-auto card glass bg-blue-950 text-base-300">
+<div class="w-3/5 p-1 mt-10 mx-auto card glass text-base-300 dark:text-white">
     <h1 class="card-title uppercase w-full text-center block">Informations de l'Utilisateur</h1>
     <div class="flex gap-4 w-full container p-4 mx-auto card-body">
         <div class="flex flex-col gap-4 justify-around flex-grow">
@@ -27,11 +27,14 @@ Detail Utilisateur
                     class="uppercase font-bold text-lg">Date de naissance:</span><span>{{object.birthday|date:"d F Y"}}</span></p>
         </div>
     </div>
+    {% if 'Users.change_user' in permissions or user == object %}
+      
     <div class="card-actions">
         <a href="{% url 'userEdit' object.id %}"
-            class="btn btn-warning">Edit
-            les informations</a>
+        class="btn btn-warning">Edit
+        les informations</a>
     </div>
+    {% endif %}
 </div>
 
 {% endblock main %}

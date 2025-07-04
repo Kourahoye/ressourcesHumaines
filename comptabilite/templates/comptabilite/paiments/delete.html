@@ -9,7 +9,7 @@
         <form method="post" class="mt-4">
             {% csrf_token %}
             <button type="submit" class="btn btn-error">Supprimer</button>
-            <a href="{% url 'paiment_list' %}" class="btn btn-secondary ml-2">Annuler</a>
+            <a href="{% url 'paiment_salary_list' %}" class="btn btn-secondary ml-2">Annuler</a>
         </form>
     </div>
 {% endblock main %}

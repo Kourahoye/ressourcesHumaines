@@ -6,20 +6,30 @@
 <div class="glass p-6 rounded shadow-md m-2 lg:mx-auto w-full lg:w-3/4">
   <h1 class="text-2xl font-bold mb-4 dark:text-white uppercase">Details du departement <span
       class="text-red-600">{{object.name}}</span></h1>
-  <section class="card-body flex flex-col gap-4 text-lg font-medium dark:text-white">
-    <p class="flex justify-between glass p-1">
-      <span class="font-semibold">Date creation</span>
-      <span>{{object.created_at}}</span>
-    </p>
-    <p class="flex justify-between glass p-1">
-      <span class="font-semibold">Date de modification</span>
-      <span>{{object.updated_at}}</span>
-    </p>
-  </section>
+
+  <section class="card-body flex flex-col gap-4 text-base dark:text-white">
+  <h2 class="text-xl font-bold mb-2 border-b border-gray-300 dark:border-gray-600 pb-1">Informations générales</h2>
+  
+  <div class="glass rounded p-3 flex justify-between items-center">
+    <span class="text-gray-600 dark:text-gray-300">Employé connecté</span>
+    <span class="font-semibold">{{ logged_in }}</span>
+  </div>
+
+  <div class="glass rounded p-3 flex justify-between items-center">
+    <span class="text-gray-600 dark:text-gray-300">Date de création</span>
+    <span class="font-semibold">{{ object.created_at }}</span>
+  </div>
+
+  <div class="glass rounded p-3 flex justify-between items-center">
+    <span class="text-gray-600 dark:text-gray-300">Dernière modification</span>
+    <span class="font-semibold">{{ object.updated_at }}</span>
+  </div>
+</section>
+
   {% if "employees.list_employee" in permissions %}
 
   <section class="overflow-x-auto">
-    <table class="table min-w-full glass  dark:text-white">
+    <table class="table min-w-full dark:text-white">
       <thead>
         <tr class="font-bold text-black dark:text-white">
           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Utilisateur</th>
@@ -78,7 +88,7 @@
 </div>
 </div>
 <!-- name of each tab group should be unique -->
-<div class="tabs tabs-lift">
+<div class="tabs tabs-lift lg:w-3/4 mx-auto">
   <label class="tab">
     <input type="radio" name="my_tabs_4" />
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

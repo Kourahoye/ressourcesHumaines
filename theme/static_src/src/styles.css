@@ -24,7 +24,6 @@
   [data-theme=halloween],
   [data-theme=coffee],
   [data-theme=cyberpunk],
-  [data-theme=cmyk],
   [data-theme=dark] *,
   [data-theme=night] *,
   [data-theme=forest] *,
@@ -39,7 +38,6 @@
   [data-theme=cyberpunk] *,
   [data-theme=sunset] *,
   [data-theme=aqua] *,
-  [data-theme=cmyk] *
 ));
 
 @plugin "daisyui" {

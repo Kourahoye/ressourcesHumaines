@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Paiment
+from .models import  BonusSlip, Payslip, Salary
 
 # Register your models here.
-admin.site.register(Paiment)
+admin.site.register([Salary,Payslip,BonusSlip])

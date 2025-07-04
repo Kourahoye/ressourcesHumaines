@@ -3,7 +3,7 @@ from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import  redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView,FormView,DetailView,UpdateView,ListView
+from django.views.generic import CreateView,FormView,DetailView,UpdateView,ListView,DeleteView
 
 from Users.forms import RegisterForm,LoginForm, UserUpdateForm
 from Users.models import  User
@@ -11,6 +11,14 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.contrib.auth.hashers import make_password
 
+from django.utils.timezone import now
+from datetime import timedelta
+from django.contrib.sessions.models import Session
+from django.utils import timezone
+
+from django.shortcuts import render
+from django import forms
+from django.core.exceptions import ValidationError
 
 
 
@@ -101,13 +109,97 @@ class UserDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
     
-class UserList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-    permission_required =['users.list_users']
+class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = ['users.list_users']
     model = User
     context_object_name = 'users'
-    template_name="users/list.html"
+    template_name = "users/list.html"
+    paginate_by = 5
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        uid_list = []
+        for session in sessions:
+            data = session.get_decoded()
+            uid = data.get('_auth_user_id')
+            if uid:
+                uid_list.append(int(uid))
+
+        online_user_ids = set(uid_list)
+
+        for user in queryset:
+            user.online = user.id in online_user_ids
+
+        return queryset
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
+    
+
+
+
+class UserDeleteForm(forms.Form):
+    # formulaire vide, juste pour gérer l'erreur
+    pass
+
+class UserDeleteView(DeleteView):
+    model = User
+    success_url = reverse_lazy('user-list')
+    template_name = 'users/delete.html'  # ton template delete
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_object()
+        if request.user != user and not request.user.is_staff:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        # afficher le formulaire vide (confirmation)
+        form = UserDeleteForm()
+        return render(request, self.template_name, {'object': self.get_object(), 'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserDeleteForm(request.POST)
+        if not form.is_valid():
+            # jamais arrivé car pas de champs, mais à titre d'exemple
+            return self.form_invalid(form)
+
+        user = self.get_object()
+        relations_bloquantes = []
+
+        for rel in user._meta.related_objects:
+            accessor_name = rel.get_accessor_name()
+            related_manager = getattr(user, accessor_name)
+            try:
+                if rel.one_to_one:
+                    if related_manager is not None:
+                        relations_bloquantes.append(f"{rel.related_model.__name__} (OneToOne)")
+                elif rel.one_to_many:
+                    if related_manager.exists():
+                        relations_bloquantes.append(f"{rel.related_model.__name__} (ForeignKey)")
+                elif rel.many_to_many:
+                    if related_manager.exists():
+                        relations_bloquantes.append(f"{rel.related_model.__name__} (ManyToMany)")
+            except Exception:
+                continue
+
+        if relations_bloquantes:
+            form.add_error(None, ValidationError(
+                "Suppression interdite : utilisateur a effectuer des actions" #+ ", ".join(relations_bloquantes)
+            ))
+            user.is_active = False
+            user.save()
+            form.add_error(None, ValidationError(
+                "Utilisateur desactivé" #+ ", ".join(relations_bloquantes)
+            ))
+            return self.form_invalid(form)
+
+        # pas de relations bloquantes, suppression normale
+        return self.delete(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        # afficher le template avec erreurs
+        return render(self.request, self.template_name, {'form': form, 'object': self.get_object()})

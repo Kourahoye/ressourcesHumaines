@@ -33,7 +33,11 @@ class DepartementRatingCreateView(CreateView):
     
     def form_invalid(self, form):
         return super().form_invalid(form)
-        
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions'] = list(self.request.user.get_all_permissions())
+        return context
     
 class DepartementRatingList(ListView):
     model = DepartementRating
@@ -62,6 +66,11 @@ class EmployeeRatingCreateView(CreateView):
     
     def form_invalid(self, form):
         return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions'] = list(self.request.user.get_all_permissions())
+        return context
         
     
 class EmployeeRatingList(ListView):
@@ -159,7 +168,6 @@ class ClassementDepartement(TemplateView):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         context['grouped_by_year']= list(grouped_by_year.items())
-        # print(context['grouped_by_year'])
         context['current'] = DepartementRating.objects.all().filter(year=current_year,month=mois_courant).order_by('-note','departement_id')
         return context
 

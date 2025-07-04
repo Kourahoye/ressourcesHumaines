@@ -5,7 +5,7 @@
     }
 </style>
 
-<header class="navbar bg-base-100 shadow-sm mb-4 h-24 pr-5">
+<header class="navbar bg-base-100 shadow-sm mb-4 pr-5 print:hidden">
     <div class="flex-1">
         <label for="my-drawer" role="button" class="btn btn-ghost btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
@@ -13,361 +13,315 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
         </label>
-        <a class="btn btn-ghost text-xl">Gestion RH/<span class="text-xs">daisyUI</span></a>
+        <a class="btn btn-ghost text-xl">Gestion RH/ <sub>
+                <span class="text-xs">daisyUI</span>
+            </sub>
+        </a>
     </div>
-    <div class="flex-none">
-        <li class="dropdown mx-5">
-            <div tabindex="0" role="button" class="btn btn-block justify-between btn-accent my-1">
-                Theme
-                <svg width="12px" height="12px" class="inline-block h-2 w-2 fill-current opacity-60"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
-                    <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
-                </svg>
+    <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button"
+            class="btn btn-circle btn-ghost avatar  avatar-online before:w-3 before:block before:h-3 before:rounded-full before:absolute before:top-o before:right-0 hover:ring-2 hover:ring-blue-800 ">
+            <div class=" w-20 rounded-full">
+                <img alt="{{user}} image" src="{% static user.avatar %}" />
             </div>
-            <ul tabindex="0"
-                class="dropdown-content bg-base-300 rounded-box w-64 p-2 shadow-2xl max-h-96 overflow-auto">
-                <!-- Light Themes -->
-                <li>
-                    <details>
-                        <summary class="cursor-pointer font-bold">☀️ Light</summary>
-                        <ul>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="Desk"
-                                    aria-label="Desk" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="light"
-                                    aria-label="Light" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="cupcake"
-                                    aria-label="Cupcake" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="bumblebee"
-                                    aria-label="Bumblebee" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="emerald"
-                                    aria-label="Emerald" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="corporate"
-                                    aria-label="Corporate" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="winter"
-                                    aria-label="Winter" /></li>
-                        </ul>
-                    </details>
-                </li>
-                <!-- Dark Themes -->
-                <li>
-                    <details>
-                        <summary class="cursor-pointer font-bold">🌙 Dark</summary>
-                        <ul>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dark"
-                                    aria-label="Dark" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="night"
-                                    aria-label="Night" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="sunset"
-                                    aria-label="Sunset" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="forest"
-                                    aria-label="Forest" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="luxury"
-                                    aria-label="Luxury" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dracula"
-                                    aria-label="Dracula" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="black"
-                                    aria-label="Black" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="dim"
-                                    aria-label="Dim" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="business"
-                                    aria-label="Business" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="coffee"
-                                    aria-label="Coffee" /></li>
-                        </ul>
-                    </details>
-                </li>
-                <!-- Colorful / Smooth / Creative Themes -->
-                <li>
-                    <details>
-                        <summary class="cursor-pointer font-bold">🎨 Colorful</summary>
-                        <ul>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="synthwave"
-                                    aria-label="Synthwave" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="retro"
-                                    aria-label="Retro" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="valentine"
-                                    aria-label="Valentine" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="aqua"
-                                    aria-label="Aqua" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="cmyk"
-                                    aria-label="CMYK" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="halloween"
-                                    aria-label="Halloween" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="lofi"
-                                    aria-label="Lofi" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="pastel"
-                                    aria-label="Pastel" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="fantasy"
-                                    aria-label="Fantasy" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="wireframe"
-                                    aria-label="Wireframe" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="autumn"
-                                    aria-label="Autumn" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="garden"
-                                    aria-label="Garden" /></li>
-
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="nord"
-                                    aria-label="Nord" /></li>
-                            <li><input type="radio" name="theme-dropdown"
-                                    class="theme-controller btn btn-sm btn-block btn-ghost" value="woodland"
-                                    aria-label="Woodland" /></li>
-                        </ul>
-                    </details>
-                </li>
-            </ul>
-
-        </li>
-        <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-circle btn-ghost avatar w-18">
-
-                <div class="w-20 rounded-full">
-                    <img alt="{{user}} image" src="{% static user.avatar %}" />
-                </div>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                {% if user.is_authenticated %}
-
-                <li>
-                    <a class="justify-between" href="{{user.get_absolute_url}}">Profil</a>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
-                </li>
-                {% else %}
-                <a href="{% url 'login' %}">LOGIN </a>
-                {% endif %}
-            </ul>
         </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            {% if user.is_authenticated %}
+
+            <li>
+                <a class="justify-between" href="{{user.get_absolute_url}}">Profil</a>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
+            </li>
+            {% else %}
+            <a href="{% url 'login' %}">LOGIN </a>
+            {% endif %}
+        </ul>
     </div>
+
 </header>
 
 <div class="drawer z-30">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
-        <!-- <label for="my-drawer" class="btn btn-accent drawer-button">🍔</label> -->
-
     </div>
     <div class="drawer-side">
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu p-4 w-80 min-h-full flex flex-col gap-3 items-stretch glass text-base-content">
+
             {% if user.is_authenticated %}
             {% if user.avatar %}
             <div style="background-image: url('{% static user.avatar %}');"
-            class="h-28 w-full bg-cover bg-center flex justify-center items-end">
-            <p class="w-full text-center text-4xl glass text-black">
-                {{user}}
-                </span>
+                class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+                <p class="w-full text-center text-4xl glass text-black">
+                    {{user}}
+                    </span>
             </div>
             {% else %}
-            <i class="fas fa-image-portrait text-5xl" style="color: #ef4444;"></i>
+            <i class="scale-125 fas fa-image-portrait text-5xl" style="color: #ef4444;"></i>
             {% endif %}
             {% else %}
             <div id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
-            <p class="w-full text-center text-4xl glass text-black">
-                {{user}}
-                </span>
+                <p class="w-full text-center text-4xl glass text-black">
+                    {{user}}
+                    </span>
             </div>
             <li>
-            <a href="{% url 'login' %}" class="btn btn-info">
-                <i class="fas fa-sign-in-alt mr-2" style="color: #0ea5e9;"></i>
-                LOGIN
-            </a>
+                <a href="{% url 'login' %}" class="btn btn-info">
+                    <i class="scale-125 fas fa-sign-in-alt mr-2" style="color: #0ea5e9;"></i>
+                    LOGIN
+                </a>
             </li>
             {% endif %}
 
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'dashbord' %}">
-                <i class="fas fa-tachometer-alt mr-2" style="color: #f59e42;"></i>
-                Dashbord
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'dashbord' %}">
+                    <i class="scale-125 fas fa-tachometer-alt mr-2" style="color: #f59e42;"></i>
+                    Dashbord
+                </a>
             </li>
 
             {% if user.is_authenticated %}
 
             {% if "employees.list_employee" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'employee_list' %}">
-                <i class="fas fa-id-badge mr-2" style="color: #22c55e;"></i>
-                Liste des employes
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'employee_list' %}">
+                    <i class="scale-125 fas fa-id-badge mr-2"></i>
+                    Liste des employes
+                </a>
             </li>
             {% endif %}
             {% if "Users.view_user" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'userList' %}">
-                <i class="fas fa-users mr-2" style="color: #a21caf;"></i>
-                <span>Liste des users</span>
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'userList' %}">
+                    <i class="scale-125 fas fa-users mr-2"></i>
+                    <span>Liste des users</span>
+                </a>
             </li>
             {% endif %}
             {% if "departements.view_departements" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'liste_departements' %}">
-                <i class="fas fa-building mr-2" style="color: #2563eb;"></i>
-                <span class="text-white">Liste des departements</span>
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'liste_departements' %}">
+                    <i class="scale-125 fas fa-building mr-2"></i>
+                    <span class="text-white">Liste des departements</span>
+                </a>
             </li>
             {% endif %}
             {% if "conges.add_congesrequest" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'conges_request_create' %}">
-                <i class="fas fa-calendar-plus mr-2" style="color: #fbbf24;"></i>
-                Demande de conge
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'conges_request_create' %}">
+                    <i class="scale-125 fas fa-calendar-plus mr-2"></i>
+                    Demande de conge
+                </a>
             </li>
             {% endif %}
             {% if "conges.list_congesrequest" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'conges_request_list' %}">
-                <i class="fas fa-calendar-alt mr-2" style="color: #f472b6;"></i>
-                Liste des demandes de conges
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'conges_request_list' %}">
+                    <i class="scale-125 fas fa-calendar-alt mr-2"></i>
+                    Liste des demandes de conges
+                </a>
             </li>
             {% endif %}
             {% if "presences.view_presence" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'presence_page' %}">
-                <i class="fas fa-clipboard-list mr-2" style="color: #0ea5e9;"></i>
-                Fiches de presences
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'presence_page' %}">
+                    <i class="scale-125 fas fa-clipboard-list mr-2"></i>
+                    Fiches de presences
+                </a>
             </li>
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'subor_presences' %}">
-                <i class="fas fa-user-clock mr-2" style="color: #f43f5e;"></i>
-                Liste Absences
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'subor_presences' %}">
+                    <i class="scale-125 fas fa-user-clock mr-2"></i>
+                    Liste Absences
+                </a>
             </li>
             {% endif %}
             {% if "conges.list_conges" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'conges_list' %}">
-                <i class="fas fa-calendar-check mr-2" style="color: #22d3ee;"></i>
-                Liste conges
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'conges_list' %}">
+                    <i class="scale-125 fas fa-calendar-check mr-2" style="color: #22d3ee;"></i>
+                    Liste conges
+                </a>
             </li>
             {% endif %}
             {% if "evaluations.add_employeerating" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'note_employee' %}">
-                <i class="fas fa-star mr-2" style="color: #facc15;"></i>
-                Evaluation employés
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'note_employee' %}">
+                    <i class="scale-125 fas fa-star mr-2" style="color: #facc15;"></i>
+                    Evaluation employés
+                </a>
             </li>
             {% endif %}
             {% if "evaluations.add_departementrating" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'note_departement' %}">
-                <i class="fas fa-chart-line mr-2" style="color: #10b981;"></i>
-                Evaluations departements
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'note_departement' %}">
+                    <i class="scale-125 fas fa-chart-line mr-2"></i>
+                    Evaluations departements
+                </a>
             </li>
             {% endif %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'departements_notes' %}">
-                <i class="fas fa-sticky-note mr-2" style="color: #f59e42;"></i>
-                Notes departement
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'departements_notes' %}">
+                    <i class="scale-125 fas fa-line-chart mr-2"></i>
+                    Notes departement
+                </a>
             </li>
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'employees_notes' %}">
-                <i class="fas fa-sticky-note mr-2" style="color: #a3e635;"></i>
-                Notes employee
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'employees_notes' %}">
+                    <i class="scale-125 fas fa-line-chart mr-2"></i>
+                    Notes employee
+                </a>
             </li>
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'classement_departement' %}">
-                <i class="fas fa-trophy mr-2" style="color: #fbbf24;"></i>
-                Classement departement
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'classement_departement' %}">
+                    <i class="scale-125 fas fa-trophy mr-2" style="color: #fbbf24;"></i>
+                    Classement departement
+                </a>
             </li>
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-                href="{% url 'classement_employees' %}">
-                <i class="fas fa-trophy mr-2" style="color: #f472b6;"></i>
-                Classement employee
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'classement_employees' %}">
+                    <i class="scale-125 fas fa-trophy mr-2" style="color: #eab308;"></i>
+                    Classement employee
+                </a>
             </li>
             {% if "comptabilite.list_paiment" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-            href="{% url 'paiment_list' %}">
-                <i class="fas fa-money-check-alt mr-2" style="color: #16a34a;"></i>
-                Liste des paiments
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'paiment_list' %}">
+                    <i class="scale-125 fas fa-money-check-alt mr-2" style="color: #16a34a;"></i>
+                    Liste des paiments
+                </a>
             </li>
             {% endif %}
-            {% if "comptabilite.add_paiment" in permissions %}
+            {% if "comptabilite.add_salary" in permissions %}
             <li>
-            <a class="btn btn-block justify-start btn-accent btn-ghost text-white hover:text-slate-950"
-            href="{% url 'paiment_create' %}">
-                <i class="fas fa-plus-circle mr-2" style="color: #eab308;"></i>
-                Ajout paiment
-            </a>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'salary_list' %}">
+                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #eab308;"></i>
+                    Salaires
+                </a>
             </li>
             {% endif %}
-
+            {% if "comptabilite.view_paiment" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                    href="{% url 'paiment_salary_list' %}">
+                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #11e811;"></i>
+                    Paiments
+                </a>
+            </li>
+            {% endif %}
+            {% if "comptabilite.view_bonusslip" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'bonus_list' %}">
+                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #11e811;"></i>
+                    Primes
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <button onclick="my_modal_1.showModal()"
+                    class="btn btn-block justify-start btn-accent btn-ghost text-white">
+                    <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt">
+                            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-linecap="square"
+                                stroke-miterlimit="10" stroke-width="2"></circle>
+                            <path
+                                d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z"
+                                fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10"
+                                stroke-width="2"></path>
+                        </g>
+                    </svg>
+                    <span>Settings</span>
+                </button>
+            </li>
             {% else %}
 
             <div class="flex flex-col gap-4 w-full">
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
-            <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
+                <div class="skeleton h-10 w-full rounded-md"></div>
             </div>
             {% endif %}
 
         </ul>
-
-        </div>
+    </div>
 </div>
+
+<dialog id="my_modal_1" class="modal">
+    <div class="modal-box max-w-5xl">
+        <h3 class="text-lg font-bold mb-4 text-black dark:text-white">🎨 Choisissez un thème</h3>
+
+        <!-- Grid responsive pour les thèmes -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <!-- Liste complète des thèmes -->
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Default" value="desk" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Light" value="light" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Cupcake"
+                value="cupcake" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Bumblebee"
+                value="bumblebee" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Emerald"
+                value="emerald" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Corporate"
+                value="corporate" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Winter" value="winter" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dark" value="dark" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Night" value="night" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Sunset" value="sunset" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Forest" value="forest" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Luxury" value="luxury" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dracula"
+                value="dracula" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Black" value="black" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dim" value="dim" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Business"
+                value="business" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Coffee" value="coffee" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Synthwave"
+                value="synthwave" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Retro" value="retro" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Valentine"
+                value="valentine" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Aqua" value="aqua" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="CMYK" value="cmyk" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Halloween"
+                value="halloween" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Lofi" value="lofi" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Pastel" value="pastel" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Fantasy"
+                value="fantasy" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Wireframe"
+                value="wireframe" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Autumn" value="autumn" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Garden" value="garden" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Nord" value="nord" />
+            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Woodland"
+                value="woodland" />
+        </div>
+
+        <div class="modal-action mt-4">
+            <form method="dialog">
+                <button class="btn">Fermer</button>
+            </form>
+        </div>
+    </div>
+</dialog>
 
 
 
@@ -389,7 +343,7 @@
         }*/
 
         // Mettre à jour les radio boutons
-        const themeInputs = document.querySelectorAll('input[name="theme-dropdown"]');
+        const themeInputs = document.querySelectorAll('input[name="theme-buttons"]');
         themeInputs.forEach(input => {
             if (input.value === savedTheme) {
                 input.checked = true;

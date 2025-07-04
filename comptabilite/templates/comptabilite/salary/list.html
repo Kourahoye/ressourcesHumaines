@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="glass p-6 rounded shadow-md mx-auto w-full md:w-3/4 lg:w-1/2">
+    <h1 class="text-2xl font-bold mb-4">Liste des Salaire</h1>
+    <a href="{% url 'salary_create' %}" class="btn btn-primary">Fixer un salaire</a>
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th>Employé</th>
+                <th>Montant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paiment in paiments %}
+            <tr>
+                <td>{{ paiment.employee.user }}</td>
+                <td>{{ paiment.amount }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button tabindex="0" class="btn btn-ghost btn-outline btn-error">
+                            Actions
+                        </button>
+                        <ul tabindex="0"
+                            class="dropdown-content gap-2 menu p-2 shadow bg-base-100 flex-col rounded-box w-40">
+                            {% if 'comptabilite.view_paiment' in permissions %}
+                            <li>
+                                <a href="" class="btn btn-sm btn-info btn-outline btn-ghost">Détail</a>
+                            </li>
+                            {% endif %}
+                            {% if 'comptabilite.delete_paiment' in permissions %}
+                            <li>
+                                <a href="{% url 'salary_delete' paiment.pk %}"
+                                    class="btn btn-sm btn-error btn-outline btn-ghost">Supprimer</a>
+                            </li>
+                            {% endif %}
+                            {% if 'comptabilite.change_paiment' in permissions %}
+                            <li>
+                                <a href="{% url 'salary_update' paiment.pk %}"
+                                    class="btn btn-sm btn-warning btn-outline btn-ghost">Modifier</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">Aucun paiement trouvé.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div class="mt-4 flex justify-center space-x-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"
+            class="btn btn-outline btn-sm btn-ghost btn-info">Précédent</a>
+        {% endif %}
+
+        <span class="btn btn-outline btn-sm">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm btn-ghost btn-error">Suivant</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+{% endblock main %}

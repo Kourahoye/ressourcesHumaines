@@ -4,64 +4,84 @@
 {% load static %}
 {% block main %}
 {% if user.is_authenticated %}
-<div class="grid grid-cols-1 gap-4 mx-auto ">
+<div class="grid grid-cols-1 gap-4 mx-auto">
     <!-- General Stats -->
     <div class="p-6 card glass dark:text-white lg:flex-2/3">
         <h2 class="text-xl font-bold mb-4 card-title">Statistiques Générales</h2>
-        <div class="stats shadow stats-vertical grid md:grid-cols-3  gap-4 card-body">
-            <div class="flex flex-col justify-center items-center p-1 h-62 md:col-span-2 md:row-span-2 shadow-md">
-                <!-- <div class="stat-title font-semibold text-sm dark:text-white">Repartition Employé</div> -->
+        <div
+            class="stats shadow stats-vertical grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4 card-body">
+            <div class="flex flex-col justify-center items-center p-1 h-62 col-span-2 row-span-2 shadow-md">
                 <canvas id="repartitiongenre" class="stat-figure"></canvas>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Utilisateurs Actifs</div>
-                <div class="stat-value text-primary">{{ general.actif_users }}</div>
+            <div class="stat order-1 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">
+                    Utilisateurs Actifs</div>
+                <div class="stat-value text-info">{{ general.actif_users }}
+                     <span class="ml-4 hidden lg:inline text-sm">{{general.logged_in}}
+                    <span aria-label="info" class="ml-1 status status-md status-info"></span><span class="text-xs">connected</span>
+                </span>
+                </div>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Utilisateurs Inactifs</div>
-                <div class="stat-value text-secondary">{{ general.inactif_user }}</div>
+            <div class="stat order-2 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">
+                    Utilisateurs Inactifs</div>
+                <div class="stat-value text-info">{{ general.inactif_user }}</div>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Départements</div>
-                <div class="stat-value text-accent">{{ general.departemts }}</div>
+            <div class="stat order-3 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">
+                    Départements</div>
+                <div class="stat-value text-info">{{ general.departemts }}</div>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Employés</div>
-                <div class="stat-value text-info">{{ general.employees }}</div>
+            <div class="stat order-4 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Employés
+                </div>
+                <div class="stat-value text-info">{{ general.employees }}
+                </div>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Employés disponibles</div>
-                <div class="stat-value text-info">{{ general.disponible }}</div>
+            <div class="stat order-5 shadow-md md:order-9 lg:order-5 col-span-2 sm:col-span-1">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Employés
+                    disponibles</div>
+                <div class="stat-value text-info">{{ general.disponible }}/{{ general.employees }}</div>
             </div>
-            <div class="flex flex-col justify-center items-center p-3 h-72 md:col-span-1 md:row-span-2 shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Stats requettes conges</div>
+            <div
+                class="stat order-6 lg:order-7 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Stats
+                    requettes conges</div>
                 <canvas id="statRequetteConges" class="stat-figure"></canvas>
             </div>
-            <div class="flex flex-col justify-center items-center p-3 h-72 md:col-span-2 md:row-span-2 shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Absences</div>
+            <div
+                class="stat order-7 flex flex-col justify-center items-center p-3 h-72 col-span-2 row-span-2 md:col-span-2 md:row-span-2 lg:col-span-3 shadow-md">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Absences
+                </div>
                 <canvas id="absences_evolution" class="stat-figure"></canvas>
             </div>
-            <div class="stat shadow-md">
-                <div class="stat-title font-semibold text-sm dark:text-white">Salaires payés ce mois</div>
-                <div class="stat-value text-info">{{ general.payments_stat.payed }}/{{ general.payments_stat.unpayed }}</div>
+            <div class="stat order-8 shadow-md lg:order-6">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Salaires
+                    payés ce mois</div>
+                <div class="stat-value text-info">{{ general.payments_stat.payed }}/{{ general.actif_users }}</div>
+            </div>
+            <div class="stat order-9 shadow-md lg:invisible">
+                <div class="stat-title font-semibold text-sm truncate hover:overflow-visible dark:text-white">Logged
+                    users</div>
+                <div class="stat-value text-info">{{general.logged_in}}</div>
             </div>
         </div>
     </div>
     <!-- Private Stats -->
     <div class="glass rounded-xl shadow p-6 card">
         <h2 class="text-xl font-bold mb-4 card-title">Vos Statistiques</h2>
-        <div class="stats shadow grid grid-cols-1 gap-4 card-body">
+        <div class="stats shadow stats-vertical sm:stats-horizontal">
             <div class="stat shadow-md">
                 <div class="stat-title font-semibold text-sm dark:text-white">Employés Ajoutés</div>
-                <div class="stat-value text-primary">{{ prive.employees_added }}</div>
+                <div class="stat-value text-info">{{ prive.employees_added }}</div>
             </div>
             <div class="stat shadow-md">
                 <div class="stat-title font-semibold text-sm dark:text-white">Départements Ajoutés</div>
-                <div class="stat-value text-accent">{{ prive.departement_added }}</div>
+                <div class="stat-value text-info">{{ prive.departement_added }}</div>
             </div>
             <div class="stat shadow-md">
                 <div class="stat-title font-semibold text-sm dark:text-white">Absences du mois</div>
-                <div class="stat-value text-error">{{ prive.absences_personnel }}</div>
+                <div class="stat-value text-info">{{ prive.absences_personnel }}</div>
             </div>
         </div>
     </div>
@@ -70,44 +90,76 @@
 {% endblock %}
 {% block scripts %}
 <script>
-    const ctx = document.getElementById('repartitiongenre').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Hommes', 'Femmes'],
+    // Store chart instances globally
+    let repartitionChart, absencesChart, congesChart;
+
+    // Chart creation functions
+    function createRepartitionChart(labelColor) {
+        const ctx = document.getElementById('repartitiongenre').getContext('2d');
+        if (repartitionChart) repartitionChart.destroy();
+
+        // Get values from template context
+        const hommes = Number("{{ general.hommes|safe|escapejs }}");
+        const femmes = Number("{{ general.femmes|safe|escapejs }}");
+        const total = hommes + femmes;
+
+        // Labels without percentages
+        const labels = [
+            'Hommes',
+            'Femmes'
+        ];
+
+        repartitionChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+            labels: labels,
             datasets: [{
-                data: "[{{ general.hommes|safe|escapejs }}, {{ general.femmes|safe|escapejs }}]",
+                data: [hommes, femmes],
                 backgroundColor: [
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 99, 132, 0.2)'
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 99, 132, 0.2)'
                 ],
                 borderColor: [
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 99, 132, 1)'
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 1
             }]
-        },
-        options: {
+            },
+            options: {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'top',
+                labels: { color: labelColor }
                 },
                 title: {
-                    display: true,
-                    text: 'Répartition par Genre'
+                display: true,
+                color: labelColor,
+                text: 'Répartition par Genre'
+                },
+                tooltip: {
+                callbacks: {
+                    label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed;
+                    const dataArr = context.dataset.data;
+                    const total = dataArr.reduce((a, b) => a + b, 0);
+                    const percent = total ? ((value / total) * 100).toFixed(1) : 0;
+                    return `${label}: ${value} (${percent}%)`;
+                }
                 }
             }
-        },
-    });
-</script>
-<script>
-    const ctxAbsences = document.getElementById('absences_evolution').getContext('2d');
-    const labels = {{ general.absence_label| safe }};
-    const data = {{ general.absence_data | safe | escapejs }};
+            }
+        }
+        });
+        }
 
-    new Chart(ctxAbsences, {
+    function createAbsencesChart(labelColor) {
+        const ctxAbsences = document.getElementById('absences_evolution').getContext('2d');
+        if (absencesChart) absencesChart.destroy();
+        const labels = {{ general.absence_label | safe }};
+    const data = {{ general.absence_data | safe | escapejs }};
+    absencesChart = new Chart(ctxAbsences, {
         type: 'line',
         data: {
             labels: labels,
@@ -121,51 +173,126 @@
             }]
         },
         options: {
+            plugins: {
+                legend: {
+                    labels: { color: labelColor }
+                },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = typeof context.parsed === 'object' && context.parsed !== null
+                            ? context.parsed.y
+                            : context.parsed;
+                        return `Absences: ${value}`;
+                    }
+                }
+            }
+            },
             scales: {
+                x: { ticks: { color: labelColor } },
                 y: {
                     beginAtZero: true,
-                    max: 10
+                    ticks: { color: labelColor }
                 }
             }
         }
     });
-</script>
-<script>
-    const ctx4 = document.getElementById('statRequetteConges').getContext('2d');
-    new Chart(ctx4, {
-        type: 'doughnut',
-        data: {
-            labels: ['Acceptés', 'Refusés', 'En attente', 'Annulés'],
-            datasets: [{
-                data: "[{{ general.conges_stats.accepted|default:0|safe|escapejs }}, {{ general.conges_stats.refused|default:0|safe|escapejs }}, {{ general.conges_stats.pending|default:0|safe|escapejs }}, {{ general.conges_stats.aborted|default:0|safe|escapejs }}]",
-                backgroundColor: [
-                    'rgba(34, 197, 94, 0.2)',  // vert
-                    'rgba(239, 68, 68, 0.2)',  // rouge
-                    'rgba(250, 204, 21, 0.2)', // jaune
-                    'rgba(107, 114, 128, 0.2)' // gris
-                ],
-                borderColor: [
-                    'rgba(34, 197, 94, 1)',
-                    'rgba(239, 68, 68, 1)',
-                    'rgba(250, 204, 21, 1)',
-                    'rgba(107, 114, 128, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Répartition des demandes de congés'
+    }
+
+    function createCongesChart(labelColor) {
+        const ctx4 = document.getElementById('statRequetteConges').getContext('2d');
+        if (congesChart) congesChart.destroy();
+        congesChart = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: ['Acceptés', 'Refusés', 'En attente', 'Annulés'],
+                datasets: [{
+                    data: [
+                        Number("{{ general.conges_stats.accepted|default:0|safe|escapejs }}"),
+                        Number("{{ general.conges_stats.refused|default:0|safe|escapejs }}"),
+                        Number("{{ general.conges_stats.pending|default:0|safe|escapejs }}"),
+                        Number("{{ general.conges_stats.aborted|default:0|safe|escapejs }}")
+                    ],
+                    backgroundColor: [
+                        'rgba(34, 197, 94, 0.2)',
+                        'rgba(239, 68, 68, 0.2)',
+                        'rgba(250, 204, 21, 0.2)',
+                        'rgba(107, 114, 128, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(34, 197, 94, 1)',
+                        'rgba(239, 68, 68, 1)',
+                        'rgba(250, 204, 21, 1)',
+                        'rgba(107, 114, 128, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: labelColor }
+                    },
+                    title: {
+                        display: true,
+                        color: labelColor,
+                        text: 'Répartition des demandes de congés'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const dataArr = context.dataset.data;
+                                const total = dataArr.reduce((a, b) => a + b, 0);
+                                const percent = total ? ((value / total) * 100).toFixed(1) : 0;
+                                return `${label}: ${value} (${percent}%)`;
+                            }
+                        }
+                    }
                 }
             }
-        },
+        });
+    }
+
+    // Theme detection
+    const darkThemes = [
+        'dark', 'night', 'forest', 'luxury', 'dracula', 'black', 'dim', 'business',
+        'synthwave', 'halloween', 'coffee', 'cyberpunk', 'cmyk', 'sunset'
+    ];
+    function isDarkTheme() {
+        const theme = document.documentElement.getAttribute('data-theme') ||
+            document.body.getAttribute('data-theme');
+        return darkThemes.includes(theme);
+    }
+
+    function getLabelColor() {
+        return isDarkTheme() || document.documentElement.classList.contains('dark') || document.body.classList.contains('dark')
+            ? '#ffffff' : '#000000';
+    }
+
+    // Initial chart rendering
+    function renderAllCharts() {
+        const labelColor = getLabelColor();
+        createRepartitionChart(labelColor);
+        createAbsencesChart(labelColor);
+        createCongesChart(labelColor);
+    }
+
+    renderAllCharts();
+
+    // Listen to theme changes
+    const observer = new MutationObserver(() => {
+        renderAllCharts();
     });
 
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+
+    // Optional: clean up observer on page unload
+    window.addEventListener('beforeunload', () => observer.disconnect());
 </script>
+
 {% endblock scripts %}

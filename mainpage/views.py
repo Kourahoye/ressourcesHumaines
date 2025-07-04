@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from comptabilite.models import Paiment
+from comptabilite.models import Salary
 from conges.models import CongesRequest, User
 from departements.models import Departements
 from employees.models import Employee
@@ -15,19 +15,12 @@ from django.utils.timezone import now
 from django.urls import reverse_lazy
 from presences.models import Presence
 from django.db.models.functions import ExtractMonth
+from django.contrib.sessions.models import Session
+from django.utils import timezone
 # Create your views here.
 
 class Dasbord(LoginRequiredMixin,TemplateView):
     template_name = "mainpage/dashbord.html"
-
-    # @staticmethod
-    # def get_absence_evolution_by_month(year):
-    #     """
-    #     Returns a dict with months as keys (1-12) and absence counts as values for the given year.
-    #     Useful for charting absence evolution over the year.
-    #     """
-        
-    #     return result
     login_url = reverse_lazy("login")
 
     def get_context_data(self, **kwargs):
@@ -50,6 +43,15 @@ class Dasbord(LoginRequiredMixin,TemplateView):
                 absence = Presence.objects.filter(employee=me.profil_employee, is_absent=True,date__month=now().month,date__year=now().year).count()
         except Exception as e:
             absence = 0
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        uid_list = []
+        for session in sessions:
+            data = session.get_decoded()
+            uid = data.get('_auth_user_id')
+            if uid:
+                uid_list.append(uid)
+        logged_in = User.objects.filter(id__in=uid_list, is_active=True).count()
+        # print(f"Logged in users: {logged_in}")
 
         qs = Presence.objects.filter(
             is_absent=True,
@@ -57,7 +59,6 @@ class Dasbord(LoginRequiredMixin,TemplateView):
         ).annotate(
             month=ExtractMonth('date')
         ).values('month').order_by('month').annotate(total=Count('id'))
-        # choices=[("pending","Pending"),("aborted","Aborted"),("refused","Refused"),("accepted","Accepted")]
         qs2 = CongesRequest.objects.filter(
             created_at__year=now().year
         ).aggregate(
@@ -66,7 +67,6 @@ class Dasbord(LoginRequiredMixin,TemplateView):
             pending=Count('id', filter=Q(status='pending')),
             aborted=Count('id', filter=Q(status='aborted'))
         )
-        print("Absence data:", qs2)
 
         french_months = {
             1: "Janvier", 2: "Février", 3: "Mars", 4: "Avril",
@@ -82,26 +82,26 @@ class Dasbord(LoginRequiredMixin,TemplateView):
 
         payed_employees = Employee.objects.filter(
             user__is_active=True,
-            paiments__date__month=now().month,
-            paiments__date__year=now().year
+            payslips__month=now().month,
+            payslips__year=now().year
         ).distinct().count()
 
         total_employees = Employee.objects.filter(user__is_active=True).count()
         unpayed_employees = total_employees - payed_employees
 
-
-        # print("Payments stat:", payments_stat)
+        inactifs = user_close.count()
         context["general"] ={
-            "actif_users": users.count(),
-            "inactif_user": user_close.count(),
+            "actif_users": users.count() - inactifs,
+            "inactif_user": inactifs,
             "departemts": departement_cpt.count(),
             "employees": employee_cpt.count(),
             "hommes": genres.get('hommes', 0),
             "femmes": genres.get('femmes', 0),
-            "disponible": users.count() - free,
+            "disponible": users.count() - free - inactifs,
             "absent_today": employees_absent.count(),
             'absence_label': list(result.keys()),
             'absence_data': list(result.values()),
+            'logged_in':logged_in,
             'conges_stats': {
                 'accepted': qs2.get('accepted', 0),
                 'refused': qs2.get('refused', 0),
@@ -119,7 +119,7 @@ class Dasbord(LoginRequiredMixin,TemplateView):
             "absences_personnel": absence
         }
         context['permissions'] = list(self.request.user.get_all_permissions())
-        # print(context["general"]['conges_stats'])
+
         return context
 
 
@@ -127,6 +127,9 @@ class Dasbord(LoginRequiredMixin,TemplateView):
 def dasbord_chart(request):
     me = request.user
     users = User.objects.all()
+    # Get all non-expired sessions
+    
+    
     user_close = users.filter(is_active=False)
     departement_cpt = Departements.objects.all()
     employee_cpt = Employee.objects.all()

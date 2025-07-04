@@ -1,5 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,ListView,DeleteView,DetailView,UpdateView
+from comptabilite.models import Salary
 from evaluations.models import EmployeeRating
 from presences.models import Presence
 from .models import Employee
@@ -11,6 +12,7 @@ from django.db.models import Count
 from django.db.models.functions import ExtractMonth, ExtractYear
 from django.db.models import Count
 import calendar
+
 
     
 
@@ -31,6 +33,12 @@ class EmployeeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        # salary = Paiment()
+        # salary.employee = form.instance.employee
+        # salary.amount = form.instance.salary
+        # salary.created_by = self.request.user
+        # salary.updated_by = self.request.user
+        # salary.save()
         return super().form_valid(form)
 
 
@@ -194,20 +202,14 @@ class EmployeeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
     
-    
-
-
-  
-
 
 class EmployeeListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required =['employees.list_employee']
     login_url = reverse_lazy("login")
-    
     model = Employee
     template_name = 'employees/list.html'
     context_object_name = 'employees'
-    # paginate_by = 10  
+    paginate_by = 5
     
     def get_queryset(self):
         from django.db.models import Q

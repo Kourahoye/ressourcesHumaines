@@ -1,31 +1,44 @@
 {% extends 'base.html' %}
 
 {% block main %}
+<div class="glass p-4 flex flex-col justify-between gap-4 md:w-1/2 lg:mx-auto rounded-md">
 
-<table class="table glass table-zebra m-1 md:w-1/2 lg:mx-auto rounded-md">
-    <thead class="font-bold text-black">
-        <tr>
-            <th class="px-6 py-3  text-lg uppercase tracking-wider">Date</th>
-            <th class="px-6 py-3  text-lg uppercase tracking-wider">Employé</th>
-            <th class="px-6 py-3  text-lg uppercase tracking-wide">Departement</th>
-        </tr>
-    </thead>
-    <tbody class="text-slate-950 text-base font-medium dark:text-white">
-        {% for object in absences %}
-        <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-                {{object.date}}
-            </td>
-            <td>
-                {{ object.employee.user }}
-            </td>
-            <td>
-                {{ object.employee.departement }}
-            </td>
-          
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table class="table w-full">
+        <thead class="font-bold text-black">
+            <tr>
+                <th class="px-6 py-3  text-lg uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3  text-lg uppercase tracking-wider">Employé</th>
+                <th class="px-6 py-3  text-lg uppercase tracking-wide">Departement</th>
+            </tr>
+        </thead>
+        <tbody class="text-slate-950 text-base font-medium dark:text-white">
+            {% for object in absences %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    {{object.date}}
+                </td>
+                <td>
+                    {{ object.employee.user }}
+                </td>
+                <td>
+                    {{ object.employee.departement }}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div class="flex justify-center space-x-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-info btn-outline">← Précédent</a>
+        {% endif %}
+        <span class="btn btn-sm">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-sm btn-error btn-outline">Suivant →</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 
 {% endblock main %}

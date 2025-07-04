@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView,DeleteView,UpdateView
@@ -9,7 +10,8 @@ from collections import defaultdict
 from django.utils.timezone import now
 from evaluations.models import DepartementRating
 from django.db.models import Avg
-
+from Users.models import User
+from django.contrib.sessions.models import Session
 
 class DepartementsCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     permission_required =["departements.add_departements"]
@@ -41,7 +43,7 @@ class DepartementsListView(LoginRequiredMixin,PermissionRequiredMixin, ListView)
     model = Departements
     template_name = 'departements/list.html'
     context_object_name = 'departements'
-    paginate_by = 10
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,7 +66,14 @@ class DepartementsDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detail
         departement = self.get_object()
         context['permissions'] = list(self.request.user.get_all_permissions())
         context['employees'] = Employee.objects.filter(departement=departement)
-
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        uid_list = []
+        for session in sessions:
+            data = session.get_decoded()
+            uid = data.get('_auth_user_id')
+            if uid:
+                uid_list.append(uid)
+        context['logged_in'] = User.objects.filter(id__in=uid_list, is_active=True,profil_employee__departement=self.get_object()).count()
         # --- Partie chart progression note par mois ---
         current_year = str(now().year)
         mois_dict = {
