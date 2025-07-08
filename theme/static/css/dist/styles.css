@@ -6902,35 +6902,11 @@
   .btn-block {
     width: 100%;
   }
-  .loading-lg {
-    width: calc(var(--size-selector, 0.25rem) * 7);
-  }
-  .loading-lg {
-    width: calc(var(--size-selector, 0.25rem) * 7);
-  }
-  .loading-md {
-    width: calc(var(--size-selector, 0.25rem) * 6);
-  }
-  .loading-md {
-    width: calc(var(--size-selector, 0.25rem) * 6);
-  }
-  .loading-sm {
-    width: calc(var(--size-selector, 0.25rem) * 5);
-  }
-  .loading-sm {
-    width: calc(var(--size-selector, 0.25rem) * 5);
-  }
   .loading-xl {
     width: calc(var(--size-selector, 0.25rem) * 8);
   }
   .loading-xl {
     width: calc(var(--size-selector, 0.25rem) * 8);
-  }
-  .loading-xs {
-    width: calc(var(--size-selector, 0.25rem) * 4);
-  }
-  .loading-xs {
-    width: calc(var(--size-selector, 0.25rem) * 4);
   }
   .w-1\/4 {
     width: calc(1/4 * 100%);
@@ -7196,11 +7172,6 @@
     margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));
     margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
   }
-  :where(.space-x-4 > :not(:last-child)) {
-    --tw-space-x-reverse: 0;
-    margin-inline-start: calc(calc(var(--spacing) * 4) * var(--tw-space-x-reverse));
-    margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
-  }
   .place-self-center {
     place-self: center;
   }
@@ -7347,9 +7318,6 @@
   .bg-base-100 {
     background-color: var(--color-base-100);
   }
-  .bg-base-200 {
-    background-color: var(--color-base-200);
-  }
   .bg-base-300 {
     background-color: var(--color-base-300);
   }
@@ -7381,17 +7349,6 @@
   }
   .bg-orange-400 {
     background-color: var(--color-orange-400);
-  }
-  .bg-primary {
-    background-color: var(--color-primary);
-  }
-  .bg-primary\/50 {
-    background-color: var(--color-primary);
-  }
-  @supports (color: color-mix(in lab, red, red)) {
-    .bg-primary\/50 {
-      background-color: color-mix(in oklab, var(--color-primary) 50%, transparent);
-    }
   }
   .bg-red-400 {
     background-color: var(--color-red-400);
@@ -7632,14 +7589,8 @@
   .text-info {
     color: var(--color-info);
   }
-  .text-neutral {
-    color: var(--color-neutral);
-  }
   .text-neutral-content {
     color: var(--color-neutral-content);
-  }
-  .text-primary {
-    color: var(--color-primary);
   }
   .text-red-300 {
     color: var(--color-red-300);
@@ -7652,9 +7603,6 @@
   }
   .text-red-700 {
     color: var(--color-red-700);
-  }
-  .text-secondary {
-    color: var(--color-secondary);
   }
   .text-slate-50 {
     color: var(--color-slate-50);
@@ -7682,9 +7630,6 @@
   }
   .underline-offset-1 {
     text-underline-offset: 1px;
-  }
-  .bg-blend-darken {
-    background-blend-mode: darken;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -7725,9 +7670,6 @@
     .shadow-white {
       --tw-shadow-color: color-mix(in oklab, var(--color-white) var(--tw-shadow-alpha), transparent);
     }
-  }
-  .ring-blue-900 {
-    --tw-ring-color: var(--color-blue-900);
   }
   .ring-blue-950 {
     --tw-ring-color: var(--color-blue-950);
@@ -7973,6 +7915,16 @@
     --fontsize: 0.75rem;
     --btn-p: 0.75rem;
     --size: calc(var(--size-field, 0.25rem) * 8);
+  }
+  .btn-xs {
+    --fontsize: 0.6875rem;
+    --btn-p: 0.5rem;
+    --size: calc(var(--size-field, 0.25rem) * 6);
+  }
+  .btn-xs {
+    --fontsize: 0.6875rem;
+    --btn-p: 0.5rem;
+    --size: calc(var(--size-field, 0.25rem) * 6);
   }
   .badge-accent {
     --badge-color: var(--color-accent);
@@ -8671,35 +8623,6 @@
   [data-theme=sunset] *,
   [data-theme=aqua] *,) {
     color: var(--color-gray-300);
-  }
-  .dark\:text-red-600:where(
-  [data-theme=dark],
-  [data-theme=night],
-  [data-theme=forest],
-  [data-theme=luxury],
-  [data-theme=dracula],
-  [data-theme=black],
-  [data-theme=dim],
-  [data-theme=business],
-  [data-theme=synthwave],
-  [data-theme=halloween],
-  [data-theme=coffee],
-  [data-theme=cyberpunk],
-  [data-theme=dark] *,
-  [data-theme=night] *,
-  [data-theme=forest] *,
-  [data-theme=luxury] *,
-  [data-theme=dracula] *,
-  [data-theme=black] *,
-  [data-theme=dim] *,
-  [data-theme=business] *,
-  [data-theme=synthwave] *,
-  [data-theme=halloween] *,
-  [data-theme=coffee] *,
-  [data-theme=cyberpunk] *,
-  [data-theme=sunset] *,
-  [data-theme=aqua] *,) {
-    color: var(--color-red-600);
   }
   .dark\:text-white:where(
   [data-theme=dark],

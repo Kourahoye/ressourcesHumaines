@@ -3,10 +3,13 @@
 
 {% block main %}
 
-<div class="w-full overflow-x-auto xl:w-4/5 mx-auto glass shadow-md rounded p-6 md:w-3/4">
-  <h1 class="text-2xl font-bold mb-6 inline-block">Liste des requettes</h1>
-  <a class="text-white btn btn-ghost btn-sm btn-info"
-    href="{% url 'conges_request_create' %}">Ajouter</a>
+<div class="w-full xl:w-4/5 mx-auto glass shadow-md rounded p-6 md:w-3/4">
+  <h1 class="text-2xl font-bold mb-6 inline-block"><span>Liste des requettes</span>
+    <a class="text-white btn btn-outline btn-ghost btn-xs btn-info justify-start"
+      href="{% url 'conges_request_create' %}">
+      <i class="fas fa-plus text-black dark:text-white "></i>
+    </a>
+  </h1>
 
   <table class="w-full min-w-full">
     <thead>
@@ -41,29 +44,40 @@
         </td>
 
         <td class="dropdown dropdown-bottom">
-          <label tabindex=0 class="btn m-1 btn-outline btn-error btn-ghost">Actions</label>
-          <ul tabindex=0
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex-col gap-2">
+          <label tabindex=0 class="btn m-1 btn-outline btn-info btn-ghost btn-sm">Actions</label>
+          <ul tabindex=0 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex-col gap-2 glass">
             <li>
-              <a href="{% url 'conges_request_delete' congesRequest.pk %}" class="btn btn-error btn-outline btn-sm btn-ghost">Supprimer</a>
+              <a href="{% url 'conges_request_delete' congesRequest.pk %}"
+                class="btn btn-error btn-outline btn-sm btn-ghost">
+                <i class="fas fa-trash text-black dark:text-white "></i>
+                <span>Supprimer</span>
+              </a>
             </li>
             <li>
-              <a href="" class="btn btn-warning">Modifier</a>
-            </li>
-            <li>
-              <a href="{% url 'conges_request_details' congesRequest.pk %}" class="btn btn-info btn-outline btn-sm btn-ghost">Detail</a>
+              <a href="{% url 'conges_request_details' congesRequest.pk %}"
+                class="btn btn-info btn-outline btn-sm btn-ghost">
+                <i class="fas fa-info text-black dark:text-white "></i>
+                <span>Details</span></a>
             </li>
             {% if "conges.accept_congesrequest" in permissions %}
             {% if congesRequest.status == "refused" or congesRequest.status == "pending" %}
             <li>
-              <a href="{% url 'conges_request_accept' congesRequest.pk  %}" class="btn btn-success btn-outline btn-sm btn-ghost">Accepter</a>
+              <a href="{% url 'conges_request_accept' congesRequest.pk  %}"
+                class="btn btn-success btn-outline btn-sm btn-ghost">
+                <i class="fas fa-check text-green dark:text-white "></i>
+                <sapn>Accepter</sapn>
+              </a>
             </li>
             {% endif %}
             {% endif %}
             {% if "conges.refuse_congesrequest" in permissions %}
             {% if congesRequest.status == "accepted" or congesRequest.status == "pending" %}
             <li>
-              <a href="{% url 'conges_request_refuse' congesRequest.pk  %}" class="btn btn-error">Refuser</a>
+              <a href="{% url 'conges_request_refuse' congesRequest.pk  %}"
+                class="btn btn-error btn-outline btn-ghost btn-sm">
+                <i class="fas fa-xmark text-black dark:text-white "></i>
+                <span>Refuser</span>
+              </a>
             </li>
             {% endif %}
             {% endif %}

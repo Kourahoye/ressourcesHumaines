@@ -3,17 +3,19 @@
 
 {% block main %}
 <div class="w-full mx-auto glass shadow-md rounded p-6 md:w-3/4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold dark:text-white">Liste des employés</h1>
-        {% if "users.add_user" in permissions %}
-        <a class="btn btn-primary btn-sm" href="{% url 'user_add' %}">Ajouter</a>
+    <h1 class="text-2xl font-bold dark:text-white">
+        <span>Liste des employés</span>
+        {% if "Users.add_user" in permissions %}
+        <a class="btn btn-info btn-outline btn-ghost btn-xs" href="{% url 'register' %}">
+            <i class="fas fa-plus text-black dark:text-white "></i>
+        </a>
         {% endif %}
-    </div>
+    </h1>
 
     <div class="overflow-x-auto">
         <table class="table dark:text-white">
             <thead>
-                <tr class="uppercase text-sm text-left font-bold text-black">
+                <tr class="uppercase text-sm text-left font-bold text-black dark:text-white">
                     <th>Utilisateur</th>
                     <th>Email</th>
                     <th>Nom complet</th>
@@ -61,18 +63,28 @@
                         <div class="dropdown dropdown-left">
                             <div tabindex="0" role="button" class="btn btn-sm btn-outline btn-info">Actions</div>
                             <ul tabindex="0"
-                                class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52">
+                                class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box w-24 glass">
                                 {% if "Users.view_user" in permissions %}
-                                <li><a class="btn btn-ghost btn-sm" href="{% url 'userDetail' person.pk %}">Détail</a>
+                                <li><a class="btn btn-info btn-ghost btn-outline btn-sm"
+                                        href="{% url 'userDetail' person.pk %}">
+                                        <i class="fas fa-info text-black dark:text-white "></i>
+                                        <span>Détail</span>
+                                    </a>
                                 </li>
                                 {% endif %}
                                 {% if "Users.change_user" in permissions %}
-                                <li><a class="btn btn-warning btn-sm"
-                                        href="{% url 'userEdit' person.pk %}">Modifier</a></li>
+                                <li><a class="btn btn-warning btn-sm btn-outline btn-ghost"
+                                        href="{% url 'userEdit' person.pk %}">
+                                        <i class="fas fa-edit text-black dark:text-white "></i>
+                                        <span>Modifier</span></a>
+                                </li>
                                 {% endif %}
                                 {% if "Users.delete_user" in permissions %}
-                                <li><a class="btn btn-error btn-sm"
-                                        href="{% url 'userDelete' person.pk %}">Supprimer</a></li>
+                                <li><a class="btn btn-error btn-sm btn-outline btn-ghost"
+                                        href="{% url 'userDelete' person.pk %}">
+                                        <i class="fas fa-trash text-black dark:text-white "></i>
+                                        <span>Supprimer</span>
+                                    </a></li>
                                 {% endif %}
                             </ul>
                         </div>

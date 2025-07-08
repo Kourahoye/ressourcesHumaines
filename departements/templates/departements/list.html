@@ -6,7 +6,9 @@
 <div class="xl:w-5/6 mx-auto glass overflow-x-auto shadow-md rounded p-6 md:3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des départements</h1>
   {% if "departements.add_departements" in permissions %}
-  <a class="btn btn-info btn-sm" href="{% url 'departement_add' %}">Ajouter</a>
+  <a class="btn btn-info btn-outline btn-ghost btn-xs" href="{% url 'departement_add' %}">
+    <i class="fas fa-plus text-black dark:text-white "></i>
+  </a>
   {% endif %}
 
   <table class="table  w-full min-w-full text-black dark:text-white ">
@@ -37,17 +39,28 @@
         </td>
 
         <td class="dropdown dropdown-bottom">
-          <label tabindex=0 class="btn m-1 btn-outline btn-ghost btn-error">Actions</label>
-          <ul tabindex=0
-            class="dropdown-content z-[1] bg-base-100 menu p-2 shadow rounded-box flex flex-col gap-2">
+          <label tabindex=0 class="btn m-1 btn-outline btn-ghost btn-info btn-sm">Actions</label>
+          <ul tabindex=0 class="dropdown-content z-[1] bg-base-100 menu p-2 shadow rounded-box flex flex-col gap-2">
             <li>
-              <a href="{% url 'departements_delete' departement.pk %} " class="btn btn-error btn-outline btn-ghost btn-sm">Supprimer</a>
+              <a href="{% url 'departements_delete' departement.pk %} "
+                class="btn btn-error btn-outline btn-ghost btn-sm">
+                <i class="fas fa-trash text-black dark:text-white "></i>
+                <span>Supprimer</span>
+              </a>
             </li>
             <li>
-              <a href="{% url 'departements_update' departement.pk %} " class="btn btn-warning btn-outline btn-ghost btn-sm">Modifier</a>
+              <a href="{% url 'departements_update' departement.pk %} "
+                class="btn btn-warning btn-outline btn-ghost btn-sm">
+                <i class="fas fa-edit text-black dark:text-white "></i>
+                <span>Modifier</span>
+              </a>
             </li>
             <li>
-              <a href="{% url 'departements_profil' departement.pk %} " class="btn btn-info btn-outline btn-ghost btn-sm">Detail</a>
+              <a href="{% url 'departements_profil' departement.pk %} "
+                class="btn btn-info btn-outline btn-ghost btn-sm">
+                <i class="fas fa-info text-black dark:text-white "></i>
+                <span>Details</span>
+              </a>
             </li>
           </ul>
         </td>
@@ -62,14 +75,14 @@
   </table>
 
   <!-- Pagination simple -->
-   {% if is_paginated %}
+  {% if is_paginated %}
   <div class="mt-4 flex justify-center space-x-2">
     {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}"
-      class="btn btn-info btn-sm btn-outline">Précédent</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info btn-sm btn-outline">Précédent</a>
     {% endif %}
 
-    <span class="px-3 py-1 btn btn-outline btn-ghost btn-sm">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    <span class="px-3 py-1 btn btn-outline btn-ghost btn-sm">{{ page_obj.number }} / {{ page_obj.paginator.num_pages
+      }}</span>
 
     {% if page_obj.has_next %}
     <a href="?page={{ page_obj.next_page_number }}" class="btn btn-error btn-sm btn-outline">Suivant</a>
