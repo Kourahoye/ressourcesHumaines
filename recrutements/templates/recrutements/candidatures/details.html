@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="max-w-3xl mx-auto p-6 bg-base-200 glass rounded-lg shadow space-y-6">
+  <h2 class="text-2xl font-bold">Détail de la Postulation</h2>
+
+  <div class="card bg-base-100 p-4 rounded">
+    <h3 class="text-xl font-semibold mb-2">Candidat</h3>
+    <p><strong>Nom :</strong> {{ postulation.candidat.prenom }} {{ postulation.candidat.nom }}</p>
+    <p><strong>Email :</strong> {{ postulation.candidat.email }}</p>
+    <p><strong>Téléphone :</strong> {{ postulation.candidat.telephone }}</p>
+    <p><strong>Date de naissance :</strong> {{ postulation.candidat.date_naissance }}</p>
+    <p><strong>Niveau :</strong> {{ postulation.candidat.niveau }}</p>
+    <p><strong>Genre :</strong> {{ postulation.candidat.genre }}</p>
+    <p><strong>Lettre :</strong> {{ postulation.candidat.lettre_motivation|default:"-" }}</p>
+    <p><strong>CV :</strong> <a href="{{ postulation.candidat.cv.url }}" target="_blank" class="link link-info">Voir CV</a></p>
+  </div>
+
+  <div class="card bg-base-100 p-4 rounded">
+    <h3 class="text-xl font-semibold mb-2">Offre</h3>
+    <p><strong>Titre :</strong> {{ postulation.offre.titre }}</p>
+    <p><strong>Département :</strong> {{ postulation.offre.departement.name }}</p>
+    <p><strong>Description :</strong> {{ postulation.offre.description }}</p>
+  </div>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <h3 class="text-xl font-semibold">Répondre à la postulation</h3>
+    <div class="form-control">
+      <label class="label">Statut</label>
+      {{ form.statut }}
+    </div>
+    <div class="form-control">
+      <label class="label">Remarque</label>
+      {{ form.remarque }}
+    </div>
+    <button type="submit" class="btn btn-success w-full">Enregistrer la réponse</button>
+  </form>
+</div>
+{% endblock %}

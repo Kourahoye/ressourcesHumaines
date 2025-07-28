@@ -1,14 +1,27 @@
-{% load static tailwind_tags %}
-
+{% load tailwind_tags %}
+{% load static %}
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>  {% block title %}Site{% endblock %} </title>
-   {% tailwind_css %}
+    <title> {% block title %}Site{% endblock %} </title>
+    	<link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+    <!-- <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet"> -->
+    {% tailwind_css %}
+    <script>
+        (function () {
+            const theme = document.cookie.split('; ').find(row => row.startsWith('theme='));
+            if (theme) {
+                document.documentElement.setAttribute('data-theme', decodeURIComponent(theme.split('=')[1]));
+            }
+        })();
+    </script>
 </head>
-<body class="bg-gradient-to-br from-blue-600 to-blue-950 text-slate-950 dark:text-zinc-50 dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-950">
+
+<body class="bg-base-100 min-h-screen">
     {% block main %}
     {% endblock %}
 </body>
+
 </html>

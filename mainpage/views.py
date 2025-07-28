@@ -37,7 +37,16 @@ class Dasbord(LoginRequiredMixin,TemplateView):
             hommes=Count('id', filter=Q(gender='masculin')),
             femmes=Count('id', filter=Q(gender='feminin'))
         )
-        employees_absent = Presence.objects.filter(is_absent=True).filter(date=now().date()).distinct()
+        date = now().date()  # ou une date spécifique
+
+# IDs des présents aujourd'hui
+        present_ids = Presence.objects.filter(date=date).values_list('employee_id', flat=True)
+
+        # Employés absents aujourd'hui = embauchés avant ou à cette date, actifs, mais pas dans les présents
+        employees_absent = Employee.objects.filter(
+            date_embauche__lte=date,
+            user__is_active=True
+        ).exclude(id__in=present_ids)
         try:
             if me.profil_employee:
                 absence = Presence.objects.filter(employee=me.profil_employee, is_absent=True,date__month=now().month,date__year=now().year).count()

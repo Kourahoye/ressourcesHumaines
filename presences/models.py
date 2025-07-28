@@ -11,7 +11,7 @@ class Presence(models.Model):
     is_absent = models.BooleanField(null=False, choices=[
         (True, "Absent"),
         (False, "Présent")
-    ])
+    ],default=True)
     created_at = models.DateField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rapport_de_presence')
     

@@ -14,11 +14,11 @@ class CongeRequestForm(forms.ModelForm):
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
          }
 
@@ -38,7 +38,7 @@ class CongeRequestForm(forms.ModelForm):
                 Field('startDate',css_class="input input-info"),
                 Field('endDate',css_class="input input-info"),
                 Field('status',css_class="input input-info"),
-                Submit('submit', 'Enregistrer', css_class="btn btn-info"),
+                # Submit('submit', 'Soumetre', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )
@@ -62,11 +62,11 @@ class CongeForm(forms.ModelForm):
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
          }
 
@@ -85,7 +85,7 @@ class CongeForm(forms.ModelForm):
                 Field('employee',css_class="select select-info"),
                 Field('startDate',css_class="input input-info"),
                 Field('endDate',css_class="input input-info"),
-                Submit('submit', 'Enregistrer', css_class="btn btn-info"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4 dark:text-white"
             )
         )

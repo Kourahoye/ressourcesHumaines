@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-x_gfvx%aa$(_931-l&uc)67y0gw%$vugt(4@fpe!w8zmplb6#p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     # 'django_icons',
     'fontawesomefree',
     'comptabilite',
+    'recrutements',
+    'attendances'
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',#server pour statics
 ]
 
 ROOT_URLCONF = 'ressourcesHumaines.urls'
@@ -144,6 +147,7 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 STATICFILES_DIRS =[
     BASE_DIR /'static',
     BASE_DIR /'files',
+    BASE_DIR/'static'
 ]
 
 # Default primary key field type
@@ -161,11 +165,6 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# DJANGO_ICONS = {
-
-#     "DEFAULTS": {
-#         "renderer": "fontawesome4",
-#     },
-
-# }

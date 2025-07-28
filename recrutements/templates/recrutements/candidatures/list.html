@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="glass p-6 rounded shadow-md mx-auto lg:w-3/4 w-full">
+  <h2 class="text-2xl font-bold mb-4">Liste des Postulations</h2>
+  <table class="table w-full">
+    <thead>
+      <tr class="text-black dark:text-white uppercase tracking-tight">
+        <th>Candidat</th>
+        <th>Offre</th>
+        <th>Date de postulation</th>
+        <th>Statut</th>
+        <th>Remarque</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for postulation in postulations %}
+      <tr>
+        <td>{{ postulation.candidat.prenom }} {{ postulation.candidat.nom }}</td>
+        <td>{{ postulation.offre.titre }}</td>
+        <td>{{ postulation.date_postulation|date:"d/m/Y H:i" }}</td>
+        <td>
+          {% if postulation.statut == 'en_attente' %}
+            <span class="badge badge-warning">En attente</span>
+          {% elif postulation.statut == 'accepte' %}
+            <span class="badge badge-success">Accepté</span>
+          {% elif postulation.statut == 'rejete' %}
+            <span class="badge badge-error">Rejeté</span>
+          {% else %}
+            <span class="badge badge-ghost">{{ postulation.statut }}</span>
+          {% endif %}
+        </td>
+        <td>{{ postulation.remarque|default:"-"|truncatechars:50 }}</td>
+        <td class="dropdown dropdown-bottom">
+          <label tabindex="0" class="btn btn-outline btn-info btn-sm btn-ghost m-1">Actions</label>
+          <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box flex flex-col gap-2 z-[1]">
+            <li>
+              <a href="{% url 'postulation_detail' postulation.id %}" class="btn btn-info btn-sm btn-ghost btn-outline">
+                <i class="fas fa-info text-black dark:text-white"></i> Détails
+              </a>
+            </li>
+          </ul>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center font-black">Aucune postulation trouvée.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+  <div class="mt-4 flex justify-center space-x-2">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info btn-sm btn-outline">Précédent</a>
+    {% endif %}
+
+    <span class="px-3 py-1 btn btn-outline btn-ghost btn-sm">
+      {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="btn btn-error btn-sm btn-outline">Suivant</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock main %}

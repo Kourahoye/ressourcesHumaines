@@ -14,21 +14,21 @@ class DepartementRateForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={
                 'type': 'month',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'departement': forms.Select(attrs={
-                'class': 'select select-accent w-full',
+                'class': 'select select-info w-full',
             }),
             'month': forms.Select(attrs={
-                'class': 'select select-accent w-full',
+                'class': 'select select-info w-full',
             }),
             'year': forms.NumberInput(attrs={
-                'class': 'input input-accent w-full',
+                'class': 'input input-info w-full',
             }),
             'note': forms.NumberInput(attrs={
                 'min':'0',
                 'max':'10',
-                'class': 'input input-accent w-full',
+                'class': 'input input-info w-full',
             }),
         }
     
@@ -91,21 +91,21 @@ class EmployeeRateForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={
                 'type': 'month',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'employee': forms.Select(attrs={
-                'class': 'select select-accent w-full',
+                'class': 'select select-info w-full',
             }),
             'month': forms.Select(attrs={
-                'class': 'select select-accent w-full',
+                'class': 'select select-info w-full',
             }),
             'year': forms.NumberInput(attrs={
-                'class': 'input input-accent w-full',
+                'class': 'input input-info w-full',
             }),
             'note': forms.NumberInput(attrs={
                 'min':'0',
                 'max':'10',
-                'class': 'input input-accent w-full',
+                'class': 'input input-info w-full',
             }),
         }
 

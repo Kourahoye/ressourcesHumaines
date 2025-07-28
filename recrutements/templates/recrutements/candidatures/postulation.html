@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% load tailwind_tags %}
+	{% load static %}
+	<title>Django Tailwind</title>
+	<meta charset=" UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+	<script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+	<script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+	<script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+
+	{% tailwind_css %}
+	<script>
+		(function () {
+			const theme = document.cookie.split('; ').find(row => row.startsWith('theme='));
+			if (theme) {
+				document.documentElement.setAttribute('data-theme', decodeURIComponent(theme.split('=')[1]));
+			}
+		})();
+	</script>
+</head>
+<body class=" bg-base-100 dark:text-white font-serif leading-normal tracking-normal min-h-screen text-slate-950">
+
+<div class="p-2 rounded shadow-md mx-auto w-full max-w-2xl card bg-base-300/40 glass">
+  <div class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ offre.titre }}</h1>
+
+  <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ offre.description }}</p>
+
+  <div class="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+    <div class="flex items-center space-x-1">
+      <span class="font-semibold">Publié le :</span>
+      <time datetime="{{ offre.date_publication }}">{{ offre.date_publication|date:"d/m/Y" }}</time>
+    </div>
+    <div class="flex items-center space-x-1">
+      <span class="font-semibold">Expiration :</span>
+      <time datetime="{{ offre.date_expiration }}">{{ offre.date_expiration|date:"d/m/Y" }}</time>
+    </div>
+    <div class="flex items-center space-x-1">
+      <span class="font-semibold">Département :</span>
+      <span>{{ offre.departement.name }}</span>
+    </div>
+    <div class="flex items-center space-x-1">
+      <span class="font-semibold">Statut :</span>
+      {% if offre.active %}
+        <span class="badge badge-success">Active</span>
+      {% else %}
+        <span class="badge badge-error">Inactive</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="text-xs text-gray-400">
+    <!-- <p>Créée par : {{ offre.created_by.get_full_name|default:"Inconnu" }}</p> -->
+    <p>Dernière mise à jour : {{ offre.updated_at|date:"d/m/Y H:i" }}</p>
+    <!-- <p>Mis à jour par : {{ offre.updated_by.get_full_name|default:"Inconnu" }}</p> -->
+  </div>
+</div>
+
+
+  <form id="postulerForm" enctype="multipart/form-data" class="space-y-4 font-black dark:text-white" method="post">
+    {% csrf_token %}
+
+    {% for field in form_candidat %}
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="text-black dark:text-white">{{ field.label }}</span>
+        </label>
+        {{ field }}
+        <p class="text-error text-sm mt-1 error" data-error-for="{{ field.name }}"></p>
+      </div>
+    {% endfor %}
+
+    {% for field in form_postulation %}
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="text-black dark:text-white">{{ field.label }}</span>
+        </label>
+        {{ field }}
+        <p class="text-error text-sm mt-1 error" data-error-for="{{ field.name }}"></p>
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary w-full mt-4">Soumettre</button>
+  </form>
+</div>
+
+	<script src='{% static "jquery\jquery.min.js" %}'></script>
+	<script src='{% static "chart.umd.js" %}'></script>
+	<script src='{% static "sweetalert2\sweetalert2.all.min.js" %}'></script>
+<script>
+  $('#postulerForm').on('submit', function (e) {
+    e.preventDefault();
+    $('.error').text('');
+
+    Swal.fire({
+      title: 'Confirmer la soumission',
+      text: 'Êtes-vous sûr de vouloir soumettre votre candidature ?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, soumettre',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let formData = new FormData($('#postulerForm')[0]);
+
+        $.ajax({
+          url: window.location.href,
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (data) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Succès',
+              text: data.success,
+              timer: 2000,
+              showConfirmButton: false
+            });
+            $('#postulerForm')[0].reset();
+          },
+          error: function (xhr) {
+            const data = xhr.responseJSON;
+            if (data.candidat || data.postulation) {
+              let errors = [];
+              if(data.candidat) {
+                for (const field in data.candidat) {
+                  errors.push(`${field}: ${data.candidat[field][0]}`);
+                  $(`[data-error-for="${field}"]`).text(data.candidat[field][0]);
+                }
+              }
+              if(data.postulation) {
+                for (const field in data.postulation) {
+                  errors.push(`${field}: ${data.postulation[field][0]}`);
+                  $(`[data-error-for="${field}"]`).text(data.postulation[field][0]);
+                }
+              }
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                html: errors.join('<br>')
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: 'Une erreur inconnue est survenue.'
+              });
+            }
+          }
+        });
+      }
+    });
+  });
+</script>
+</body>
+
+</html>

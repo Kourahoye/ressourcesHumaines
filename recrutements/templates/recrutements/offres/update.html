@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="p-6 rounded shadow-md mx-auto w-full max-w-2xl card bg-base-300/40 glass">
+    <h1 class="text-2xl font-bold mb-4 card-title text-slate-950 dark:text-zinc-50">Modifier l'Offre</h1>
+    <form class="flex flex-col gap-5 w-full card-body" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label class="floating-label w-full">
+            {{ form.titre }}
+            <span class="bg-transparent font-bold text-2xl">Titre</span>
+        </label>
+        {% if form.titre.errors %}
+        <span class="alert alert-error mt-1 text-sm">
+            {{ form.titre.errors }}
+        </span>
+        {% endif %}
+
+        <label class="floating-label w-full">
+            {{ form.description }}
+            <span class="bg-transparent font-bold text-2xl">Description</span>
+        </label>
+        {% if form.description.errors %}
+        <span class="alert alert-error mt-1 text-sm">
+            {{ form.description.errors }}
+        </span>
+        {% endif %}
+
+        <label class="floating-label w-full">
+            {{ form.date_expiration }}
+            <span class="bg-transparent font-bold text-2xl">Date d'expiration</span>
+        </label>
+        {% if form.date_expiration.errors %}
+        <span class="alert alert-error mt-1 text-sm">
+            {{ form.date_expiration.errors }}
+        </span>
+        {% endif %}
+
+        <label class="floating-label w-full">
+            {{ form.departement }}
+            <span class="bg-transparent font-bold text-2xl">Département</span>
+        </label>
+        {% if form.departement.errors %}
+        <span class="alert alert-error mt-1 text-sm">
+            {{ form.departement.errors }}
+        </span>
+        {% endif %}
+        <button type="submit" class="btn btn-success btn-sm">Modifier</button>
+    </form>
+</div>
+{% endblock main %}

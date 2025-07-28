@@ -20,20 +20,20 @@ class RegisterForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['username'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'username'})
         """self.fields['username']..widget.attrs.update({'class': 'text-white hover:ring-1 hover:ring-red-400 font-semibold'})"""
-        self.fields['last_name'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['last_name'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'last_name'})
-        self.fields['first_name'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['first_name'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'first_name'})
-        self.fields['email'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['email'].widget.attrs.update({'class': 'w-full input input-info',
                                                   'id': 'email'})
-        self.fields['avatar'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['avatar'].widget.attrs.update({'class': 'w-full file-input file-input-info',
                                                   'id': 'avatar'})
-        self.fields['birthday'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['birthday'].widget.attrs.update({'class': 'w-full input input-info',
                                                   'id': 'birthday'})
-        self.fields['password'].widget.attrs.update({'class': 'w-full input input-accent',
+        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'password'})
         self.fields['gender'].widget.attrs.update({'class': 'rounded-full p-1 border-transparent',
                                                  'id': 'gender'})
@@ -49,9 +49,9 @@ class LoginForm(forms.Form):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'w-full input input-info',
+        self.fields['username'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'username'})
-        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info',
+        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'password'})
     
 
@@ -74,20 +74,20 @@ class UserUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'input input-info  w-full',
+        self.fields['username'].widget.attrs.update({'class': 'input input-info input-sm w-full',
                                                      'id': 'username'})
-        self.fields['last_name'].widget.attrs.update({'class': 'w-full input input-info ',
+        self.fields['last_name'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'last_name'})
-        self.fields['first_name'].widget.attrs.update({'class': 'w-full input input-info ',
+        self.fields['first_name'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'first_name'})
-        self.fields['email'].widget.attrs.update({'class': 'w-full input input-info ',
+        self.fields['email'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                   'id': 'email'})
-        self.fields['avatar'].widget.attrs.update({'class': 'w-full file-input input-info ',
+        self.fields['avatar'].widget.attrs.update({'class': 'w-full file-input file-input-sm file-input-info',
                                                   'id': 'avatar'})
-        self.fields['birthday'].widget.attrs.update({'class': 'w-full input input-info ',
+        self.fields['birthday'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                   'id': 'birthday'})
         self.fields['gender'].widget.attrs.update({'id': 'gender'})
 
-        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info ',
+        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'password'})
 
