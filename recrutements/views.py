@@ -1,17 +1,40 @@
-from django.shortcuts import render
-from django.views.generic.edit import CreateView
-from employees.models import Employee
-from .forms import OffreForm, PostulationAdminForm
-from .models import Offre
+# Django core
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView
 from django.views import View
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from .models import Offre, Candidat, Postulation
-from .forms import CandidatForm, PostulationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.utils.text import slugify
+from django.utils.crypto import get_random_string
 
+# Generic class-based views
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+
+# Models
+from employees.models import Employee
+from .models import Offre, Postulation
+
+# Forms
+from .forms import (
+    OffreForm,
+    PostulationAdminForm,
+    CandidatForm,
+    PostulationForm
+)
+
+# Python standard
+from datetime import datetime
+
+User = get_user_model()
 
 # Create your views here.
 class OffreCreateView(CreateView):
@@ -26,6 +49,7 @@ class OffreCreateView(CreateView):
         return context
 
     def form_valid(self, form):
+        form.instance.acitve = True
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
@@ -34,6 +58,28 @@ class OffreCreateView(CreateView):
         return super().form_invalid(form)
 
 
+
+
+class DeleteOffreView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+    model = Offre
+    template_name = 'recrutements/offres/delete.html'
+    success_url = reverse_lazy('offre-list')
+    success_message = "L'offre a été supprimée avec succès"
+
+    def test_func(self):
+        """Vérifie que l'utilisateur a le droit de supprimer l'offre"""
+        offre = self.get_object()
+        return (
+            self.request.user.is_superuser or 
+            self.request.user == offre.created_by or
+            self.request.user.has_perm('recrutements.delete_offre')
+        )
+
+    def get_context_data(self, **kwargs):
+        """Ajoute des informations supplémentaires au contexte"""
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Confirmer la suppression"
+        return context
 
 class OffreUpdateView(UpdateView):
     model = Offre
@@ -63,23 +109,52 @@ class OffreListView(ListView):
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
 
-# views.py
 
+
+
+from datetime import date, datetime, time
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, render
+from django.http import Http404
 
 class PostulerOffreView(View):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['permissions'] = list(self.request.user.get_all_permissions())
-        return context
     def get(self, request, offre_id):
+        # Récupération de l'offre ou 404
         offre = get_object_or_404(Offre, id=offre_id)
+
+        # Normalisation date_expiration en datetime
+        if isinstance(offre.date_expiration, date) and not isinstance(offre.date_expiration, datetime):
+            date_exp = timezone.make_aware(datetime.combine(offre.date_expiration, time.min))
+        else:
+            date_exp = offre.date_expiration
+
+        # Vérification de disponibilité
+        if not offre.active or date_exp < timezone.now():
+            raise Http404("Cette offre n'est plus disponible")
+
+        # Préparation des formulaires
         form_candidat = CandidatForm()
         form_postulation = PostulationForm()
+
+        # Calcul du temps restant
+        maintenant = timezone.now()
+        temps_restant = date_exp - maintenant
+        jours = temps_restant.days
+        secondes_restantes = temps_restant.seconds
+        heures, reste = divmod(secondes_restantes, 3600)
+        minutes, secondes = divmod(reste, 60)
+
         return render(request, 'recrutements/candidatures/postulation.html', {
             'offre': offre,
             'form_candidat': form_candidat,
             'form_postulation': form_postulation,
+            'jours': jours,
+            'heures': heures,
+            'minutes': minutes,
+            'secondes': secondes,
+            'date_expiration_iso': date_exp.isoformat(),
         })
+
 
     def post(self, request, offre_id):
         offre = get_object_or_404(Offre, id=offre_id)
@@ -89,9 +164,11 @@ class PostulerOffreView(View):
         if form_candidat.is_valid() and form_postulation.is_valid():
             candidat = form_candidat.save()
 
+            # Vérifie si ce candidat a déjà postulé
             if Postulation.objects.filter(candidat=candidat, offre=offre).exists():
                 return JsonResponse({'candidat': {'email': ['Vous avez déjà postulé.']}}, status=400)
 
+            # Enregistre la postulation
             postulation = form_postulation.save(commit=False)
             postulation.candidat = candidat
             postulation.offre = offre
@@ -124,16 +201,6 @@ class PostulationListView(PermissionRequiredMixin, ListView):
         qs = super().get_queryset().select_related('candidat', 'offre', 'offre__departement')
         return qs.order_by('-date_postulation')
 
-from django.views.generic.edit import UpdateView
-from django.core.mail import send_mail
-from django.utils import timezone
-from django.urls import reverse_lazy
-from django.contrib.auth import get_user_model
-from django.utils.text import slugify
-from django.utils.crypto import get_random_string
-
-
-User = get_user_model()
 
 class PostulationDetailView(UpdateView):
     model = Postulation

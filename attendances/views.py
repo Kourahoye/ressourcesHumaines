@@ -8,7 +8,7 @@ from django.urls import path
 from django.core.serializers import serialize
 from django.forms.models import model_to_dict
 from django.views.generic import TemplateView
-from .models import Attendances, Employee
+from .models import Attendance, Employee
 import datetime
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -23,7 +23,7 @@ class MarkAttendanceAjaxView(View):
         employee = get_object_or_404(Employee, id=employee_id)
         today = datetime.date.today()
 
-        attendances, created = Attendances.objects.get_or_create(
+        attendances, created = Attendance.objects.get_or_create(
             employee=employee,
             date=today,
             defaults={'heure_arrivee': None, 'heure_depart': None}
@@ -48,7 +48,7 @@ class MarkAttendanceAjaxView(View):
 class PresencesTodayAjaxView(View):
     def get(self, request):
         today = datetime.date.today()
-        attendancess = Attendances.objects.filter(date=today).select_related('employee__user')
+        attendancess = Attendance.objects.filter(date=today).select_related('employee__user')
 
         data = [
             {

@@ -4,7 +4,14 @@
 
 {% block main %}
 <div class="card glass p-2 rounded shadow-md mx-auto lg:w-3/4 w-full">
-    <h1 class="card-title text-sm lg:text-lg dark:text-white uppercase">Liste des offres</h1>
+    <h1 class="m-1 text-2xl font-bold mb-6 inline-block dark:text-white">
+    <span>Liste des offres</span>
+      {% if "recrutements.add_offre" in permissions %}
+    <a class="btn btn-info btn-outline btn-ghost btn-xs text-white" href="{% url 'offre-create' %}">
+    <i class="fas fa-plus text-black dark:text-white "></i>
+  </a>
+  {% endif %}
+  </h1>
     <table class="table w-full card-body">
         <thead>
             <tr class="text-black dark:text-white uppercase tracking-tight">
@@ -37,7 +44,7 @@
                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex flex-col gap-2">
                         {% if "recrutements.delete_offre" in permissions %}
                         <li>
-                            <a href="#" class="btn btn-error btn-sm btn-ghost btn-outline">
+                            <a href="{% url 'delete_offre' offre.pk %}" class="btn btn-error btn-sm btn-ghost btn-outline">
                                 <i class="fas fa-trash text-black dark:text-white"></i>
                                 <span>Supprimer</span>
                             </a>
@@ -49,14 +56,6 @@
                                 class="btn btn-warning btn-sm btn-ghost btn-outline">
                                 <i class="fas fa-edit text-black dark:text-white"></i>
                                 <span>Modifier</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% if "recrutements.view_offre" in permissions %}
-                        <li>
-                            <a href="#" class="btn btn-info btn-sm btn-ghost btn-outline">
-                                <i class="fas fa-info text-black dark:text-white"></i>
-                                <span>Details</span>
                             </a>
                         </li>
                         {% endif %}
