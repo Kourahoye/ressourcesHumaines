@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'fontawesomefree',
     'comptabilite',
     'recrutements',
+    'django_celery_beat',
     'attendances',
     'django_celery_beat',
 ]

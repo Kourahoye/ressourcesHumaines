@@ -4,7 +4,7 @@ from .models import Offre, Candidat, Postulation
 class OffreForm(forms.ModelForm):
     class Meta:
         model = Offre
-        fields = ['titre', 'description', 'date_expiration', 'departement', 'active']
+        fields = ['titre', 'description', 'date_expiration', 'departement']
         widgets = {
             'titre': forms.TextInput(attrs={
                 'class': 'input input-info w-full dark:text-white',
@@ -14,15 +14,16 @@ class OffreForm(forms.ModelForm):
                 'class': 'input input-info w-full dark:text-white',
                 'placeholder': "Description",
             }),
-            'date_expiration': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'input input-info w-full dark:text-white',
-            }),
+            'date_expiration': forms.DateTimeInput(
+                attrs={
+                    'type': 'datetime-local',
+                    'class': 'input input-info w-full dark:text-white',
+                },
+                format='%Y-%m-%dT%H:%M'
+            ),
+
             'departement': forms.Select(attrs={
                 'class': 'select select-info w-full dark:text-white',
-            }),
-            'active': forms.CheckboxInput(attrs={
-                'class': 'mt-2 checkbox checkbox-sm checkbox-info',
             }),
         }
 

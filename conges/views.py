@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,ListView,DetailView,DeleteView
 from conges.forms import CongeForm, CongeRequestForm
-from .models import Conges, CongesRequest
+from .models import Conge, CongesRequest
 from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 # Create your views here.
@@ -68,7 +68,7 @@ def acceptRequest(request,pk):
     requette.status = 'accepted'
     requette.save()
 
-    conges = Conges()
+    conges = Conge()
     conges.employee = request.user.profil_employee
     conges.startDate = requette.startDate
     conges.endDate = requette.endDate
@@ -88,7 +88,7 @@ def refuseRequest(request,pk):
 @login_required(login_url='login')
 @permission_required(['conges.change_conge_status'])
 def finishConges(request,pk):
-    conge = Conges.objects.get(pk=pk)
+    conge = Conge.objects.get(pk=pk)
     conge.status = True
     conge.save()
     return redirect(reverse_lazy('conges_list'))
@@ -96,7 +96,7 @@ def finishConges(request,pk):
 @login_required(login_url='login')
 @permission_required(['conges.change_conge_status'])
 def unfinishConges(request,pk):
-    conge = Conges.objects.get(pk=pk)
+    conge = Conge.objects.get(pk=pk)
     conge.status = False
     conge.save()
     return redirect(reverse_lazy('conges_list'))
@@ -104,7 +104,7 @@ def unfinishConges(request,pk):
 @login_required(login_url='login')
 @permission_required(['conges.delete_conges'])
 def deleteConges(request,pk):
-    conge = Conges.objects.get(pk=pk)
+    conge = Conge.objects.get(pk=pk)
     conge.delete()
     return redirect(reverse_lazy('conges_list'))
 
@@ -113,7 +113,7 @@ def deleteConges(request,pk):
 class CongesList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     permission_required =["conges.list_conge"]
     login_url = reverse_lazy("login")
-    model = Conges
+    model = Conge
     context_object_name = 'conges'
     template_name="conges/conges/list.html"
 
@@ -126,7 +126,7 @@ class CongesList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 class CongesCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     permission_required =["conges.add_conges"]
     login_url = reverse_lazy("login")
-    model = Conges
+    model = Conge
     template_name = "conges/conges/create.html"
     success_url = reverse_lazy('conges_request_list')
     form_class = CongeForm
