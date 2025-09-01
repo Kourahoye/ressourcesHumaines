@@ -96,8 +96,6 @@ MEDIA_ROOT = BASE_DIR / 'files/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'files',
-    BASE_DIR / 'static'
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -111,7 +109,7 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 # -------------------- AUTH & USER --------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Users.User'
-INTERNAL_IPS = ["127.0.0.1"]
+INTERNAL_IPS = ["ressourceshumaines.onrender.com"]
 
 # -------------------- EMAIL --------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
