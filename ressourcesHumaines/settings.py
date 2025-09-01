@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'attendances',
     'django_celery_beat',
+    'attendances',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
