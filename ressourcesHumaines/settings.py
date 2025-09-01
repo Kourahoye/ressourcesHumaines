@@ -98,6 +98,7 @@ MEDIA_ROOT = BASE_DIR / 'files/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
+    BASE_DIR /"theme/static/css"
 ]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -105,8 +106,8 @@ STATICFILES_FINDERS = [
     "compressor.finders.CompressorFinder",
 ]
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = "theme.storage.MinimalFontAwesomeStorage"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = "theme.storage.MinimalFontAwesomeStorage"
 
 
 # -------------------- CRISPY & TAILWIND --------------------
