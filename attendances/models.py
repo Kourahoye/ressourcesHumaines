@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from employees.models import Employee
 
-class Attendances(models.Model):
+class Attendance(models.Model):
     employee = models.ForeignKey(
         Employee,
         on_delete=models.CASCADE,

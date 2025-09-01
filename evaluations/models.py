@@ -10,7 +10,7 @@ class DepartementRating(models.Model):
     departement = models.ForeignKey(Departements, related_name='notes',on_delete=models.CASCADE)
     month = models.CharField(choices=[
         ("Janvier",'Janvier'),("Fevrier",'Fevrier'),("Mars",'Mars'),("Avril",'Avril'),("Mai",'Mai'),("Juin",'Juin'),("Juillet",'Juillet'),("Aout",'Aout'),("Septembre",'Septembre'),("Octobre",'Octobre'),("Novembre",'Novembre'),("Decembre",'Decembre'),
-         ],null=False,
+         ],null=False,max_length=10,
          default=f"{timezone.now().month}"
     )
     year = models.CharField(null=False,default=f"{timezone.now().year}",max_length=6)
@@ -37,7 +37,7 @@ class EmployeeRating(models.Model):
     employee = models.ForeignKey(Employee, related_name='notes',on_delete=models.CASCADE)
     month = models.CharField(choices=[
         ("Janvier",'Janvier'),("Fevrier",'Fevrier'),("Mars",'Mars'),("Avril",'Avril'),("Mai",'Mai'),("Juin",'Juin'),("Juillet",'Juillet'),("Aout",'Aout'),("Septembre",'Septembre'),("Octobre",'Octobre'),("Novembre",'Novembre'),("Decembre",'Decembre'),
-         ],null=False,
+         ],null=False,max_length=10,
          default=f"{timezone.now().month}"
     )
     year = models.CharField(null=False,default=f"{timezone.now().year}",max_length=6)

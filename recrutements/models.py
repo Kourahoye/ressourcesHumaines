@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
 from departements.models import Departements
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -16,9 +16,9 @@ class Offre(models.Model):
     titre = models.CharField(max_length=100)
     description = models.TextField()
     date_publication = models.DateField(auto_now_add=True)
-    date_expiration = models.DateField()
+    date_expiration = models.DateTimeField(default=timezone.now)  
     departement = models.ForeignKey(Departements, on_delete=models.CASCADE, related_name='offres')
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True,null=False)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='offres_created')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='offres_updated')
     updated_at = models.DateTimeField(auto_now=True)
