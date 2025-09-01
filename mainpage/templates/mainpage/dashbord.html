@@ -139,11 +139,11 @@ function createRepartitionChart(labelColor) {
             data: [hommes, femmes],
             backgroundColor: [
             'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 99, 132, 0.2)'
+            'rgba(75, 192, 192, 0.2)' // changed from yellow to teal
             ],
             borderColor: [
             'rgba(54, 162, 235, 1)',
-            'rgba(255, 99, 132, 1)'
+            'rgba(75, 192, 192, 1)' // changed from yellow to teal
             ],
             borderWidth: 1
         }]
@@ -188,8 +188,8 @@ function createAbsencesChart(labelColor) {
             datasets: [{
                 label: 'Evolutions absences par mois',
                 data: data,
-                borderColor: 'red',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)', // changed from yellow to teal
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 fill: false,
                 tension: 0.3,
             }]
@@ -237,14 +237,14 @@ function createCongesChart(labelColor) {
                 ],
                 backgroundColor: [
                     'rgba(34, 197, 94, 0.2)',
-                    'rgba(239, 68, 68, 0.2)',
-                    'rgba(250, 204, 21, 0.2)',
+                    'rgba(75, 192, 192, 0.2)', // changed from yellow to teal
+                    'rgba(54, 162, 235, 0.2)',
                     'rgba(107, 114, 128, 0.2)'
                 ],
                 borderColor: [
                     'rgba(34, 197, 94, 1)',
-                    'rgba(239, 68, 68, 1)',
-                    'rgba(250, 204, 21, 1)',
+                    'rgba(75, 192, 192, 1)', // changed from yellow to teal
+                    'rgba(54, 162, 235, 1)',
                     'rgba(107, 114, 128, 1)'
                 ],
                 borderWidth: 1
@@ -289,10 +289,10 @@ function createStatutsChart(labelColor) {
             datasets: [{
                 data: {{ statuts.values|safe }},
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(75, 192, 192, 0.5)', // changed from yellow to teal
                     'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)'
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(250, 204, 21, 0.5)'
                 ],
                 borderWidth: 1
             }]
@@ -330,10 +330,10 @@ function createNiveauxChart(labelColor) {
             datasets: [{
                 data: {{ niveaux.values|safe }},
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(75, 192, 192, 0.5)', // changed from yellow to teal
                     'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)'
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(250, 204, 21, 0.5)'
                 ],
                 borderWidth: 1
             }]

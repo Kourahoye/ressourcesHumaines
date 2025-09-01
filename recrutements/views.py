@@ -21,6 +21,7 @@ from django.views.generic import (
 
 # Models
 from employees.models import Employee
+from ressourcesHumaines.settings import EMAIL_HOST_USER
 from .models import Offre, Postulation
 
 # Forms
@@ -201,6 +202,9 @@ class PostulationListView(PermissionRequiredMixin, ListView):
         qs = super().get_queryset().select_related('candidat', 'offre', 'offre__departement')
         return qs.order_by('-date_postulation')
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 class PostulationDetailView(UpdateView):
     model = Postulation
@@ -212,6 +216,7 @@ class PostulationDetailView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
+
     def get_success_url(self):
         return reverse_lazy('postulation_detail', kwargs={'pk': self.object.pk})
 
@@ -238,9 +243,10 @@ class PostulationDetailView(UpdateView):
         # Créer un username unique
         username = self.generate_username(candidat)
 
-        # Créer ou récupérer un utilisateur
+        # Générer un mot de passe aléatoire
         password = get_random_string(10)
 
+        # Créer ou récupérer un utilisateur
         user, created = User.objects.get_or_create(
             email=candidat.email,
             defaults={
@@ -252,31 +258,32 @@ class PostulationDetailView(UpdateView):
                 'avatar': 'avatars/default.jpg',
             }
         )
-        # print("==========================")
-        if  created:
+
+        if created:
             user.set_password(password)
             user.save()
-            # print("==========================")
-            # # Envoi d'email simulé dans la console
-            # print("📧 Envoi email à :", user.email)
-            send_mail(
+
+            # Préparer le contenu email (HTML + texte)
+            context = {
+                "prenom": candidat.prenom,
+                "nom": candidat.nom,
+                "poste": offre.titre,
+                "departement": offre.departement.name,
+                "username": user.username,
+                "password": password,
+            }
+
+            html_content = render_to_string("emails/acceptation.html", context)
+            text_content = strip_tags(html_content)  # version texte brut
+ 
+            email = EmailMultiAlternatives(
                 subject="🎉 Félicitations, vous avez été retenu(e) !",
-                message=f"""
-                    Bonjour {candidat.prenom},
-
-                    Félicitations ! Vous avez été retenu(e) pour le poste de "{offre.titre}" dans le département {offre.departement.name}.
-
-                    Votre compte RH a été créé :
-                    Identifiant : {user.username}
-                    Mot de passe : {password}
-
-                    Cordialement,
-                    RH
-                    """,
-                from_email="noreply@entreprise.com",
-                recipient_list=[user.email],
-                fail_silently=False,
+                body=text_content,
+                from_email= EMAIL_HOST_USER,
+                to=[user.email],
             )
+            email.attach_alternative(html_content, "text/html")
+            email.send()
 
         # Créer un employé s’il n’existe pas déjà
         if not hasattr(user, 'profil_employee'):
@@ -287,7 +294,6 @@ class PostulationDetailView(UpdateView):
                 date_embauche=timezone.now().date(),
                 created_by=self.request.user,
             )
-            # print("=========================")
 
     def generate_username(self, candidat):
         base = slugify(f"{candidat.prenom}-{candidat.nom}")
@@ -297,4 +303,4 @@ class PostulationDetailView(UpdateView):
             counter += 1
             username = f"{base}{counter}"
         return username
-    # print("===============END==============")
+
