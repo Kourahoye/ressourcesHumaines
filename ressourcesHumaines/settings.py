@@ -7,9 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------- SECURITY --------------------
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
-ALLOWED_HOSTS = []
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
-ALLOWED_HOSTS.append("https://ressourceshumaines.onrender.com")
+
 # -------------------- APPLICATION --------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +35,10 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'attendances',
 ]
+INSTALLED_APPS += ["compressor"]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -97,8 +99,15 @@ MEDIA_ROOT = BASE_DIR / 'files/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "theme.storage.MinimalFontAwesomeStorage"
+
 
 # -------------------- CRISPY & TAILWIND --------------------
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["tailwind"]
