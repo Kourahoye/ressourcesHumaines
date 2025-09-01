@@ -7,8 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------- SECURITY --------------------
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
+ALLOWED_HOSTS = []
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
-
+ALLOWED_HOSTS.append("https://ressourceshumaines.onrender.com")
 # -------------------- APPLICATION --------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
