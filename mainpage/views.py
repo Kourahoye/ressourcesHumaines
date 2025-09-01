@@ -7,16 +7,19 @@ from comptabilite.models import Salary
 from conges.models import CongesRequest, User
 from departements.models import Departements
 from employees.models import Employee
-from presences.models import Presence 
+from presences.models import Abcence 
 from django.db.models import Count
 from django.db.models import Q
 from django.db.models import Sum
 from django.utils.timezone import now
 from django.urls import reverse_lazy
-from presences.models import Presence
+from presences.models import Abcence
 from django.db.models.functions import ExtractMonth
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from recrutements.models import *
+from plotly.offline import plot
+import plotly.express as px
 # Create your views here.
 
 class Dasbord(LoginRequiredMixin,TemplateView):
@@ -37,10 +40,18 @@ class Dasbord(LoginRequiredMixin,TemplateView):
             hommes=Count('id', filter=Q(gender='masculin')),
             femmes=Count('id', filter=Q(gender='feminin'))
         )
-        employees_absent = Presence.objects.filter(is_absent=True).filter(date=now().date()).distinct()
+        date = now().date()  # ou une date spécifique
+
+        present_ids = Abcence.objects.filter(date=date).values_list('employee_id', flat=True)
+
+        # Employés absents aujourd'hui = embauchés avant ou à cette date, actifs, mais pas dans les présents
+        employees_absent = Employee.objects.filter(
+            date_embauche__lte=date,
+            user__is_active=True
+        ).exclude(id__in=present_ids)
         try:
             if me.profil_employee:
-                absence = Presence.objects.filter(employee=me.profil_employee, is_absent=True,date__month=now().month,date__year=now().year).count()
+                absence = Abcence.objects.filter(employee=me.profil_employee, is_absent=True,date__month=now().month,date__year=now().year).count()
         except Exception as e:
             absence = 0
         sessions = Session.objects.filter(expire_date__gte=timezone.now())
@@ -51,9 +62,8 @@ class Dasbord(LoginRequiredMixin,TemplateView):
             if uid:
                 uid_list.append(uid)
         logged_in = User.objects.filter(id__in=uid_list, is_active=True).count()
-        # print(f"Logged in users: {logged_in}")
 
-        qs = Presence.objects.filter(
+        qs = Abcence.objects.filter(
             is_absent=True,
             date__year=now().year
         ).annotate(
@@ -90,6 +100,25 @@ class Dasbord(LoginRequiredMixin,TemplateView):
         unpayed_employees = total_employees - payed_employees
 
         inactifs = user_close.count()
+        top_offres = Offre.objects.annotate(
+            postulation_count=Count('postulations')
+        ).order_by('-postulation_count')[:5]
+        
+        niveaux = Candidat.objects.values('niveau').annotate(count=Count('id'))        
+
+        statuts = Postulation.objects.values('statut').annotate(count=Count('id'))
+        context['top_offres']= {
+                "labels": [offre.titre for offre in top_offres],  # Supposant que le modèle Offre a un champ 'titre'
+                "values": [offre.postulation_count for offre in top_offres]
+            }
+        context['statuts']={
+                "labels": [statut['statut'] for statut in statuts],
+                "values": [statut['count'] for statut in statuts]
+            }
+        context['niveaux']={
+                "labels": [niveau['niveau'] for niveau in niveaux],
+                "values": [niveau['count'] for niveau in niveaux]
+            }
         context["general"] ={
             "actif_users": users.count() - inactifs,
             "inactif_user": inactifs,
@@ -108,11 +137,12 @@ class Dasbord(LoginRequiredMixin,TemplateView):
                 'pending': qs2.get('pending', 0),
                 'aborted': qs2.get('aborted', 0)
             },
-            'payments_stat' : {
+            'payments_stat':{
             "payed": payed_employees,
             "unpayed": unpayed_employees
         }
         }
+       
         context["prive"] = {
             "employees_added": employee_added.count(),
             "departement_added": departement_added.count(),
@@ -140,14 +170,14 @@ def dasbord_chart(request):
         hommes=Count('id', filter=Q(gender='masculin')),
         femmes=Count('id', filter=Q(gender='feminin'))
     )
-    employees_absent = Presence.objects.filter(is_absent=True).filter(date=now().date()).distinct()
+    employees_absent = Abcence.objects.filter(is_absent=True).filter(date=now().date()).distinct()
 
     # # Debug output for inspection
     # print("Genres dict:", genres)
 
     try:
         if me.profil_employee:
-            absence = Presence.objects.filter(employee=me.profil_employee, is_absent=True).count()
+            absence = Abcence.objects.filter(employee=me.profil_employee, is_absent=True).count()
     except Exception as e:
         # print("Exception in absence calculation:", e)
         absence = 0

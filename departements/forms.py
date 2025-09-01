@@ -10,7 +10,7 @@ class DepartementsForm(forms.ModelForm):
         exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'block w-full mt-1 rounded-md border-2 border-black shadow-sm',
+                'class': 'input input-info w-full',
                 'placeholder': 'Nom du département',
             }),
         }
@@ -28,7 +28,7 @@ class DepartementsForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field('name'),
-                Submit('submit', 'Enregistrer', css_class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"),
+                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )

@@ -11,7 +11,7 @@
     </a>
   </h1>
 
-  <table class="w-full min-w-full">
+  <table class="table w-full min-w-full">
     <thead>
       <tr class="font-bold text-black dark:text-white">
         <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">User</th>
@@ -23,7 +23,7 @@
     </thead>
     <tbody>
       {% for congesRequest in congesRequests %}
-      <tr class="border-b-2 border-b-black">
+      <tr>
         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.employee.user }}</td>
         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.startDate|date:"d/m/Y" }}</td>
         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.endDate|date:"d/m/Y" }}</td>

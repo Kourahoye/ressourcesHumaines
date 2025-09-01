@@ -1,5 +1,5 @@
 from django import forms
-from conges.models import Conges, CongesRequest
+from conges.models import Conge, CongesRequest
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Div
 
@@ -14,11 +14,11 @@ class CongeRequestForm(forms.ModelForm):
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
          }
 
@@ -34,11 +34,9 @@ class CongeRequestForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('user',css_class="select select-info"),
                 Field('startDate',css_class="input input-info"),
                 Field('endDate',css_class="input input-info"),
-                Field('status',css_class="input input-info"),
-                Submit('submit', 'Enregistrer', css_class="btn btn-info"),
+                Submit('submit', 'Enregistrer', css_class="m-3 btn btn-info btn-sm"),
                 css_class="space-y-4"
             )
         )
@@ -56,17 +54,17 @@ class CongeForm(forms.ModelForm):
 
  
     class Meta:
-        model = Conges
+        model = Conge
         fields = '__all__'
         exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
          }
 
@@ -85,7 +83,7 @@ class CongeForm(forms.ModelForm):
                 Field('employee',css_class="select select-info"),
                 Field('startDate',css_class="input input-info"),
                 Field('endDate',css_class="input input-info"),
-                Submit('submit', 'Enregistrer', css_class="btn btn-info"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4 dark:text-white"
             )
         )

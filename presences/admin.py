@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from presences.models import Presence
+from presences.models import Abcence
 
 # Register your models here.
-admin.site.register(Presence)
+admin.site.register(Abcence)

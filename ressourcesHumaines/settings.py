@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x_gfvx%aa$(_931-l&uc)67y0gw%$vugt(4@fpe!w8zmplb6#p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
     'conges',
     'django.contrib.humanize',
     'crispy_forms',
@@ -54,6 +53,9 @@ INSTALLED_APPS = [
     # 'django_icons',
     'fontawesomefree',
     'comptabilite',
+    'recrutements',
+    'attendances',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',#server pour statics
 ]
 
 ROOT_URLCONF = 'ressourcesHumaines.urls'
@@ -95,7 +98,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'your_database_name',
+#         'USER': 'your_mysql_user',
+#         'PASSWORD': 'your_mysql_password',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -144,6 +159,7 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 STATICFILES_DIRS =[
     BASE_DIR /'static',
     BASE_DIR /'files',
+    BASE_DIR/'static'
 ]
 
 # Default primary key field type
@@ -161,11 +177,24 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'parinari2025@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'lqvx qxlt zwxk fpnr'  # Use an App Password if 2FA is enabled
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
-# DJANGO_ICONS = {
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-#     "DEFAULTS": {
-#         "renderer": "fontawesome4",
-#     },
 
-# }
+# Config Celery avec Redis
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Conakry'
+
+

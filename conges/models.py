@@ -6,7 +6,7 @@ from employees.models import Employee
 
 User = get_user_model()
 # Create your models here.
-class Conges(models.Model):
+class Conge(models.Model):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name="conges")
     startDate = models.DateField()
     endDate = models.DateField()
@@ -28,7 +28,7 @@ class CongesRequest(models.Model):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE,related_name="conges_asked")
     startDate = models.DateField()
     endDate = models.DateField()
-    status = models.CharField(choices=[("pending","Pending"),("aborted","Aborted"),("refused","Refused"),("accepted","Accepted")],null=False,default='pending')
+    status = models.CharField(choices=[("pending","Pending"),("aborted","Aborted"),("refused","Refused"),("accepted","Accepted")],null=False,default='pending',max_length=10)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='conges_ask_crees')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

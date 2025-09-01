@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="w-3/4 mx-auto p-6 card bg-base-200 shadow-lg glass flex-row gap-4 justify-around">
+    <div class="flex flex-col  flex-2/5">
+    <h2 class="text-sm lg:text-lg font-bold mb-4">Pointage du jour - {{ today | date }}</h2>
+    <label for="employee-select" class="label-text text-sm font-semibold mb-2">Sélectionner un employé :</label>
+  <div class="flex gap-2 justify-center items-center">
+        <select id="employee-select" class="select select-bordered w-full">
+            
+          <option value="" selected disabled>-- Choisir un employé --</option>
+          {% for emp in employees %}
+            <option value="{{ emp.id }}">{{ emp.user.get_full_name }} ({{ emp.user.username }})</option>
+          {% endfor %}
+        </select>
+        <div class="flex justify-center">
+          <button id="btn-pointer" class="btn btn-info btn-sm">Pointer</button>
+        </div>
+  </div>
+  </div>
+
+
+  <table class="table w-full border-l-2 flex-3/5">
+    <thead>
+      <tr class="text-black dark:text-white tracking-tight text-lg uppercase">
+        <th>Nom</th>
+        <th>Arrivée</th>
+        <th>Départ</th>
+      </tr>
+    </thead>
+    <tbody id="presence-body">
+        <tr>
+            <td colspan="3" class="text-center align-middle">
+            <span class="loading loading-dots loading-xl"></span>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function chargerPresences() {
+    $.ajax({
+        url: "{% url 'PresencesToday' %}",
+        method: 'GET',
+        success: function(data) {
+            console.log(data)
+            const presences = Array.isArray(data.Attendancess) ? data.Attendancess : [];
+            const rows = presences.map(p =>
+                `<tr>
+                    <td>${p.employee}</td>
+                    <td>${p.heure_arrivee}</td>
+                    <td>${p.heure_depart}</td>
+                </tr>`
+            ).join('');
+
+            const tableBody = rows || `<tr><td colspan="3" class="text-center">Aucune présence enregistrée aujourd'hui.</td></tr>`;
+            $('#presence-body').html(tableBody);
+        },
+        error: function() {
+            $('#presence-body').html(`<tr><td colspan="3" class="text-center text-red-500">Erreur lors du chargement des présences.</td></tr>`);
+        }
+    });
+}
+
+$(document).ready(function() {
+    chargerPresences();
+});
+
+  $('#btn-pointer').click(() => {
+    const id = $('#employee-select').val();
+    if (!id) return;
+
+    Swal.fire({
+      title: 'Quel type de pointage ?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Arrivée',
+      cancelButtonText: 'Départ',
+      reverseButtons: true
+    }).then((result) => {
+      let action = result.isConfirmed ? 'arrivee' : (result.dismiss === Swal.DismissReason.cancel ? 'depart' : null);
+      if (!action) return;
+
+      $.ajax({
+        url: "{% url 'mark_attendance' %}",
+        method: 'POST',
+        data: {
+          'employee_id': id,
+          'action': action,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+          Swal.fire({
+            icon: 'success',
+            title: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+          chargerPresences();
+        },
+        error: function (xhr) {
+          let msg = xhr.responseJSON?.error || "Une erreur est survenue.";
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: msg
+          });
+        }
+      });
+    });
+  });
+
+  // Auto load on page load
+  $(document).ready(() => {
+    chargerPresences();
+  });
+</script>
+{% endblock %}

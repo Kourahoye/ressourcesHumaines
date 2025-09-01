@@ -5,18 +5,17 @@ from employees.models import Employee
 
 User = get_user_model()
 # Create your models here.
-class Presence(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='presences')
+class Abcence(models.Model):
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='absences')
     date = models.DateField(null=False)
     is_absent = models.BooleanField(null=False, choices=[
         (True, "Absent"),
         (False, "Présent")
-    ])
+    ],default=True)
     created_at = models.DateField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rapport_de_presence')
     
     def __str__(self):
-        return f"{self.employee.user}  {'présent' if self.is_absent else 'absent'} le {self.created_at}"
+        return f"{self.employee.user}  {'absent' if self.is_absent else 'présent'} le {self.created_at}"
 
     class Meta:
          constraints = [

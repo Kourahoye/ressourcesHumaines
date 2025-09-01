@@ -1,0 +1,26 @@
+<html>
+  <body style="font-family: Arial, sans-serif; background:#f8f9fa; padding:20px;">
+    <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px; border:1px solid #ddd;">
+      <h2 style="color:#28a745;">Félicitations {{ prenom }} 🎉</h2>
+      <p>
+        Vous avez été retenu(e) pour le poste de <b>{{ poste }}</b> dans le département
+        <b>{{ departement }}</b>.
+      </p>
+      <p>Un compte RH a été créé pour vous :</p>
+      <ul>
+        <li><b>Identifiant :</b> {{ username }}</li>
+        <li><b>Mot de passe :</b> {{ password }}</li>
+      </ul>
+      <p>
+        👉 <a href="https://mon-entreprise.com/login"
+             style="background:#007bff; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">
+             Se connecter
+        </a>
+      </p>
+      <p style="margin-top:20px; font-size:12px; color:#555;">
+        Cordialement,<br>
+        L’équipe RH
+      </p>
+    </div>
+  </body>
+</html>

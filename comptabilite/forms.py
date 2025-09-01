@@ -26,14 +26,14 @@ from datetime import date
 #     def __init__(self, *args, **kwargs):
 #         super().__init__(*args, **kwargs)
 #         self.fields['employee'].widget.attrs.update({
-#             'class': 'select select-primary',
+#             'class': 'select select-info',
 #         })
 #         self.fields['bonus'].widget.attrs.update({
-#             'class': 'input input-primary',
+#             'class': 'input input-info',
 #             'placeholder': 'Montant du paiement',
 #         })
 #         self.fields['date'].widget.attrs.update({
-#             'class': 'input input-primary'
+#             'class': 'input input-info'
 #         })
 
 #     def clean_employee(self):
@@ -65,11 +65,11 @@ class SalaryForm(forms.ModelForm):
         exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
         widgets = {
             'amount': forms.NumberInput(attrs={
-                'class': 'input input-primary',
+                'class': 'input input-info',
                 'placeholder': 'Montant du paiement',
                 }),
             'employee': forms.Select(attrs={
-                'class': 'select select-primary',
+                'class': 'select select-info',
                 }),
         }
     
@@ -86,7 +86,7 @@ class SalaryForm(forms.ModelForm):
             Div(
                 Field('employee'),
                 Field('amount'),
-                Submit('submit', 'Enregistrer', css_class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"),
+                Submit('submit', 'Enregistrer', css_class="btn btn-info btn-sm"),
                 css_class="space-y-4"
             )
         )
@@ -109,18 +109,18 @@ class BonusSlipForm(forms.ModelForm):
         exclude = ['created_by', 'created_at','month','year']
         widgets = {
             'employee': forms.Select(attrs={
-                'class': 'select select-primary',
+                'class': 'select select-info',
                 }),
             'amount': forms.NumberInput(attrs={
-                'class': 'input input-primary',
+                'class': 'input input-info',
                 'placeholder': 'Montant du paiement',
                 }),
             'description': forms.TextInput(attrs={
-                'class':'input input-info',
+                'class':'textarea textarea-info',
                 'placeholder':'Description de la prime'
                 }),
             'date':({
-                'class': 'input input-primary'
+                'class': 'input input-info'
             })
         }
     
@@ -139,7 +139,7 @@ class BonusSlipForm(forms.ModelForm):
                 Field('amount'),
                 Field('date'),
                 Field('description'),
-                Submit('submit', 'Enregistrer', css_class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"),
+                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )
@@ -180,15 +180,15 @@ class PaimentForm(forms.ModelForm):
         exclude = ['created_by', 'created_at','month','year','total','generated_by','base_salary']
         widgets = {
             'employee': forms.Select(attrs={
-                'class': 'select select-primary',
+                'class': 'select select-info',
                 }),
             'bonus':forms.NumberInput(
                 attrs={
-                    'class': 'input input-primary',
+                    'class': 'input input-info',
                 }
             ),
             'date':forms.DateInput(attrs={
-                'class': 'input input-primary'
+                'class': 'input input-info'
             })
         }
     
@@ -202,7 +202,7 @@ class PaimentForm(forms.ModelForm):
                 Field('employee'),
                 Field('bonus'),
                 Field('date'),
-                Submit('submit', 'Enregistrer', css_class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"),
+                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )

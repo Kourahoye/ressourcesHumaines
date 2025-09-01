@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView,ListView,DeleteView,DetailView,UpdateView
 from comptabilite.models import Salary
 from evaluations.models import EmployeeRating
-from presences.models import Presence
+from presences.models import Abcence
 from .models import Employee
 from .forms import EmployeeForm
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
@@ -33,12 +33,6 @@ class EmployeeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
-        # salary = Paiment()
-        # salary.employee = form.instance.employee
-        # salary.amount = form.instance.salary
-        # salary.created_by = self.request.user
-        # salary.updated_by = self.request.user
-        # salary.save()
         return super().form_valid(form)
 
 
@@ -96,14 +90,10 @@ class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
 
         context['chart_labels_year'] = years
         context['chart_data_year'] = moyennes
-        #absences
-       
-
-    
 
         # Requête ORM
         absences_raw = (
-            Presence.objects
+            Abcence.objects
             .filter(employee_id=self.get_object(), is_absent=True)
             .annotate(mois=ExtractMonth('date'), annee=ExtractYear('date'))
             .values('annee', 'mois')
@@ -159,7 +149,7 @@ class EmployeeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
 
   
 
-    #     presences_qs = Presence.objects.filter(
+    #     presences_qs = Abcence.objects.filter(
     #         employee=employee,
     #         date__year=current_year
     #     )

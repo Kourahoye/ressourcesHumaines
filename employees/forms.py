@@ -10,19 +10,19 @@ class EmployeeForm(forms.ModelForm):
         widgets = {
             'date_embauche': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-primary w-full',
+                'class': 'input input-info w-full',
             }),
             'user': forms.Select(attrs={
-                'class': 'select select-accent w-full',
+                'class': 'select select-info w-full',
             }),
             'poste': forms.TextInput(attrs={
                 'class': 'input input-info w-full',
             }),
             'manager': forms.Select(attrs={
-                'class': 'select select-error w-full',
+                'class': 'select select-info w-full',
             }),
             'departement': forms.Select(attrs={
-                'class': 'select select-error w-full',
+                'class': 'select select-info w-full',
             }),
         }
 

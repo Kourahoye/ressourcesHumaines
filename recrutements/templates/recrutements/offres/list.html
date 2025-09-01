@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main %}
+<div class="card glass p-2 rounded shadow-md mx-auto lg:w-3/4 w-full">
+    <h1 class="m-1 text-2xl font-bold mb-6 inline-block dark:text-white">
+    <span>Liste des offres</span>
+      {% if "recrutements.add_offre" in permissions %}
+    <a class="btn btn-info btn-outline btn-ghost btn-xs text-white" href="{% url 'offre-create' %}">
+    <i class="fas fa-plus text-black dark:text-white "></i>
+  </a>
+  {% endif %}
+  </h1>
+    <table class="table w-full card-body">
+        <thead>
+            <tr class="text-black dark:text-white uppercase tracking-tight">
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Date de publication</th>
+                <th>Date d'expiration</th>
+                <th>Département</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offre in offres %}
+            <tr>
+                <td>{{ offre.titre }}</td>
+                <td>{{ offre.description|truncatechars:50 }}</td>
+                <td>{{ offre.date_publication }}</td>
+                <td>{{ offre.date_expiration }}</td>
+                <td>{{ offre.departement.name }}</td>
+                <td>
+                    {% if offre.active %}
+                    <span class="badge badge-success">Oui</span>
+                    {% else %}
+                    <span class="badge badge-error">Non</span>
+                    {% endif %}
+                <td class="dropdown dropdown-bottom">
+                    <label tabindex=0 class="btn m-1 btn-outline btn-info btn-ghost btn-sm">Actions</label>
+                    <ul tabindex=0
+                        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex flex-col gap-2">
+                        {% if "recrutements.delete_offre" in permissions %}
+                        <li>
+                            <a href="{% url 'delete_offre' offre.pk %}" class="btn btn-error btn-sm btn-ghost btn-outline">
+                                <i class="fas fa-trash text-black dark:text-white"></i>
+                                <span>Supprimer</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if "recrutements.change_offre" in permissions %}
+                        <li>
+                            <a href="{% url 'offre-update' offre.pk %}"
+                                class="btn btn-warning btn-sm btn-ghost btn-outline">
+                                <i class="fas fa-edit text-black dark:text-white"></i>
+                                <span>Modifier</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <button class="btn btn-success btn-sm btn-ghost btn-outline copy-link"
+                                data-url="{% url 'postuler_offre' offre.id %}">
+                                <i class="fas fa-share text-black dark:text-white"></i>
+                                <span>Partager</span>
+                            </button>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center font-black">Aucune offre disponible.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    <div class="mt-4 flex justify-center space-x-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info btn-sm btn-outline">Précédent</a>
+        {% endif %}
+
+        <span class="px-3 py-1 btn btn-outline btn-ghost btn-sm">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages}}
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-error btn-sm btn-outline">Suivant</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock main %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyButtons = document.querySelectorAll('.copy-link');
+
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const url = this.dataset.url;
+                navigator.clipboard.writeText(window.location.origin + url)
+                    .then(() => {
+                        this.innerHTML = '<i class="fas fa-check text-green-600"></i> <span>Copié !</span>';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-share text-black dark:text-white"></i> <span>Partager</span>';
+                        }, 1500);
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur',
+                            text: "Échec de la copie du lien."
+                        });
+                    });
+            });
+        });
+    });
+</script>
+{% endblock scripts %}

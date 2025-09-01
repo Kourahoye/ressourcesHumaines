@@ -6,7 +6,7 @@
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des conges</h1>
 
     <table class="table w-full">
-      <thead class="">
+      <thead>
         <tr class="font-bold dark:text-white">
           <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Employee</th>
           <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Debut</th>
@@ -18,9 +18,9 @@
           <th></th>
         </tr>
       </thead>
-      <tbody class="">
+      <tbody>
         {% for conge in conges %}
-        <tr class="">
+        <tr>
           <td class="px-6 py-4 whitespace-nowrap">{{ conge.employee.user }}</td>
           <td class="px-6 py-4 whitespace-nowrap">{{ conge.startDate }}</td>
           <td class="px-6 py-4 whitespace-nowrap">{{ conge.endDate }}</td>

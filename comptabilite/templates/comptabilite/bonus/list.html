@@ -3,8 +3,11 @@
 
 {% block main %}
 <div class="glass p-6 rounded shadow-md mx-auto w-full md:w-3/4 lg:w-1/2">
-    <h1 class="text-2xl font-bold mb-4">Liste des fiche de primes</h1>
-    <a href="{% url 'bonus_create' %}" class="btn btn-primary">Don de prime</a>
+    <h1 class="text-2xl font-bold mb-4">
+        <span>Liste des fiche de primes</span>
+        <a href="{% url 'bonus_create' %}" class="btn btn-info btn-outline btn-ghost btn-sm">Don de prime</a>
+
+    </h1>
     <table class="table w-full">
         <thead>
             <tr>
@@ -23,25 +26,34 @@
                 <td>{{ paiment.amount }}</td>
                 <td>
                     <div class="dropdown dropdown-left">
-                        <button tabindex="0" class="btn btn-sm btn-ghost">
+                        <button tabindex="0" class="btn btn-sm btn-ghost btn-outline btn-info">
                             Actions
                         </button>
-                        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40">
+                        <ul tabindex="0" class="dropdown-content menu p-2 shadow glass bg-base-100 rounded-box w-30">
                             {% if 'comptabilite.view_bonusslip' in permissions %}
                             <li class="my-1">
-                                <a href="{% url 'bonus_details' paiment.pk %}" class="btn btn-info">Détail</a>
+                                <a href="{% url 'bonus_details' paiment.pk %}" class="btn btn-info btn-outline btn-sm btn-ghost">
+                                <i class="fas fa-info text-black dark:text-white "></i>
+                                    <span>Détail</span>
+                                </a>
                             </li>
                             {% endif %}
                             {% if 'comptabilite.delete_bonusslip' in permissions %}
                             <li class="my-1">
-                                <a href="{% url 'bonus_delete' paiment.pk %}" class="btn btn-error">Supprimer</a>
+                                <a href="{% url 'bonus_delete' paiment.pk %}" class="btn btn-error btn-outline btn-sm btn-ghost">
+                                <i class="fas fa-trash text-black dark:text-white "></i>
+                                    <span>Supprimer</span>
+                                </a>
                             </li>
                             {% endif %}
 
                             {% comment %}
                             {% if 'comptabilite.change_bonusslip' in permissions %}
                             <li class="mb-1">
-                                <a href="{% url 'bonus_update' paiment.pk %}" class="btn btn-warning">Modifier</a>
+                                <a href="{% url 'bonus_update' paiment.pk %}" class="btn btn-warning btn-outline btn-sm btn-ghost">
+                                <i class="fas fa-edit text-black dark:text-white "></i>
+                                    <span>Modifier</span>
+                                </a>
                             </li>
                             {% endif %}
                             {% endcomment %}

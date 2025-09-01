@@ -7,13 +7,13 @@
 
 <header class="navbar bg-base-100 shadow-sm mb-4 pr-5 print:hidden">
     <div class="flex-1">
-        <label for="my-drawer" role="button" class="btn btn-ghost btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+        <!-- <img src="{% static 'images/favicon.ico' %}" alt="logo"> -->
+        <label for="my-drawer" role='button' class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
         </label>
-        <a class="btn btn-ghost text-xl">Gestion RH/ <sub>
+        <a class="btn btn-ghost text-xl" href="{% url 'dashbord' %}">Gestion RH/ <sub>
                 <span class="text-xs">daisyUI</span>
             </sub>
         </a>
@@ -30,7 +30,7 @@
 
             <li>
                 <a class="justify-between" href="{{user.get_absolute_url}}">Profil</a>
-                </a>
+            
             </li>
             <li>
                 <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
@@ -125,6 +125,15 @@
                     href="{% url 'conges_request_list' %}">
                     <i class="scale-125 fas fa-calendar-alt mr-2"></i>
                     Liste des demandes de conges
+                </a>
+            </li>
+            {% endif %}
+            {% if  'attendances_add_attendance'  %}
+              
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'attendances' %}">
+                    <i class="scale-125 fas fa-clipboard-list mr-2"></i>
+                    Markage presences
                 </a>
             </li>
             {% endif %}
@@ -227,6 +236,22 @@
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'bonus_list' %}">
                     <i class="scale-125 fas fa-plus-circle mr-2" style="color: #11e811;"></i>
                     Primes
+                </a>
+            </li>
+            {% endif %}
+            {% if "recrutements.list_offre" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'offre-list' %}">
+                    <i class="scale-125 fas fa-briefcase mr-2" style="color: #11e811;"></i>
+                    Offres
+                </a>
+            </li>
+            {% endif %}
+            {% if "recrutements.list_postulation" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'postulation_list' %}">
+                    <i class="scale-125 fas fa-file-signature mr-2" style="color: #11e811;"></i>
+                    Postulations
                 </a>
             </li>
             {% endif %}
