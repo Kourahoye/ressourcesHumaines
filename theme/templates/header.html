@@ -22,7 +22,7 @@
         <div tabindex="0" role="button"
             class="btn btn-circle btn-ghost avatar  avatar-online before:w-3 before:block before:h-3 before:rounded-full before:absolute before:top-o before:right-0 hover:ring-2 hover:ring-blue-800 ">
             <div class=" w-20 rounded-full">
-                <img alt="{{user}} image" src="{% static user.avatar %}" />
+                <img alt="{{user}} image" src="{{user.avatar.url}}" />
             </div>
         </div>
         <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
@@ -53,7 +53,7 @@
 
             {% if user.is_authenticated %}
             {% if user.avatar %}
-            <div style="background-image: url('{% static user.avatar %}');"
+            <div style="background-image: url('{{user.avatar.url}}');"
                 class="h-28 w-full bg-cover bg-center flex justify-center items-end">
                 <p class="w-full text-center text-4xl glass text-black">
                     {{user}}

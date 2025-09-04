@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'recrutements',
     'django_celery_beat',
     'attendances',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 
@@ -96,7 +98,6 @@ MEDIA_ROOT = BASE_DIR / 'files/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR /"theme/static/css",
-    BASE_DIR /"files",
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -131,3 +132,13 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Conakry'
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# stockage par défaut des médias → Cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = config("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = config("CLOUDINARY_API_SECRET")

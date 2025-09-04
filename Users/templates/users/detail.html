@@ -11,7 +11,7 @@ Detail Utilisateur
         <div class="flex flex-col gap-4 justify-around flex-grow">
             <div class="avatar">
                 <div class="w-24 rounded-xl">
-                    <img src="{% static object.avatar %}" alt='avatar'
+                    <img src="{{ object.avatar.url }}" alt='avatar'
                         class="w-1/4  object-cover rounded-md shadow shadow-white border-2 border-black" />
                 </div>
             </div>
