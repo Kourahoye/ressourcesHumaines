@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from departements.models import Departements
 from django.utils import timezone
-
+from django.core.validators import FileExtensionValidator
+from cloudinary.models import CloudinaryField
 User = get_user_model()
 
 # Exemple de niveau d'études ou expériences
@@ -35,7 +36,7 @@ class Candidat(models.Model):
     prenom = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     telephone = models.CharField(max_length=15)
-    cv = models.FileField(upload_to='cv/')
+    cv = CloudinaryField('cv_files/', resource_type='raw', validators=[FileExtensionValidator(['pdf'])])
     lettre_motivation = models.TextField(blank=True)
     genre = models.CharField(max_length=10, choices=[("masculin", "Masculin"), ("feminin", "Féminin")])
     date_naissance = models.DateField()

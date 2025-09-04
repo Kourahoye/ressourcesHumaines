@@ -273,7 +273,7 @@ class PostulationDetailView(UpdateView):
                 "password": password,
             }
 
-            html_content = render_to_string("emails/acceptation.html", context)
+            html_content = render_to_string("recrutements/emails/acceptation.html", context)
             text_content = strip_tags(html_content)  # version texte brut
  
             email = EmailMultiAlternatives(
