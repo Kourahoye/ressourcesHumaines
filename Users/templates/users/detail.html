@@ -5,7 +5,7 @@ Detail Utilisateur
 {% load static %}
 {% block main %}
 
-<div class="w-3/5 p-1 mt-10 mx-auto card glass text-base-300 dark:text-white">
+<div class="w-3/5 p-3 mt-10 mx-auto text-black card glass dark:text-white">
     <h1 class="card-title uppercase w-full text-center block">Informations de l'Utilisateur</h1>
     <div class="flex gap-4 w-full container p-4 mx-auto card-body">
         <div class="flex flex-col gap-4 justify-around flex-grow">
@@ -31,7 +31,7 @@ Detail Utilisateur
       
     <div class="card-actions">
         <a href="{% url 'userEdit' object.id %}"
-        class="btn btn-warning">Edit
+        class="btn btn-warning btn-outline btn-sm btn-ghost">Edit
         les informations</a>
     </div>
     {% endif %}

@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'attendances',
 ]
-INSTALLED_APPS += ["compressor"]
 
 
 MIDDLEWARE = [
@@ -96,16 +95,11 @@ MEDIA_ROOT = BASE_DIR / 'files/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR /"theme/static/css"
-]
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
+    BASE_DIR /"theme/static/css",
+    BASE_DIR /"files",
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_STORAGE = "theme.storage.MinimalFontAwesomeStorage"
 
 
 # -------------------- CRISPY & TAILWIND --------------------
