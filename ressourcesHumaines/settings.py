@@ -1,6 +1,9 @@
 from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -132,13 +135,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Conakry'
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 # stockage par défaut des médias → Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME")
 CLOUDINARY_API_KEY = config("CLOUDINARY_API_KEY")
 CLOUDINARY_API_SECRET = config("CLOUDINARY_API_SECRET")
