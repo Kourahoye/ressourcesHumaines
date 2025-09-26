@@ -18,8 +18,6 @@ from django.db.models.functions import ExtractMonth
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from recrutements.models import *
-from plotly.offline import plot
-import plotly.express as px
 # Create your views here.
 
 class Dasbord(LoginRequiredMixin,TemplateView):
