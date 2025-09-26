@@ -273,17 +273,186 @@ class PostulationDetailView(UpdateView):
                 "password": password,
             }
 
-            html_content = render_to_string("recrutements/emails/acceptation.html", context)
-            text_content = strip_tags(html_content)  # version texte brut
- 
-            email = EmailMultiAlternatives(
-                subject="🎉 Félicitations, vous avez été retenu(e) !",
-                body=text_content,
-                from_email= EMAIL_HOST_USER,
-                to=[user.email],
-            )
-            email.attach_alternative(html_content, "text/html")
-            email.send()
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Félicitations - Candidature acceptée</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #f8f9fa;
+                    margin: 0;
+                    padding: 20px;
+                }}
+                .email-container {{
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background: white;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                }}
+                .header {{
+                    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                    color: white;
+                    padding: 30px;
+                    text-align: center;
+                }}
+                .header h1 {{
+                    margin: 0;
+                    font-size: 28px;
+                }}
+                .content {{
+                    padding: 30px;
+                }}
+                .credentials-box {{
+                    background: #f8f9fa;
+                    border: 2px solid #28a745;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 20px 0;
+                }}
+                .credentials-table {{
+                    width: 100%;
+                    margin: 15px 0;
+                }}
+                .credentials-table td {{
+                    padding: 8px 0;
+                    border-bottom: 1px solid #dee2e6;
+                }}
+                .credentials-table td:first-child {{
+                    font-weight: bold;
+                    width: 30%;
+                }}
+                .button {{
+                    display: inline-block;
+                    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+                    color: white;
+                    padding: 15px 30px;
+                    text-decoration: none;
+                    border-radius: 25px;
+                    font-weight: bold;
+                    margin: 20px 0;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                }}
+                .warning {{
+                    background: #fff3cd;
+                    border: 1px solid #ffeaa7;
+                    border-radius: 5px;
+                    padding: 15px;
+                    margin: 20px 0;
+                    color: #856404;
+                }}
+                .footer {{
+                    background: #343a40;
+                    color: white;
+                    text-align: center;
+                    padding: 20px;
+                    font-size: 14px;
+                }}
+                ul {{
+                    padding-left: 20px;
+                }}
+                ul li {{
+                    margin: 8px 0;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <h1>🎉 Félicitations {context['prenom']} !</h1>
+                    <p>Votre candidature a été acceptée</p>
+                </div>
+                
+                <div class="content">
+                    <h2>Bonjour {context['prenom']} {context['nom']},</h2>
+                    
+                    <p>
+                        Nous avons le plaisir de vous informer que vous avez été retenu(e) pour le poste de 
+                        <strong>{context['poste']}</strong> dans le département <strong>{context['departement']}</strong>.
+                    </p>
+                    
+                    <div class="credentials-box">
+                        <h3 style="color: #28a745; margin-top: 0;">🔐 Vos identifiants de connexion</h3>
+                        <p>Un compte RH a été créé pour vous :</p>
+                        <table class="credentials-table">
+                            <tr>
+                                <td><strong>Identifiant :</strong></td>
+                                <td>{context['username']}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mot de passe :</strong></td>
+                                <td>{context['password']}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Important :</strong> Veuillez conserver ces informations en sécurité et ne les partagez avec personne.
+                    </div>
+                    
+                    <p><strong>Prochaines étapes :</strong></p>
+                    <ul>
+                        <li>Connectez-vous à votre compte</li>
+                        <li>Changez votre mot de passe lors de la première connexion</li>
+                        <li>Complétez votre profil</li>
+                        <li>Explorez les fonctionnalités disponibles</li>
+                    </ul>
+                    
+                    <div style="text-align: center;">
+                        <a href="https://ressourcesHumaines.onrender.com/login" class="button">
+                            👉 Se connecter maintenant
+                        </a>
+                    </div>
+                    
+                    <p style="margin-top: 30px;">
+                        Nous sommes ravis de vous accueillir dans notre équipe !
+                    </p>
+                </div>
+                
+                <div class="footer">
+                    <p><strong>L'équipe RH - Parinari</strong></p>
+                    <p>© 2025 Parinari. Tous droits réservés.</p>
+                    <p>Pour toute question, contactez-nous à parinari2025@gmail.com</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        # Create plain text version
+        text_content = f"""
+        Félicitations {context['prenom']} {context['nom']} !
+        
+        Vous avez été retenu(e) pour le poste de {context['poste']} dans le département {context['departement']}.
+        
+        Vos identifiants de connexion :
+        - Identifiant : {context['username']}
+        - Mot de passe : {context['password']}
+        
+        Connectez-vous sur : https://ressourcesHumaines.onrender.com/accounts/login
+        
+        Cordialement,
+        L'équipe RH - Parinari
+        """
+        
+        from_email = EMAIL_HOST_USER
+        to = [self.request.POST.get("email")]
+    
+        # Use EmailMultiAlternatives for both HTML and text versions
+        email = EmailMultiAlternatives(
+            subject="🎉 Félicitations, vous avez été retenu(e) !",
+            body=text_content,  # Plain text version
+            from_email=from_email,
+            to=to,
+        )
+        email.attach_alternative(html_content, "text/html")  # HTML version
+        email.send()
 
         # Créer un employé s’il n’existe pas déjà
         if not hasattr(user, 'profil_employee'):
