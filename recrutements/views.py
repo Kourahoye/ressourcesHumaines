@@ -1,16 +1,14 @@
-# Django core
-from email.message import EmailMessage
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from django.core.mail import EmailMessage 
 
 # Generic class-based views
 from django.views.generic import (
@@ -426,22 +424,6 @@ class PostulationDetailView(UpdateView):
         </html>
         """
         
-        # Create plain text version
-        # text_content = f"""
-        # Félicitations {context['prenom']} {context['nom']} !
-        
-        # Vous avez été retenu(e) pour le poste de {context['poste']} dans le département {context['departement']}.
-        
-        # Vos identifiants de connexion :
-        # - Identifiant : {context['username']}
-        # - Mot de passe : {context['password']}
-        
-        # Connectez-vous sur : https://ressourcesHumaines.onrender.com/accounts/login
-        
-        # Cordialement,
-        # L'équipe RH - Parinari
-        # """
-        
         from_email = EMAIL_HOST_USER
         to = [self.request.POST.get("email")]
     
@@ -452,6 +434,7 @@ class PostulationDetailView(UpdateView):
             from_email=from_email,
             to=to,
         )
+        email.content_subtype = "html" 
         email.send()
 
         # Créer un employé s’il n’existe pas déjà
