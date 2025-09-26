@@ -1,16 +1,14 @@
-# Django core
-from email.message import EmailMessage
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from django.core.mail import EmailMessage 
 
 # Generic class-based views
 from django.views.generic import (
