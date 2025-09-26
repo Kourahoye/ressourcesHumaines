@@ -1,4 +1,5 @@
 # Django core
+from email.message import EmailMessage
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
@@ -426,32 +427,31 @@ class PostulationDetailView(UpdateView):
         """
         
         # Create plain text version
-        text_content = f"""
-        Félicitations {context['prenom']} {context['nom']} !
+        # text_content = f"""
+        # Félicitations {context['prenom']} {context['nom']} !
         
-        Vous avez été retenu(e) pour le poste de {context['poste']} dans le département {context['departement']}.
+        # Vous avez été retenu(e) pour le poste de {context['poste']} dans le département {context['departement']}.
         
-        Vos identifiants de connexion :
-        - Identifiant : {context['username']}
-        - Mot de passe : {context['password']}
+        # Vos identifiants de connexion :
+        # - Identifiant : {context['username']}
+        # - Mot de passe : {context['password']}
         
-        Connectez-vous sur : https://ressourcesHumaines.onrender.com/accounts/login
+        # Connectez-vous sur : https://ressourcesHumaines.onrender.com/accounts/login
         
-        Cordialement,
-        L'équipe RH - Parinari
-        """
+        # Cordialement,
+        # L'équipe RH - Parinari
+        # """
         
         from_email = EMAIL_HOST_USER
         to = [self.request.POST.get("email")]
     
         # Use EmailMultiAlternatives for both HTML and text versions
-        email = EmailMultiAlternatives(
+        email = EmailMessage(
             subject="🎉 Félicitations, vous avez été retenu(e) !",
-            body=text_content,  # Plain text version
+            body=html_content,  # Plain text version
             from_email=from_email,
             to=to,
         )
-        email.attach_alternative(html_content, "text/html")  # HTML version
         email.send()
 
         # Créer un employé s’il n’existe pas déjà
