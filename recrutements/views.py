@@ -261,8 +261,6 @@ class PostulationDetailView(UpdateView):
         if created:
             user.set_password(password)
             user.save()
-
-            # Préparer le contenu email (HTML + texte)
             context = {
                 "prenom": candidat.prenom,
                 "nom": candidat.nom,
@@ -425,7 +423,7 @@ class PostulationDetailView(UpdateView):
             """
         
             from_email = EMAIL_HOST_USER
-            to = [self.request.POST.get("email")]
+            to = [candidat.email]
         
             # Use EmailMultiAlternatives for both HTML and text versions
             email = EmailMessage(
@@ -436,6 +434,7 @@ class PostulationDetailView(UpdateView):
             )
             email.content_subtype = "html" 
             email.send()
+            
 
         # Créer un employé s’il n’existe pas déjà
         if not hasattr(user, 'profil_employee'):
