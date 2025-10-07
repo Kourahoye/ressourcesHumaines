@@ -384,7 +384,7 @@ class PostulationDetailView(UpdateView):
                                 </tr>
                                 <tr>
                                     <td><strong>Mot de passe :</strong></td>
-                                    <td>{context['password']}</td>
+                                    <td>{password}</td>
                                 </tr>
                             </table>
                         </div>
@@ -402,7 +402,7 @@ class PostulationDetailView(UpdateView):
                         </ul>
                         
                         <div style="text-align: center;">
-                            <a href="https://ressourcesHumaines.onrender.com/login" class="button">
+                            <a href="https://ressourcesHumaines.onrender.com" class="button">
                                 👉 Se connecter maintenant
                             </a>
                         </div>
@@ -422,14 +422,14 @@ class PostulationDetailView(UpdateView):
             </html>
             """
         
-            from_email = EMAIL_HOST_USER
+
             to = [candidat.email]
         
             # Use EmailMultiAlternatives for both HTML and text versions
             email = EmailMessage(
                 subject="🎉 Félicitations, vous avez été retenu(e) !",
-                body=html_content,  # Plain text version
-                from_email=from_email,
+                body=html_content,
+                from_email=EMAIL_HOST_USER,
                 to=to,
             )
             email.content_subtype = "html" 

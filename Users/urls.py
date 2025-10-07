@@ -1,6 +1,7 @@
 from django.urls import path
 
 from Users.views import  Logout, RegisterView,LoginView, UserDeleteView,UserDetailView, UserupdateView,UserList
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('register/',RegisterView.as_view(),name="register"),
@@ -10,4 +11,8 @@ urlpatterns = [
     path('edit/<int:pk>/',UserupdateView.as_view(),name="userEdit"),
     path('users/',UserList.as_view(),name="userList"),
     path('user/delete/<int:pk>/',UserDeleteView.as_view(),name="userDelete"),
+     path("robots.txt", TemplateView.as_view(
+        template_name="robots.txt",
+        content_type="text/plain"
+    )),
 ]

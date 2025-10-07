@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /media/
+Disallow: /static/
+Disallow: /private/
+Allow: /
+
+Sitemap: https://ressourcesHumaines.onrender.com/sitemap.xml
