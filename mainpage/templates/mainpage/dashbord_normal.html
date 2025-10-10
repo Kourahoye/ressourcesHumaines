@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load static %}
+{% block main %}
+{% if user.is_authenticated %}
+<div class="glass rounded-xl shadow p-6 card">
+        <h2 class="text-xl font-bold mb-4 card-title">Vos Statistiques</h2>
+        <div class="stats shadow stats-vertical sm:stats-horizontal">
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Employés Ajoutés</div>
+                <div class="stat-value text-info">{{ prive.employees_added }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Départements Ajoutés</div>
+                <div class="stat-value text-info">{{ prive.departement_added }}</div>
+            </div>
+            <div class="stat shadow-md">
+                <div class="stat-title font-semibold text-sm dark:text-white">Absences du mois</div>
+                <div class="stat-value text-info">{{ prive.absences_personnel }}</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+    
+{% endblock scripts %}
+    
