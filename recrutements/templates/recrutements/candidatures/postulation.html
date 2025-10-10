@@ -111,7 +111,9 @@
       </div>
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary w-full mt-4">Soumettre</button>
+      <button type="submit" class="btn btn-primary w-full mt-4">Soumettre 
+      <span id="spinner" class="loading loading-spinner loading-sm invisible"></span>
+      </button>
     </form>
   </div>
 
@@ -133,7 +135,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           let formData = new FormData($('#postulerForm')[0]);
-
+          $('#spinner').removeClass('invisible');
           $.ajax({
             url: window.location.href,
             type: 'POST',
@@ -141,6 +143,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+              $('#spinner').addClass('invisible');
               Swal.fire({
                 icon: 'success',
                 title: 'Succès',
@@ -151,6 +154,7 @@
               $('#postulerForm')[0].reset();
             },
             error: function (xhr) {
+              $('#spinner').addClass('invisible');
               const data = xhr.responseJSON;
               if (data.candidat || data.postulation) {
                 let errors = [];
@@ -180,6 +184,7 @@
               }
             }
           });
+          
         }
       });
     });
