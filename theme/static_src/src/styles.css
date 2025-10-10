@@ -1,16 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
-/**
-  * A catch-all path to Django template files, JavaScript, and Python files
-  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
-  *
-  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
-  * the scope of this path.
-  */
+
 @source "../../../**/*.{html,py,js}";
-/* @dark class; */
-/* @custom-variant dark (&:where(.dark, .dark *));
- */
+
 @custom-variant dark (&:where(
   [data-theme=dark],
   [data-theme=night],
@@ -44,8 +36,40 @@
   themes: all;
 };
 
-
-
+@plugin "daisyui/theme" {
+  name: "Slate";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: oklch(27% 0.041 260.031);
+  --color-base-200: oklch(20% 0.042 265.755);
+  --color-base-300: oklch(12% 0.042 264.695);
+  --color-base-content: oklch(100% 0 0);
+  --color-primary: oklch(62% 0.194 149.214);
+  --color-primary-content: oklch(0% 0 0);
+  --color-secondary: oklch(51% 0.262 276.966);
+  --color-secondary-content: oklch(27% 0.046 192.524);
+  --color-accent: oklch(85% 0.138 181.071);
+  --color-accent-content: oklch(27% 0.077 45.635);
+  --color-neutral: oklch(44% 0.043 257.281);
+  --color-neutral-content: oklch(98% 0.003 247.858);
+  --color-info: oklch(54% 0.245 262.881);
+  --color-info-content: oklch(98% 0.019 200.873);
+  --color-success: oklch(59% 0.145 163.225);
+  --color-success-content: oklch(98% 0.014 180.72);
+  --color-warning: oklch(66% 0.179 58.318);
+  --color-warning-content: oklch(98% 0.016 73.684);
+  --color-error: oklch(57% 0.245 27.325);
+  --color-error-content: oklch(96% 0.015 12.422);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 1;
+}
 
 
 @plugin "daisyui/theme" {
