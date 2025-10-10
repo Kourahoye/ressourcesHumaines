@@ -14,8 +14,7 @@
                 <canvas id="repartitiongenre" class="stat-figure"></canvas>
             </div>
             <div class="stat order-1 shadow-md">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">
-                    Utilisateurs Actifs</div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Utilisateurs Actifs</div>
                 <div class="stat-value text-info">{{ general.actif_users }}
                      <span class="ml-4 hidden lg:inline text-sm">{{general.logged_in}}
                     <span aria-label="info" class="ml-1 status status-md status-info"></span><span class="text-xs">connected</span>
@@ -23,65 +22,43 @@
                 </div>
             </div>
             <div class="stat order-2 shadow-md">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">
-                    Utilisateurs Inactifs</div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Utilisateurs Inactifs</div>
                 <div class="stat-value text-info">{{ general.inactif_user }}</div>
             </div>
             <div class="stat order-3 shadow-md">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">
-                    Départements</div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Départements</div>
                 <div class="stat-value text-info">{{ general.departemts }}</div>
             </div>
             <div class="stat order-4 shadow-md">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Employés
-                </div>
-                <div class="stat-value text-info">{{ general.employees }}
-                </div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Employés</div>
+                <div class="stat-value text-info">{{ general.employees }}</div>
             </div>
             <div class="stat order-5 shadow-md md:order-9 lg:order-5 col-span-2 sm:col-span-1">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Employés
-                    disponibles</div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Employés disponibles</div>
                 <div class="stat-value text-info">{{ general.disponible }}/{{ general.employees }}</div>
             </div>
-            <div
-                class="stat order-6 lg:order-7 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
-                <!-- <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Stats
-                    requettes conges</div> -->
+            <div class="stat order-6 lg:order-7 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
                 <canvas id="statRequetteConges" class="stat-figure"></canvas>
             </div>
             <div class="stat order-7 flex flex-col justify-center items-center p-3 h-72 col-span-2 row-span-2 md:col-span-2 md:row-span-2 lg:col-span-3 shadow-md">
-            <!-- <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Absences
-            </div> -->
             <canvas id="absences_evolution" class="stat-figure"></canvas>
         </div>
         <div class="stat order-8 shadow-md lg:order-6">
-            <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Salaires
-                payés ce mois</div>
+            <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Salaires payés ce mois</div>
                 <div class="stat-value text-info">{{ general.payments_stat.payed }}/{{ general.actif_users }}</div>
             </div>
             <div class="stat order-9 shadow-md lg:hidden">
-                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Logged
-                    users</div>
+                <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Logged users</div>
                     <div class="stat-value text-info">{{general.logged_in}}</div>
                 </div>
-                <div
-                    class="stat order-10 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
-                    <!-- <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Stats postulations</div> -->
-                    
-                          <canvas class="stat-figure" id="statutsChart"></canvas>
-                  
-                    
+                <div class="stat order-10 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
+                    <canvas class="stat-figure" id="statutsChart"></canvas>
                 </div>
-                <div
-                    class="stat order-11 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md lg:order-12">
-                    <!-- <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Stats niveaux </div> -->
-
-                         <canvas class="stat-figure" id="niveauxChart"></canvas>
+                <div class="stat order-11 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md lg:order-12">
+                     <canvas class="stat-figure" id="niveauxChart"></canvas>
                 </div>
-                <div
-                    class="stat order-12 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 shadow-md lg:order-11 lg:col-span-3">
-                    <!-- <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white"></div> -->
-                        <canvas class="stat-figure" id="topOffresChart"></canvas>
+                <div class="stat order-12 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 shadow-md lg:order-11 lg:col-span-3">
+                    <canvas class="stat-figure" id="topOffresChart"></canvas>
                 </div>
 
         </div>
