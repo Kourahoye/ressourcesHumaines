@@ -20,20 +20,10 @@ from django.db.models.functions import ExtractMonth
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from recrutements.models import *
-# Create your views here.
-
-from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.utils.timezone import now
-from django.db.models import Count, Q
-from django.db.models.functions import ExtractMonth
-from django.contrib.sessions.models import Session
-from django.utils import timezone
 
 
-class Dashboard(LoginRequiredMixin, View):
+
+class Dasbord(LoginRequiredMixin, View):
     """Dashboard view with staff and regular user views"""
     login_url = reverse_lazy("login")
 
