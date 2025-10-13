@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from comptabilite.models import Salary
 from conges.models import CongesRequest, User
 from departements.models import Departements
@@ -18,7 +19,8 @@ from django.db.models.functions import ExtractMonth
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from recrutements.models import *
-# Create your views here.
+
+
 
 class Dasboard(LoginRequiredMixin,TemplateView):
     template_name = "mainpage/dashbord.html"
