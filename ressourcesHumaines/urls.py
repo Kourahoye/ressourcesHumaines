@@ -35,4 +35,5 @@ urlpatterns = [
     path('recrutements/',include("recrutements.urls")),
    path('attendances/',include("attendances.urls")),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
+    path('permissions/',include('permissions.urls')),
 ]

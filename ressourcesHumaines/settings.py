@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     "django.contrib.sites",
     "django.contrib.sitemaps",
+    'permissions'
 ]
 SITE_ID = 1
 

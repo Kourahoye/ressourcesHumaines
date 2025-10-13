@@ -1,0 +1,149 @@
+{% extends 'accounts/base.html' %}
+
+
+{% block main %}
+
+<div class="w-full h-full grid grid-rows-2 p-2 md:p-4 lg:grid-cols-3">
+    <form class="p-2 w-full space-y-2">
+        <select name="user" class="select select-primary w-full max-w-xs">
+          <option disabled selected>-------------</option>
+          #load users here
+        </select>
+        <span id="userspinner" class="loading loading-spinner loading-xs hidden"></span>
+    </form>
+    <div class="p-2 w-full space-x-2 lg:col-span-2 lg:space-y-2">
+        <div data-group-id="allperm" ondrop="drop(event)" ondragover="allowDrop(event)"
+        class="group w-64 h-64 border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
+
+        <h2 class="font-semibold text-gray-700 mb-3">All permissions</h2>
+        #load permissions here
+        <div id="add_user" data-item-id="add_user" draggable="true" ondragstart="drag(event)" ondragend="dragEnd(event)"
+            class="w-full bg-green-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-green-600 transition">
+            Can add user
+        </div>
+
+       
+
+        <p class="text-gray-400 order-last bg-zinc-100 w-full p-2 rounded-sm text-center">Déposez ici</p>
+    </div>
+
+    <!-- Groupe 2 -->
+    <div data-group-id="userperm" ondrop="drop(event)" ondragover="allowDrop(event)"
+        class="group w-64 h-64 border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
+
+        <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
+         <div id="view-user" data-item-id="view-user" draggable="true" ondragstart="drag(event)" ondragend="dragEnd(event)"
+            class="w-full bg-blue-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-blue-600 transition">
+            Can view user
+        </div>
+        <p class="text-gray-400 order-last bg-zinc-100 w-full p-2 rounded-sm text-center">Déposez ici</p>
+    </div>
+    </div>
+</div>
+    
+{% endblock main %}
+    
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+        $('#userspinner').removeClass('hidden');
+        $.ajax({
+            url:'{% url "get_users" %}',
+            method: 'GET',
+            success: function(data) {
+                var userSelect = $('select[name="user"]');
+                data.users.forEach(function(user) {
+                    var option = $('<option></option>')
+                        .attr('value', user.id)
+                        .text(user.username);
+                    userSelect.append(option);
+                });
+                $('#userspinner').addClass('hidden');
+            },
+        })
+        $('select[name="user"]').on('change', function() {
+            var userId = $(this).val();
+            $('.loading').removeClass('hidden');
+            // Fetch user permissions via AJAX
+            $.ajax({
+                url: '/get_user_permissions/',  // URL to fetch user permissions
+                method: 'GET',
+                data: { user_id: userId },
+                success: function(data) {
+                    // Clear current permissions
+                    $('[data-group-id="userperm"]').find('.permission-item').remove();
+                    $('[data-group-id="allperm"]').find('.permission-item').remove();
+
+                    // Populate permissions based on fetched data
+                    data.all_permissions.forEach(function(perm) {
+                        var permDiv = $('<div></div>')
+                            .attr('id', perm.id)
+                            .attr('data-item-id', perm.id)
+                            .addClass('permission-item w-full bg-gray-200 text-gray-800 text-center py-2 rounded-lg shadow cursor-move hover:bg-gray-300 transition')
+                            .attr('draggable', 'true')
+                            .attr('ondragstart', 'drag(event)')
+                            .attr('ondragend', 'dragEnd(event)')
+                            .text(perm.name);
+                        $('[data-group-id="allperm"]').append(permDiv);
+                    });
+                    data.user_permissions.forEach(function(perm) {
+                        var permDiv = $('<div></div>')
+                            .attr('id', perm.id)
+                            .attr('data-item-id', perm.id)
+                            .addClass('permission-item w-full bg-blue-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-blue-600 transition')
+                            .attr('draggable', 'true')
+                            .attr('ondragstart', 'drag(event)')
+                            .attr('ondragend', 'dragEnd(event)')
+                            .text(perm.name);
+                        $('[data-group-id="userperm"]').append(permDiv);
+                    });
+                    $('.loading').addClass('hidden');
+                },
+                error: function() {
+                    alert('Error fetching permissions.');
+                    $('.loading').addClass('hidden');
+                }
+            });
+        });
+    });
+  </script>
+  <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            const itemId = event.target.dataset.itemId;
+            const sourceGroup = event.target.closest(".group").dataset.groupId;
+
+            // Ajouter un style visuel pendant le drag
+            event.target.classList.add("scale-95", "opacity-70");
+
+            // Stocker l'ID de l'item
+            event.dataTransfer.setData("itemId", itemId);
+
+            console.log(`Dragged item ${itemId} from ${sourceGroup}`);
+        }
+
+        function dragEnd(event) {
+            // Retirer le style si drag annulé
+            event.target.classList.remove("scale-95", "opacity-70");
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const itemId = event.dataTransfer.getData("itemId");
+
+            const targetGroup = event.currentTarget.dataset.groupId;
+            const item = document.getElementById(itemId);
+
+            // Retirer le style visuel
+            item.classList.remove("scale-95", "opacity-70");
+
+            // Déplacer l'élément dans le groupe
+            event.currentTarget.appendChild(item);
+
+            console.log(`Dropped item ${itemId} in ${targetGroup}`);
+        }
+    </script>
+{% endblock scripts %}
