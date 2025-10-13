@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import JsonResponse
 from django.contrib.auth.models import Permission
@@ -10,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 #add or remove perms if check true
 
 class Permissions(TemplateView):
-    template_name = 'permissons/perms.html'
+    template_name = 'permissions/perms.html'
 
     def post(self, request, *args, **kwargs):
         from Users.models import User
