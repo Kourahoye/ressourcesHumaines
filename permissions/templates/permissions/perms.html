@@ -3,42 +3,36 @@
 
 {% block main %}
 
-<div class="w-full h-full grid grid-rows-2 p-2 md:p-4 lg:grid-cols-3">
+<div class="w-full p-2 md:p-4">
     <form class="p-2 w-full space-y-2">
-        <select name="user" class="select select-primary w-full max-w-xs">
-            <option disabled selected>-------------</option>
-            #load users here
-        </select>
-        <span id="userspinner" class="loading loading-spinner loading-xs hidden"></span>
-    </form>
-    <div class="p-2 w-full space-x-2 lg:col-span-2 lg:space-y-2">
-        <div data-group-id="allperm" ondrop="drop(event)" ondragover="allowDrop(event)"
-            class="group w-64 h-64 border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
-
-            <h2 class="font-semibold text-gray-700 mb-3">All permissions</h2>
-            #load permissions here
-            <div id="add_user" data-item-id="add_user" draggable="true" ondragstart="drag(event)"
-                ondragend="dragEnd(event)"
-                class="w-full bg-green-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-green-600 transition">
-                Can add user
-            </div>
-
-
-
-            <p class="text-gray-400 order-last bg-zinc-100 w-full p-2 rounded-sm text-center">Déposez ici</p>
+        <div class="flex items-center space-x-2">
+            <form class="p-2 w-full space-y-2">
+                <select name="user" class="select select-primary w-full max-w-xs">
+                    <option disabled selected>Select a user</option>
+                </select>
+                <form class="p-2 w-full space-y-2">
+                    <span id="userspinner" class="loading loading-spinner loading-xs hidden"></span>
         </div>
+    </form>
+    <div class="p-2 w-full space-x-2 grid md:grid-cols-3 md:space-y-2">
+        <div data-group-id="allperm"
+            class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
 
+            <h2 class="font-semibold text-gray-700 mb-3 col-span-2">All permissions</h2>
+
+            <span id="spinner-allperm" class="loading loading-spinner loading-lg"></span>
+        </div>
+        <div class="flex flex-col items-center justify-start p-4">
+            <h1 class="text-xl font-bold">Actions</h1>
+            <button class="btn md:-rotate-90" onclick="addPerms()"><i class="fa fa-arrow-down scale-200"></i>
+            </button>
+        </div>
         <!-- Groupe 2 -->
-        <div data-group-id="userperm" ondrop="drop(event)" ondragover="allowDrop(event)"
-            class="group w-64 h-64 border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
+        <div data-group-id="userperm"
+            class="border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
 
             <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
-            <div id="view-user" data-item-id="view-user" draggable="true" ondragstart="drag(event)"
-                ondragend="dragEnd(event)"
-                class="w-full bg-blue-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-blue-600 transition">
-                Can view user
-            </div>
-            <p class="text-gray-400 order-last bg-zinc-100 w-full p-2 rounded-sm text-center">Déposez ici</p>
+            <span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span>
         </div>
     </div>
 </div>
@@ -47,59 +41,124 @@
 
 {% block scripts %}
 <script>
-    $(document).ready(function () {
-        $('#userspinner').removeClass('hidden');
-        $.ajax({
-            url: '{% url "get_users" %}',
-            method: 'GET',
-            success: function (data) {
-                var userSelect = $('select[name="user"]');
-                data.users.forEach(function (user) {
-                    var option = $('<option></option>')
-                        .attr('value', user.id)
-                        .text(user.username);
-                    userSelect.append(option);
+    function addPerms() {
+
+        var userId = $('select[name="user"]').val();
+        if (!userId) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please select a user first',
+                icon: 'error'
+            });
+            return;
+        }
+
+        // Get selected permissions
+        var selectedPermissions = [];
+        $('input[name="permissions-to-add"]:checked').each(function() {
+            selectedPermissions.push($(this).val());
+        });
+
+        // Confirm and submit
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to add these permissions?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{% url "add_permissions" %}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    data: {
+                        user_id: userId,
+                        permissions: selectedPermissions
+                    },
+                    success: function(response) {
+                        Swal.fire('Success', 'Permissions added successfully', 'success');
+                    },
+                    error: function(error) {
+                        Swal.fire('Error', error.responseJSON.error, 'error');
+                    }
                 });
-                $('#userspinner').addClass('hidden');
-            },
-        })
+            }
+        });
+    }
+    $(document).ready(function () {
+       
+        function fetchAllPermissions() {
+            $('#userspinner').removeClass('hidden');
+            $.ajax({
+                url: '{% url "get_perms" %}',
+                method: 'GET',
+                success: function (data) {
+                    var allPermsDiv = $('[data-group-id="allperm"]');
+                    data.permissions.forEach(function (perm) {
+                        var permDiv = $('<input>')
+                            .attr('type', 'checkbox')
+                            .attr('id', perm.id)
+                            .attr('name', 'permissions-to-add')
+                            .attr('class', 'btn btn-wide btn-sm')
+                            .attr('aria-label', perm.name)
+                            .attr('value', perm.id);
+                        allPermsDiv.append(permDiv);
+                    });
+                    $('#spinner-allperm').addClass('hidden');
+                },
+                error: function () {
+                    alert('Error fetching permissions.');
+                }
+            });
+        }
+
+        function fetchUsers() {
+            $.ajax({
+                url: '{% url "get_users" %}',
+                method: 'GET',
+                success: function (data) {
+                    var userSelect = $('select[name="user"]');
+                    data.users.forEach(function (user) {
+                        var option = $('<option></option>')
+                            .attr('value', user.id)
+                            .text(user.username);
+                        userSelect.append(option);
+                    });
+                    $('#userspinner').addClass('hidden');
+                    $('#user-icon').removeClass('hidden');
+                },
+            });
+        }
+
+        // Call both functions when document is ready
+        fetchAllPermissions();
+        fetchUsers();
         $('select[name="user"]').on('change', function () {
             var userId = $(this).val();
-            $('.loading').removeClass('hidden');
+            $('#spinner-userperm').removeClass('hidden')
             // Fetch user permissions via AJAX
             $.ajax({
-                url: '/get_user_permissions/',  // URL to fetch user permissions
+                url: '{% url "get_user_permissions" %}',  // URL to fetch user permissions
                 method: 'GET',
                 data: { user_id: userId },
                 success: function (data) {
                     // Clear current permissions
                     $('[data-group-id="userperm"]').find('.permission-item').remove();
-                    $('[data-group-id="allperm"]').find('.permission-item').remove();
-
-                    // Populate permissions based on fetched data
-                    data.all_permissions.forEach(function (perm) {
-                        var permDiv = $('<div></div>')
-                            .attr('id', perm.id)
-                            .attr('data-item-id', perm.id)
-                            .addClass('permission-item w-full bg-gray-200 text-gray-800 text-center py-2 rounded-lg shadow cursor-move hover:bg-gray-300 transition')
-                            .attr('draggable', 'true')
-                            .attr('ondragstart', 'drag(event)')
-                            .attr('ondragend', 'dragEnd(event)')
-                            .text(perm.name);
-                        $('[data-group-id="allperm"]').append(permDiv);
-                    });
-                    data.user_permissions.forEach(function (perm) {
+                    console.log(data);
+                    //$('#spinner-userperm').Class('hidden')
+                    data.permissions.forEach(function (perm) {
                         var permDiv = $('<div></div>')
                             .attr('id', perm.id)
                             .attr('data-item-id', perm.id)
                             .addClass('permission-item w-full bg-blue-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-blue-600 transition')
-                            .attr('draggable', 'true')
-                            .attr('ondragstart', 'drag(event)')
-                            .attr('ondragend', 'dragEnd(event)')
                             .text(perm.name);
                         $('[data-group-id="userperm"]').append(permDiv);
                     });
-                    $('.loading').addClass('hidden');
+                    $('#spinner-userperm').addClass('hidden');
                 },
                 error: function () {
                     alert('Error fetching permissions.');
