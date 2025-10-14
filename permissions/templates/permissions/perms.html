@@ -28,7 +28,8 @@
             <span id="spinner-allperm" class="loading loading-spinner loading-lg"></span>
         </div>
         <!-- Groupe 2 -->
-        <div data-group-id="userperm" class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
+
+        <div>
 
             <div class="col-span-2 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
@@ -49,6 +50,9 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+            <div data-group-id="userperm" class="w-full border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
+
             </div>
             <span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span>
         </div>
@@ -219,6 +223,8 @@
                 method: 'GET',
                 success: function (data) {
                     var allPermsDiv = $('[data-group-id="allperm"]');
+                    //clear existing permissions
+                    allPermsDiv.find('input').remove();
                     data.permissions.forEach(function (perm) {
                         var permDiv = $('<input>')
                             .attr('type', 'checkbox')
@@ -268,9 +274,8 @@
                 data: { user_id: userId },
                 success: function (data) {
                     // Clear current permissions
-                    $('[data-group-id="userperm"]').find('.permission-item').remove();
+                    $('[data-group-id="userperm"]').empty();
                     console.log(data);
-                    //$('#spinner-userperm').Class('hidden')
                     data.permissions.forEach(function (perm) {
                         var permDiv =  $('<input>')
                             .attr('type', 'checkbox')
@@ -278,7 +283,8 @@
                             .attr('id', perm.id)
                             .attr('class', 'btn btn-wide btn-sm')
                             .attr('aria-label', perm.name)
-                            .attr('value', perm.id);;
+                            .attr('value', perm.id);
+                        
                         $('[data-group-id="userperm"]').append(permDiv);
                     });
                     $('#spinner-userperm').addClass('hidden');
