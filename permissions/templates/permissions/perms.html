@@ -18,39 +18,36 @@
         <div data-group-id="allperm"
             class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
 
-           <div class="col-span-2 flex items-center justify-between">
+            <div class="col-span-2 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700 mb-3 col-span-2">All permissions</h2>
-                <div class="dropdown">
-                  <label tabindex="0" class="btn btn-sm btn-outline btn-info btn-ghost m-1"><i class="fa fa-plus"></i><span> Ajouter les permissions</span></label>
-                  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li>Tous</li>
-                    <li>
-                        <button class="btn btn-outline btn-sm btn-info btn-ghost" onclick="addPerms()">
-                        Selectionées
-                    </button>
-                </li>
-                  </ul>
-                </div>
-           </div>
+                <button class="btn btn-outline btn-sm btn-info btn-ghost" id="addperms">
+                    <i class="fa fa-plus"></i><span> Ajouter les permissions</span></label>
+                </button>
+            </div>
 
             <span id="spinner-allperm" class="loading loading-spinner loading-lg"></span>
         </div>
         <!-- Groupe 2 -->
-        <div data-group-id="userperm"
-            class="border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
+        <div data-group-id="userperm" class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
 
             <div class="col-span-2 flex items-center justify-between">
                 <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
                 <div class="dropdown">
-                  <label tabindex="0" class="btn btn-sm btn-outline btn-info btn-ghost m-1"><i class="fa fa-minus"></i><span> Retirer les permissions</span></label>
-                  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li>Toutes les permissions</li>
-                    <li>
-                        <button class="btn btn-outline btn-sm btn-info btn-ghost" >
-                        Permissions Selectionées
-                    </button>
-                </li>
-                  </ul>
+                    <label tabindex="0" class="btn btn-sm btn-outline btn-info btn-ghost m-1"><i
+                            class="fa fa-minus"></i><span> Retirer les permissions</span></label>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li>
+
+                            <button id="removeallperms" class="btn btn-outline btn-sm btn-info btn-ghost">
+                                Toutes les permissions
+                            </button>
+                        </li>
+                        <li>
+                            <button id="removeperms" class="btn btn-outline btn-sm btn-info btn-ghost">
+                                Permissions Selectionées
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span>
@@ -62,56 +59,161 @@
 
 {% block scripts %}
 <script>
-    function addPerms() {
 
-        var userId = $('select[name="user"]').val();
-        if (!userId) {
-            Swal.fire({
-                title: 'Error',
-                text: 'Please select a user first',
-                icon: 'error'
-            });
-            return;
-        }
+    $(document).ready(function () {
+        $('#addperms').on('click', function (e) {
+            function addPerms() {
 
-        // Get selected permissions
-        var selectedPermissions = [];
-        $('input[name="permissions-to-add"]:checked').each(function() {
-            selectedPermissions.push($(this).val());
-        });
+                var userId = $('select[name="user"]').val();
+                if (!userId) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Please select a user first',
+                        icon: 'error'
+                    });
+                    return;
+                }
 
-        // Confirm and submit
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to add these permissions?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '{% url "add_permissions" %}',
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    data: {
-                        user_id: userId,
-                        permissions: selectedPermissions
-                    },
-                    success: function(response) {
-                        Swal.fire('Success', 'Permissions added successfully', 'success');
-                    },
-                    error: function(error) {
-                        Swal.fire('Error', error.responseJSON.error, 'error');
+                // Get selected permissions
+                var selectedPermissions = [];
+                $('input[name="permissions-to-add"]:checked').each(function () {
+                    selectedPermissions.push($(this).val());
+                });
+
+                // Confirm and submit
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to add these permissions?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{% url "add_permissions" %}',
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            data: {
+                                user_id: userId,
+                                permissions: selectedPermissions
+                            },
+                            success: function (response) {
+                                Swal.fire('Success', 'Permissions added successfully', 'success');
+                            },
+                            error: function (error) {
+                                Swal.fire('Error', error.responseJSON.error, 'error');
+                            }
+                        });
                     }
                 });
             }
+        })
+
+        $('#removeallperms').on('click', function (e) {
+            e.preventDefault();
+            var userId = $('select[name="user"]').val();
+            if (!userId) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select a user first',
+                    icon: 'error'
+                });
+                return;
+            }
+            // Confirm and submit
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to remove all permissions?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{% url "remove_all_user_permissions" %}',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        data: {
+                            user_id: userId
+                        },
+                        success: function (response) {
+                            Swal.fire('Success', 'All permissions removed successfully', 'success');
+                            // Clear user permissions display
+                            $('[data-group-id="userperm"]').find('.permission-item').remove();
+                        },
+                        error: function (error) {
+                            Swal.fire('Error', error.responseJSON.error, 'error');
+                        }
+                    });
+                }
+            });
         });
-    }
-    $(document).ready(function () {
-       
+        $('#removeperms').on('click', function (e) {
+            e.preventDefault();
+            var userId = $('select[name="user"]').val();
+            if (!userId) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select a user first',
+                    icon: 'error'
+                });
+                return;
+            }
+            // Get selected permissions
+             var selectedPermissions = [];
+                $('input[name="permissions-to-remove"]:checked').each(function () {
+                    selectedPermissions.push($(this).val());
+                });
+
+            if (selectedPermissions.length === 0) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please select at least one permission to remove',
+                    icon: 'error'
+                });
+                return;
+            }
+
+            // Confirm and submit
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to remove the selected permissions?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{% url "remove_user_permissions" %}',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        data: {
+                            user_id: userId,
+                            permissions: selectedPermissions
+                        },
+                        success: function (response) {
+                            Swal.fire('Success', 'Selected permissions removed successfully', 'success');
+                            // Remove selected permissions from display
+                            selectedPermissions.forEach(function (permId) {
+                                $('[data-group-id="userperm"]').find(`[data-item-id="${permId}"]`).remove();
+                            });
+                        },
+                        error: function (error) {
+                            Swal.fire('Error', error.responseJSON.error, 'error');
+                        }
+                    });
+                }
+            });
+        });
         function fetchAllPermissions() {
             $('#userspinner').removeClass('hidden');
             $.ajax({
@@ -172,11 +274,13 @@
                     console.log(data);
                     //$('#spinner-userperm').Class('hidden')
                     data.permissions.forEach(function (perm) {
-                        var permDiv = $('<div></div>')
+                        var permDiv =  $('<input>')
+                            .attr('type', 'checkbox')
+                            .attr('name', 'permissions-to-remove')
                             .attr('id', perm.id)
-                            .attr('data-item-id', perm.id)
-                            .addClass('permission-item w-full bg-blue-500 text-white text-center py-2 rounded-lg shadow cursor-move hover:bg-blue-600 transition')
-                            .text(perm.name);
+                            .attr('class', 'btn btn-wide btn-sm')
+                            .attr('aria-label', perm.name)
+                            .attr('value', perm.id);;
                         $('[data-group-id="userperm"]').append(permDiv);
                     });
                     $('#spinner-userperm').addClass('hidden');
@@ -188,44 +292,5 @@
             });
         });
     });
-</script>
-<script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function drag(event) {
-        const itemId = event.target.dataset.itemId;
-        const sourceGroup = event.target.closest(".group").dataset.groupId;
-
-        // Ajouter un style visuel pendant le drag
-        event.target.classList.add("scale-95", "opacity-70");
-
-        // Stocker l'ID de l'item
-        event.dataTransfer.setData("itemId", itemId);
-
-        console.log(`Dragged item ${itemId} from ${sourceGroup}`);
-    }
-
-    function dragEnd(event) {
-        // Retirer le style si drag annulé
-        event.target.classList.remove("scale-95", "opacity-70");
-    }
-
-    function drop(event) {
-        event.preventDefault();
-        const itemId = event.dataTransfer.getData("itemId");
-
-        const targetGroup = event.currentTarget.dataset.groupId;
-        const item = document.getElementById(itemId);
-
-        // Retirer le style visuel
-        item.classList.remove("scale-95", "opacity-70");
-
-        // Déplacer l'élément dans le groupe
-        event.currentTarget.appendChild(item);
-
-        console.log(`Dropped item ${itemId} in ${targetGroup}`);
-    }
 </script>
 {% endblock scripts %}

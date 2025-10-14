@@ -80,3 +80,43 @@ def get_user_permissions(request):
         return JsonResponse({'permissions': list(permissions)})
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
+    
+
+@login_required
+@permission_required('auth.delete_permission, raise_exception=True)')
+def remove_all_user_permissions(request):
+    from Users.models import User
+    user_id = request.POST.get('user_id')
+    try:
+        user = User.objects.get(id=user_id)
+        if user.is_superuser:
+            return JsonResponse({'error': 'Cannot remove permissions from a superuser'}, status=403)
+        if not request.user.is_staff and user.is_staff:
+            return JsonResponse({'error': 'Insufficient permissions to modify this user'}, status=403)
+        user.user_permissions.clear()
+        return JsonResponse({'success': True})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+from django.views.decorators.http import require_POST
+
+@login_required
+@permission_required('auth.delete_permission, raise_exception=True)')
+@require_POST
+def remove_user_permissions(request):
+    from Users.models import User
+    user_id = request.POST.get('user_id')
+    perm_ids = request.POST.getlist('permissions[]')
+    try:
+        user = User.objects.get(id=user_id)
+        if user.is_superuser:
+            return JsonResponse({'error': 'Cannot remove permissions from a superuser'}, status=403)
+        if not request.user.is_staff and user.is_staff:
+            return JsonResponse({'error': 'Insufficient permissions to modify this user'}, status=403)
+        permissions = Permission.objects.filter(id__in=perm_ids)
+        user.user_permissions.remove(*permissions)
+        return JsonResponse({'success': True})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    except Permission.DoesNotExist:
+        return JsonResponse({'error': 'One or more permissions not found'}, status=404)
