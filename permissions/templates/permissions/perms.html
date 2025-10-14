@@ -59,10 +59,9 @@
 
 {% block scripts %}
 <script>
-
     $(document).ready(function () {
+
         $('#addperms').on('click', function (e) {
-            function addPerms() {
 
                 var userId = $('select[name="user"]').val();
                 if (!userId) {
@@ -109,7 +108,6 @@
                         });
                     }
                 });
-            }
         })
 
         $('#removeallperms').on('click', function (e) {
