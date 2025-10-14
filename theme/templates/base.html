@@ -32,6 +32,7 @@
 </head>
 
 <body class="bg-base-100 dark:text-white font-serif leading-normal tracking-normal min-h-screen text-slate-950">
+	{% include 'header.html' %}
 	{% block main %}{% endblock main %}
 	<script src='{% static "jquery\jquery.min.js" %}'></script>
 	<script src='{% static "chart.umd.js" %}'></script>
