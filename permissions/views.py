@@ -7,8 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from Users.models import User
 
 
-class Permissions(LoginRequiredMixin, TemplateView):
+class Permissions(LoginRequiredMixin,PermissionRequiredMixin, TemplateView):
     template_name = 'permissions/perms.html'
+    permission_required = 'auth.add_permission'
     
     def post(self, request, *args, **kwargs):
         try:

@@ -100,6 +100,14 @@
                 </a>
             </li>
             {% endif %}
+             {% if "auth.add_permission" %}
+                <li>
+                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'add_permissions' %}">
+                    <i class="scale-125 fas fa-key mr-2" style="color: #11e811;"></i>
+                    Permissons
+                </a>
+            </li>
+            {% endif %}
             {% if "departements.view_departements" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
@@ -254,6 +262,10 @@
                 </a>
             </li>
             {% endif %}
+            <!-- add permissions -->
+            
+                
+                
             <li>
                 <button onclick="my_modal_1.showModal()"
                     class="btn btn-block justify-start btn-accent btn-ghost text-white">
