@@ -14,24 +14,41 @@
                     <span id="userspinner" class="loading loading-spinner loading-xs hidden"></span>
         </div>
     </form>
-    <div class="p-2 w-full space-x-2 grid md:grid-cols-3 md:space-y-2">
+    <div class="p-2 w-full space-x-2 grid md:grid-cols-2 md:space-y-2">
         <div data-group-id="allperm"
             class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
 
             <h2 class="font-semibold text-gray-700 mb-3 col-span-2">All permissions</h2>
+            <div class="dropdown">
+              <label tabindex="0" class="btn btn-outline btn-info btn-ghost m-1"><i class="fa fa-plus"></i><span> Ajouter les permissions</span></label>
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li>Tous</li>
+                <li>
+                    <button class="btn btn-outline btn-sm btn-info btn-ghost" onclick="addPerms()">
+                    Selectionées
+                </button>
+            </li>
+              </ul>
+            </div>
 
             <span id="spinner-allperm" class="loading loading-spinner loading-lg"></span>
-        </div>
-        <div class="flex flex-col items-center justify-start p-4">
-            <h1 class="text-xl font-bold">Actions</h1>
-            <button class="btn md:-rotate-90" onclick="addPerms()"><i class="fa fa-arrow-down scale-200"></i>
-            </button>
         </div>
         <!-- Groupe 2 -->
         <div data-group-id="userperm"
             class="border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-start p-4 bg-white shadow-md gap-2">
 
             <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
+            <div class="dropdown">
+              <label tabindex="0" class="btn btn-outline btn-info btn-ghost m-1"><i class="fa fa-minus"></i><span> Retirer les permissions</span></label>
+              <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <li>Toutes les permissions</li>
+                <li>
+                    <button class="btn btn-outline btn-sm btn-info btn-ghost" >
+                    Permissions Selectionées
+                </button>
+            </li>
+              </ul>
+            </div>
             <span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span>
         </div>
     </div>
