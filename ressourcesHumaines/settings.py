@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'presences',
     'employees',
     'mainpage',
-    'Users',
+    'Users.apps.UsersConfig',
     'theme',
     'evaluations',
     'fontawesomefree',
