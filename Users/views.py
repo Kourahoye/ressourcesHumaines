@@ -1,24 +1,22 @@
 from typing import Any
 from django.forms import BaseModelForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import  redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,FormView,DetailView,UpdateView,ListView,DeleteView
-
+from django.contrib.auth.decorators import login_required, permission_required
 from Users.forms import RegisterForm,LoginForm, UserUpdateForm
 from Users.models import  User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.contrib.auth.hashers import make_password
-
-from django.utils.timezone import now
-from datetime import timedelta
 from django.contrib.sessions.models import Session
 from django.utils import timezone
-
 from django.shortcuts import render
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+from django.shortcuts import redirect
 
 
 
@@ -203,3 +201,27 @@ class UserDeleteView(DeleteView):
     def form_invalid(self, form):
         # afficher le template avec erreurs
         return render(self.request, self.template_name, {'form': form, 'object': self.get_object()})
+
+
+@login_required
+@permission_required('users.change_user',raise_exception=True)
+def toggle_user_active(request, user_id):
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        messages.error(request, "Utilisateur non trouvé.")
+        referrer = request.META.get('HTTP_REFERER')
+        return redirect(referrer) if referrer else redirect('user-list')
+
+    if user == request.user:
+        messages.error(request, "Vous ne pouvez pas désactiver votre propre compte.")
+        referrer = request.META.get('HTTP_REFERER')
+        return redirect(referrer) if referrer else redirect('user-list')
+
+    user.is_active = not user.is_active
+    user.save()
+    status = "activé" if user.is_active else "désactivé"
+    messages.success(request, f"Utilisateur {user.username} {status}.")
+    referrer = request.META.get('HTTP_REFERER')
+    return redirect(referrer) if referrer else redirect('user-list')
