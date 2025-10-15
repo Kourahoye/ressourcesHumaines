@@ -12,7 +12,6 @@
         {% endif %}
     </h1>
 
-    <div class="overflow-x-auto">
         <table class="table dark:text-white">
             <thead>
                 <tr class="uppercase text-sm text-left font-bold text-black dark:text-white">
@@ -88,8 +87,7 @@
                                 {% endif %}
                                 {% if "Users.change_user" in permissions %}
                                 <li>
-                                    <form method="post" action="{% url 'toggle_user_active' person.pk %}">
-                                        {% csrf_token %}
+                                    <a href="{% url 'toggle_user_active' person.pk %}">
                                         {% if person.is_active %}
                                         <button type="submit" class="btn btn-sm btn-outline btn-error btn-ghost">
                                             <i class="fas fa-user-slash text-black dark:text-white "></i>
@@ -101,7 +99,7 @@
                                             <span>Activer</span>
                                         </button>
                                         {% endif %}
-                                    </form>
+                                    </a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -115,7 +113,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
 
     {% if is_paginated %}
     <div class="mt-6 flex justify-center space-x-2">
@@ -129,24 +126,6 @@
     </div>
     {% endif %}
 </div>
-
-{% if messages %}
-{% for message in messages %}
- 
- {% if message.tag == "error" %}
-    <div class="toast toast-start toast-middle">
-  <div class="alert alert-info">
-    <span>messge</span>
-  </div>
-</div>
-    {% elif message.tag == "success" %}
-        <div class="toast toast-start toast-middle">
-    <div class="alert alert-info">
-        <span>messge</span>
-    </div>
- {% endif %}
-    
- {% endif %}
 {% endblock %}
 
 
