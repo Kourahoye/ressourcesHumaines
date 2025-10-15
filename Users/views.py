@@ -204,7 +204,7 @@ class UserDeleteView(DeleteView):
 
 
 @login_required
-@permission_required('Users.change_user',raise_exception=True)
+@permission_required('users.change_user',raise_exception=True)
 def toggle_user_active(request, user_id):
 
     try:
