@@ -1,6 +1,6 @@
 from django.urls import path
 
-from Users.views import  Logout, RegisterView,LoginView, UserDeleteView,UserDetailView, UserupdateView,UserList
+from Users.views import  Logout, RegisterView,LoginView, UserDeleteView,UserDetailView, UserupdateView,UserList,toggle_user_active
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
         template_name="robots.txt",
         content_type="text/plain"
     )),
+    path('toggle_active/<int:user_id>/', toggle_user_active, name='toggle_user_active')
 ]
