@@ -274,19 +274,32 @@
                 data: { user_id: userId },
                 success: function (data) {
                     // Clear current permissions
-                    $('[data-group-id="userperm"]').empty();
-                    console.log(data);
-                    data.permissions.forEach(function (perm) {
-                        var permDiv =  $('<input>')
+                    let datadiv= $('[data-group-id="userperm"]')
+                    datadiv.empty();
+                    if (data.error){
+                        Toastify({
+                            text: data.error,
+                            duration: 3000,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "right", // `left`, `center` or `right`
+                            backgroundColor: "linear-gradient(to right, #B00000FF, #FF0000FF)",
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                        }).showToast();
+                        datadiv.append('<p class="text-red-600 font-semibold">No permissions to display</p>');
+                    }else{
+                        data.permissions.forEach(function (perm) {
+                            var permDiv =  $('<input>')
                             .attr('type', 'checkbox')
                             .attr('name', 'permissions-to-remove')
                             .attr('id', perm.id)
                             .attr('class', 'btn btn-wide btn-sm')
                             .attr('aria-label', perm.name)
                             .attr('value', perm.id);
-                        
-                        $('[data-group-id="userperm"]').append(permDiv);
-                    });
+                            
+                            datadiv.append(permDiv);
+                        });
+                    }
                     $('#spinner-userperm').addClass('hidden');
                 },
                 error: function () {

@@ -70,6 +70,10 @@ def get_user_permissions(request):
     user_id = request.GET.get('user_id')
     try:
         user = User.objects.get(id=user_id)
+        if not user:
+            return JsonResponse({'error': 'User not found'})
+        if user and not user.is_active:
+            return JsonResponse({"error": "Permissions disabled for inactive users"})
         perm_strings = user.get_all_permissions()
         permissions = Permission.objects.filter(
             codename__in=[p.split('.')[-1] for p in perm_strings]
