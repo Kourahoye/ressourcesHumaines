@@ -114,6 +114,23 @@
             </tbody>
         </table>
 
+ {% if messages %}
+ {% for message in messages %}
+ <div class="toast toast-start toast-middle">
+    
+    {% if message.tags == "success" %}
+    <div class="alert alert-info">
+        {{ message }}
+    </div>
+    {% elif message.tags == "error" %}
+    <div class="alert alert-error">
+        {{ message }}
+    </div>
+    {% endif %}
+        </div>
+        {% endfor %}
+{% endif %}
+
     {% if is_paginated %}
     <div class="mt-6 flex justify-center space-x-2">
         {% if page_obj.has_previous %}
