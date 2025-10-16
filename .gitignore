@@ -3,4 +3,4 @@
 **/__pycache__
 **/avatars
 **/**/node_modules
-.env
+**/.env
