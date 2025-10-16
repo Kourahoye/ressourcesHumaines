@@ -10,7 +10,12 @@ from Users.models import User
 class Permissions(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     template_name = 'permissions/perms.html'
     permission_required = 'auth.add_permission'
-
+    
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['permissions'] = self.request.user.get_all_permissions()
+        return context
+    
     def post(self, request, *args, **kwargs):
         try:
             user_id = request.POST.get('user_id')
