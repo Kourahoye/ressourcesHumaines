@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block main %}
-<div class="w-full h-full mx-auto glass shadow-md rounded p-6 md:w-3/4 overflow-x-auto">
+<div class="w-full mx-auto glass shadow-md rounded p-6 md:w-3/4">
     <h1 class="text-2xl font-bold dark:text-white">
         <span>Liste users</span>
         {% if "Users.add_user" in permissions %}
@@ -61,7 +61,7 @@
                         <div class="dropdown dropdown-left">
                             <div tabindex="0" role="button" class="btn btn-sm btn-outline btn-info">Actions</div>
                             <ul tabindex="0"
-                                class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box w-32 glass">
+                                class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box glass">
                                 {% if "Users.view_user" in permissions %}
                                 <li><a class="btn btn-info btn-ghost btn-outline btn-sm"
                                         href="{% url 'userDetail' person.pk %}">
