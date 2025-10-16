@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block main %}
-<div class="w-full mx-auto glass shadow-md rounded p-6 md:w-3/4 overflow-x-auto">
+<div class="w-full h-full mx-auto glass shadow-md rounded p-6 md:w-3/4 overflow-x-auto">
     <h1 class="text-2xl font-bold dark:text-white">
         <span>Liste users</span>
         {% if "Users.add_user" in permissions %}
@@ -28,7 +28,6 @@
                 <tr>
                     <td>
                         <div class="flex items-center gap-3">
-                            <!-- Statut de connexion en temps réel -->
                             <div
                                 class="avatar {% if person.online %} avatar-online {% else %} avatar-offline {% endif %}">
                                 <div class="mask mask-squircle w-12 h-12">

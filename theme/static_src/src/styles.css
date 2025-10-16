@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
-
+@plugin "flowbite/plugin";
 @source "../../../**/*.{html,py,js}";
 
 @custom-variant dark (&:where(
