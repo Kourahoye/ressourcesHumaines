@@ -51,7 +51,7 @@
                     </ul>
                 </div>
             </div>
-            <div data-group-id="userperm" class="space-y-2 w-full flex items-center">
+            <div data-group-id="userperm" class="space-y-2 w-full flex flex-col items-center">
 
             </div>
             <div class="text-center"><span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span></div>
@@ -281,12 +281,12 @@
                             text: data.error,
                             duration: 3000,
                             close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            backgroundColor: "linear-gradient(to right, #B00000FF, #FF0000FF)",
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            gravity: "top",
+                            position: "right",
+                            style: { background: "linear-gradient(to right, #B00000FF, #FF0000FF)" },
+                            stopOnFocus: true,
                         }).showToast();
-                        datadiv.append('<p class="text-red-600 font-semibold w-full">No permissions to display</p>');
+                        datadiv.append('<p class="text-red-600 font-semibold w-full text-center">No permissions to display</p>');
                     }else{
                         data.permissions.forEach(function (perm) {
                             var permDiv =  $('<input>')
