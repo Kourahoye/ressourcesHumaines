@@ -51,10 +51,10 @@
                     </ul>
                 </div>
             </div>
-            <div data-group-id="userperm" class="space-y-2">
+            <div data-group-id="userperm" class="space-y-2 w-full flex items-center">
 
             </div>
-            <span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span>
+            <div class="text-center"><span id="spinner-userperm" class="loading loading-spinner loading-lg hidden"></span></div>
         </div>
     </div>
 </div>
@@ -286,14 +286,14 @@
                             backgroundColor: "linear-gradient(to right, #B00000FF, #FF0000FF)",
                             stopOnFocus: true, // Prevents dismissing of toast on hover
                         }).showToast();
-                        datadiv.append('<p class="text-red-600 font-semibold">No permissions to display</p>');
+                        datadiv.append('<p class="text-red-600 font-semibold w-full">No permissions to display</p>');
                     }else{
                         data.permissions.forEach(function (perm) {
                             var permDiv =  $('<input>')
                             .attr('type', 'checkbox')
                             .attr('name', 'permissions-to-remove')
                             .attr('id', perm.id)
-                            .attr('class', 'btn btn-wide btn-sm')
+                            .attr('class', 'btn btn-sm w-full')
                             .attr('aria-label', perm.name)
                             .attr('value', perm.id);
                             
