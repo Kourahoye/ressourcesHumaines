@@ -22,7 +22,6 @@ class RegisterForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'username'})
-        """self.fields['username']..widget.attrs.update({'class': 'text-white hover:ring-1 hover:ring-red-400 font-semibold'})"""
         self.fields['last_name'].widget.attrs.update({'class': 'w-full input input-info',
                                                      'id': 'last_name'})
         self.fields['first_name'].widget.attrs.update({'class': 'w-full input input-info',
