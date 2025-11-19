@@ -12,8 +12,7 @@
         <div
             class="stats shadow stats-vertical grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  gap-4 card-body">
             <div class="stat flex flex-col justify-center items-center p-1 h-62 col-span-2 row-span-2 shadow-md">
-                <canvas id="repartitiongenre" class="stat-figure" width="400" height="400"></canvas>
-                <canvas id="repartitiongenre" class="w-full h-full"></canvas>
+                <canvas id="repartitiongenre" class="stat-figure"></canvas>
             </div>
             <div class="stat order-1 shadow-md">
                 <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Utilisateurs Actifs</div>
@@ -40,12 +39,10 @@
                 <div class="stat-value text-info">{{ general.disponible }}/{{ general.employees }}</div>
             </div>
             <div class="stat order-6 lg:order-7 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
-                <canvas id="statRequetteConges" class="stat-figure" width="400" height="400"></canvas>
-                <canvas id="statRequetteConges" class="w-full h-full"></canvas>
+                <canvas id="statRequetteConges" class="stat-figure"></canvas>
             </div>
             <div class="stat order-7 flex flex-col justify-center items-center p-1 h-72 col-span-2 row-span-2 md:col-span-2 md:row-span-2 lg:col-span-3 shadow-md">
-            <canvas id="absences_evolution" class="stat-figure" width="400" height="400"></canvas>
-            <canvas id="absences_evolution" class="w-full h-full"></canvas>
+            <canvas id="absences_evolution" class="stat-figure"></canvas>
         </div>
         <div class="stat order-8 shadow-md lg:order-6">
             <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Salaires payés ce mois</div>
@@ -57,11 +54,14 @@
                 </div>
                 <div class="stat order-10 flex flex-col justify-center items-center p-1 h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 shadow-md">
                     <canvas class="stat-figure" id="statutsChart"></canvas>
+                    <canvas class="stat-figure" id="statutsChart"></canvas>
                 </div>
                 <div class="stat order-11 flex flex-col justify-center items-center p-1 h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 shadow-md lg:order-12">
                     <figure class="stat-figure"> <canvas  id="niveauxChart"></canvas></figure>
+                    <figure class="stat-figure"> <canvas  id="niveauxChart"></canvas></figure>
                 </div>
                 <div class="stat order-12 flex flex-col justify-center items-center p-1 h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 shadow-md lg:order-11 lg:col-span-3">
+                    <canvas class="stat-figure" id="topOffresChart"></canvas>
                     <canvas class="stat-figure" id="topOffresChart"></canvas>
                 </div>
                 <div class="stat order-13 shadow-md hidden lg:block lg:invisible lg:col-span-3">
