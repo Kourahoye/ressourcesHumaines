@@ -4,3 +4,4 @@
 **/avatars
 **/**/node_modules
 **/.env
+**/.venv
