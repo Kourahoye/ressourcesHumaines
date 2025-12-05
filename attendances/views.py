@@ -3,10 +3,7 @@ from django.http import JsonResponse
 from django.utils.timezone import now
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404, render
-from django.urls import path
-from django.core.serializers import serialize
-from django.forms.models import model_to_dict
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 from .models import Attendance, Employee
 import datetime
@@ -14,34 +11,32 @@ import datetime
 @method_decorator(csrf_exempt, name='dispatch')
 class MarkAttendanceAjaxView(View):
     def post(self, request):
-        employee_id = request.POST.get('employee_id')
-        action = request.POST.get('action')
+        try:
+            employee_id = request.POST.get('employee_id')
 
-        if not employee_id or action not in ['arrivee', 'depart']:
-            return JsonResponse({'error': 'Données invalides.'}, status=400)
 
-        employee = get_object_or_404(Employee, id=employee_id)
-        today = datetime.date.today()
+            if not employee_id :
+                return JsonResponse({'error': 'Selectionner un employer.'}, status=400)
 
-        attendances, created = Attendance.objects.get_or_create(
-            employee=employee,
-            date=today,
-            defaults={'heure_arrivee': None, 'heure_depart': None}
-        )
+            employee = get_object_or_404(Employee, id=employee_id)
+            today = datetime.date.today()
+            now_time = now().time()
 
-        now_time = now().time()
+            attendances, created = Attendance.objects.get_or_create(
+                employee=employee,
+                date=today,
+            )
 
-        if action == 'arrivee':
-            if attendances.heure_arrivee:
-                return JsonResponse({'error': "L'arrivée a déjà été enregistrée."}, status=400)
-            attendances.heure_arrivee = now_time
-        elif action == 'depart':
-            if attendances.heure_depart:
-                return JsonResponse({'error': "Le départ a déjà été enregistré."}, status=400)
-            attendances.heure_depart = now_time
-
-        attendances.save()
-        return JsonResponse({'message': f"Pointage '{action}' enregistré avec succès."})
+            if created :
+                attendances.heure_arrivee = now_time()
+                attendances.save()
+                return JsonResponse({'message': f"Pointage enregistré avec succès."})
+            if not created:
+                attendances.heure_depart = now_time
+                attendances.save()
+                return JsonResponse({'message': f"Pointage enregistré avec succès."})
+        except Exception as e:
+            print(e)
 
 
 @method_decorator(csrf_exempt, name='dispatch')

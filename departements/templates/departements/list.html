@@ -3,7 +3,7 @@
 
 {% block main %}
 
-<div class="xl:w-5/6 mx-auto glass overflow-x-auto shadow-md rounded p-6 md:3/4">
+<div class="xl:w-5/6 mx-auto glass overflow-auto shadow-md rounded p-6 md:3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des départements</h1>
   {% if "departements.add_departements" in permissions %}
   <a class="btn btn-info btn-outline btn-ghost btn-xs" href="{% url 'departement_add' %}">

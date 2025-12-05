@@ -39,9 +39,7 @@
             {% endif %}
         </ul>
     </div>
-
 </header>
-
 <div class="drawer z-30">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
@@ -360,25 +358,13 @@
 </dialog>
 
 
-
-
 {% block sripts %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Charger les thèmes depuis les cookies
         const savedTheme = getCookie("theme") || "cupcake";
-        //const savedMode = getCookie("mode") || "light";
 
-        // Appliquer data-theme
         document.documentElement.setAttribute("data-theme", savedTheme);
 
-        // Appliquer dark/light mode via class
-        /*if (savedMode === "dark") {
-            document.documentElement.classList.add("dark");
-            document.getElementById("theme").checked = true;
-        }*/
-
-        // Mettre à jour les radio boutons
         const themeInputs = document.querySelectorAll('input[name="theme-buttons"]');
         themeInputs.forEach(input => {
             if (input.value === savedTheme) {
@@ -390,19 +376,6 @@
                 setCookie("theme", selectedTheme, 365);
             });
         });
-
-        // Switch dark/light
-        /*document.getElementById("theme").addEventListener("change", (e) => {
-            const isDark = e.target.checked;
-            if (isDark) {
-                document.documentElement.classList.add("dark");
-                setCookie("mode", "dark", 365);
-            } else {
-                document.documentElement.classList.remove("dark");
-                setCookie("mode", "light", 365);
-            }
-        });
-        */
     });
 
     // Cookies helpers

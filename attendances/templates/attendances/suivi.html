@@ -75,22 +75,22 @@ $(document).ready(function() {
     if (!id) return;
 
     Swal.fire({
-      title: 'Quel type de pointage ?',
+      title: 'Enregistrer le pointage ?',
       icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Arrivée',
-      cancelButtonText: 'Départ',
+      //showCancelButton: true,
+      //confirmButtonText: 'Arrivée',
+      //cancelButtonText: 'Départ',
       reverseButtons: true
     }).then((result) => {
-      let action = result.isConfirmed ? 'arrivee' : (result.dismiss === Swal.DismissReason.cancel ? 'depart' : null);
-      if (!action) return;
+      //let action = result.isConfirmed ? 'arrivee' : (result.dismiss === Swal.DismissReason.cancel ? 'depart' : null);
+      //if (!action) return;
 
       $.ajax({
         url: "{% url 'mark_attendance' %}",
         method: 'POST',
         data: {
           'employee_id': id,
-          'action': action,
+          //'action': action,
           'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
         success: function (response) {
