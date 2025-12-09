@@ -21,8 +21,8 @@ from django.shortcuts import redirect
 
 
 # Create your views here.
-class RegisterView(CreateView):
-    # permission_required =['users.add_user']
+class RegisterView(PermissionRequiredMixin,CreateView):
+    permission_required =['users.add_user']
     model = User
     template_name = "users/register.html"
     form_class = RegisterForm
