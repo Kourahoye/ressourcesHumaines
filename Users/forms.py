@@ -90,3 +90,64 @@ class UserUpdateForm(forms.ModelForm):
         self.fields['password'].widget.attrs.update({'class': 'w-full input input-info input-sm',
                                                      'id': 'password'})
 
+
+
+
+
+# accounts/forms.py
+from django import forms
+from django.contrib.auth import password_validation
+from django.contrib.auth.hashers import check_password
+from .models import User  # ton CustomUser
+
+class CustomPasswordChangeForm(forms.Form):
+
+    old_password = forms.CharField(
+        label="Mot de passe actuel",
+        widget=forms.PasswordInput(attrs={'class': 'w-full input input-info input-sm'})
+    )
+    new_password1 = forms.CharField(
+        label="Nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={'class': 'w-full input input-info input-sm'}),
+        # help_text=password_validation.password_validators_help_text_html()
+    )
+    new_password2 = forms.CharField(
+        label="Confirmer le nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={'class': 'w-full input input-info input-sm'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')  # obligatoire
+        super().__init__(*args, **kwargs)
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        if not check_password(old_password, self.user.password):
+            raise forms.ValidationError("Le mot de passe actuel est incorrect.")
+        return old_password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password1 = cleaned_data.get("new_password1")
+        new_password2 = cleaned_data.get("new_password2")
+
+        if new_password1 and new_password2 and new_password1 != new_password2:
+            self.add_error('new_password2', "Les mots de passe ne correspondent pas.")
+        return cleaned_data
+
+        # Validation des règles Django
+        # if new_password1:
+        #     try:
+        #         password_validation.validate_password(new_password1, self.user)
+        #     except forms.ValidationError as e:
+        #         self.add_error('new_password1', e)
+        # return cleaned_data
+
+    # def save(self, commit=True):
+    #     password = self.cleaned_data["new_password1"]
+    #     self.user.set_password(password)
+    #     if hasattr(self.user, 'must_change_password'):
+    #         self.user.must_change_password = False
+    #     if commit:
+    #         self.user.save()
+    #     return self.user

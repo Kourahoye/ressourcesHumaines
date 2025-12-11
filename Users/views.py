@@ -3,9 +3,10 @@ from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import  redirect, render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView,FormView,DetailView,UpdateView,ListView,DeleteView
 from django.contrib.auth.decorators import login_required, permission_required
-from Users.forms import RegisterForm,LoginForm, UserUpdateForm
+from Users.forms import CustomPasswordChangeForm, RegisterForm,LoginForm, UserUpdateForm
 from Users.models import  User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
@@ -35,16 +36,10 @@ class RegisterView(PermissionRequiredMixin,CreateView):
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         return super().post(request, *args, **kwargs)
-    def form_valid(self, form) -> HttpResponse:
-                # up_form = form.save(commit=False)
-                # up_form.password = make_password(form.cleaned_data['password'])
-                # up_form.save()
-                # user = authenticate(username=self.request.POST['username'], password=self.request.POST['password'])
-                # if(up_form):
-                #      login(self.request, user)
-                #     return redirect('login')            
+    def form_valid(self, form) -> HttpResponse:       
         form.instance.password =  make_password(form.cleaned_data['password'])
         form.instance.is_active = False
+        form.instance.must_change_password = True
         return super().form_valid(form)
 
 
@@ -76,6 +71,7 @@ class LoginView(FormView):
     template_name = "users/login.html"
     form_class = LoginForm
     success_url = reverse_lazy("dashbord")
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -225,3 +221,92 @@ def toggle_user_active(request, user_id):
     messages.success(request, f"Utilisateur {user.username} {status}.")
     referrer = request.META.get('HTTP_REFERER')
     return redirect(referrer) if referrer else redirect('user-list')
+
+
+
+# myapp/views.py
+# from django.contrib.auth.decorators import login_required
+# from django.contrib import messages
+# from django.shortcuts import render, redirect
+# from django.contrib.auth import update_session_auth_hash
+# from django.contrib.auth.forms import PasswordChangeForm  # ou MyPasswordChangeForm
+
+# @login_required
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(user=request.user, data=request.POST)
+#         if form.is_valid():
+#             user = form.save()  # enregistre le nouveau mot de passe (hashé)
+#             # Empêche la déconnexion après le changement :
+#             update_session_auth_hash(request, user)
+#             messages.success(request, 'Votre mot de passe a été modifié avec succès.')
+#             return redirect('login')  # url de succès
+#         else:
+#             messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
+#     else:
+#         form = PasswordChangeForm(user=request.user)
+
+#     return render(request, 'users/change_password.html', {'form': form})
+
+# myapp/views.py
+
+# class change_password(View):
+    
+#     def get(self, request, *args, **kwargs):
+#         return render(request, 'users/change_password.html', {'form': MyPasswordChangeForm})
+
+#     def post(self, request, *args, **kwargs):
+#         return HttpResponse('POST request!')
+
+# accounts/views.py
+
+from django.contrib.auth import update_session_auth_hash
+# from django.shortcuts import render, redirect
+# from django.contrib import messages
+
+# def change_password(request):
+#     form = CustomPasswordChangeForm()
+
+#     if request.method == "POST":
+#         if form.is_valid():
+#             user = form.save()
+#             # Retirer l’obligation
+#             user.must_change_password = False
+#             user.save()
+
+#             # Garder l'utilisateur connecté
+#             update_session_auth_hash(request, user)
+
+#             messages.success(request, "Votre mot de passe a été changé avec succès.")
+#             return redirect('home')  # changer pour votre URL
+#         else:
+#             messages.error(request, "Veuillez corriger les erreurs.")
+
+#     return render(request, 'users/change_password.html', {"form": form})
+
+
+from django.views.generic import FormView
+
+class change_password(FormView):
+    form_class = CustomPasswordChangeForm
+    template_name = "users/change_password.html"
+    success_url = reverse_lazy('dashbord')
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def form_valid(self, form):
+        user = self.request.user
+        user.set_password(form.cleaned_data['new_password1'])
+        if hasattr(user, 'must_change_password'):
+            user.must_change_password = False
+        user.save()
+        update_session_auth_hash(self.request, user)  # garde l'utilisateur connecté
+        messages.success(self.request, "Votre mot de passe a été changé avec succès.")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Veuillez corriger les erreurs.")
+        return super().form_invalid(form)

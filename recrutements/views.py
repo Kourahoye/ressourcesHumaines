@@ -254,6 +254,7 @@ class PostulationDetailView(UpdateView):
                 'last_name': candidat.nom,
                 'gender': candidat.genre,
                 'birthday': candidat.date_naissance,
+                'must_change_password':True,
                 'avatar': 'avatars/default.jpg',
             }
         )

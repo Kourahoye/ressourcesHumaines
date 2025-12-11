@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -------------------- SECURITY --------------------
 SECRET_KEY = config("SECRET_KEY")
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = True
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 # -------------------- APPLICATION --------------------
 INSTALLED_APPS = [
@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'Users.middleware'
+    'Users.middleware.PasswordChangeRequiredMiddleware',#check most change password
 ]
 
 ROOT_URLCONF = 'ressourcesHumaines.urls'

@@ -12,6 +12,7 @@ class User(AbstractUser):
         choices=[("masculin", "Masculin"), ("feminin", "Feminin")],
         null=False
     )
+    must_change_password = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
