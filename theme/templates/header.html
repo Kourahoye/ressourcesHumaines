@@ -113,7 +113,7 @@
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
                     href="{% url 'liste_departements' %}">
                     <i class="scale-125 fas fa-building mr-2"></i>
-                    <span class="text-white">Liste des departements</span>
+                    <span class="text-white">Departements</span>
                 </a>
             </li>
             {% endif %}
@@ -350,7 +350,7 @@
 {% block sripts %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const savedTheme = getCookie("theme") || "cupcake";
+        const savedTheme = getCookie("theme") || "desk";
 
         document.documentElement.setAttribute("data-theme", savedTheme);
 
