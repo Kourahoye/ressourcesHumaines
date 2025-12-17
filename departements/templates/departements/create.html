@@ -5,9 +5,10 @@
 {% block main %}
 <div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
     <h1 class="text-xl md:text-2xl font-bold mb-4">Enregistrer un Departement</h1>
-    <form method="post">
-      <!-- {% csrf_token %} -->
-      {% crispy form %}
+    <form method="post" class="space-y-2">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Enregistrer" class="btn btn-info btn-outline btn-sm btn-ghost">
     </form>
   </div>
   

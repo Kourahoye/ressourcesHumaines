@@ -2,60 +2,68 @@
 
 
 {% block main %}
-<div class="glass p-6 rounded shadow-md mx-auto w-full md:w-3/4 lg:w-1/2 overflow-auto">
+<div class="glass p-6 rounded shadow-md mx-auto w-full md:w-3/4 lg:w-1/2">
     <h1 class="text-2xl font-bold mb-4">
         <span>Liste des Salaire</span>
         <a href="{% url 'salary_create' %}" class="btn btn-info btn-outline btn-ghost btn-sm">Fixer un salaire</a>
 
     </h1>
-    <table class="table w-full">
-        <thead>
-            <tr>
-                <th>Employé</th>
-                <th>Montant</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for paiment in paiments %}
-            <tr>
-                <td>{{ paiment.employee.user }}</td>
-                <td>{{ paiment.amount }}</td>
-                <td>
-                    <div class="dropdown">
-                        <button tabindex="0" class="btn btn-ghost btn-outline btn-info btn-sm">
-                            Actions
-                        </button>
-                        <ul tabindex="0"
-                            class="dropdown-content gap-2 menu p-2 shadow bg-base-100 flex-col rounded-box w-24 glass">
-                            {% if 'comptabilite.delete_paiment' in permissions %}
-                            <li>
-                                <a href="{% url 'salary_delete' paiment.pk %}"
-                                    class="btn btn-sm btn-error btn-outline btn-ghost">
-                                    <i class="fas fa-trash text-black dark:text-white "></i>
-                                    <span>Supprimer</span></a>
-                            </li>
-                            {% endif %}
-                            {% if 'comptabilite.change_paiment' in permissions %}
-                            <li>
-                                <a href="{% url 'salary_update' paiment.pk %}"
-                                    class="btn btn-sm btn-warning btn-outline btn-ghost">
-                                    <i class="fas fa-edit text-black dark:text-white "></i>
-                                    <sapn>Modifier</sapn>
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4" class="text-center">Aucun paiement trouvé.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+   <div>
+     <table class="table w-full">
+         <thead>
+             <tr>
+                 <th>Employé</th>
+                 <th>Montant</th>
+                 <th>Actions</th>
+             </tr>
+         </thead>
+         <tbody>
+             {% for paiment in paiments %}
+             <tr>
+                 <td>{{ paiment.employee.user }}</td>
+                 <td>{{ paiment.amount }}</td>
+                  <td class="relative">
+                    {{paiement.pk}}
+                        <button
+                                id="actionsBtn-{{ paiment.pk }}"
+                                data-dropdown-toggle="actionsMenu-{{ paiment.pk }}"
+                                data-dropdown-trigger="click"
+                                type="button"
+                                class="btn m-1 btn-outline btn-ghost btn-info btn-sm"
+                                >
+                                Actions
+                                </button>
+                        <div
+                            id="actionsMenu-{{ paiment.pk }}"
+                            class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2">
+                             {% if 'comptabilite.delete_salary' in permissions %}
+                                 <a href="{% url 'salary_delete' paiment.pk %}"
+                                     class="btn btn-sm btn-error btn-outline btn-ghost">
+                                     <i class="fas fa-trash text-black dark:text-white "></i>
+                                     <span>Supprimer</span></a>
+                             
+                             {% endif %}
+                             {% if 'comptabilite.change_salary' in permissions %}
+                             
+                                 <a href="{% url 'salary_update' paiment.pk %}"
+                                     class="btn btn-sm btn-warning btn-outline btn-ghost">
+                                     <i class="fas fa-edit text-black dark:text-white "></i>
+                                     <span>Modifier</span>
+                                 </a>
+                             
+                             {% endif %}
+                        </div>
+                     </div>
+                 </td>
+             </tr>
+             {% empty %}
+             <tr>
+                 <td colspan="4" class="text-center">Aucun paiement trouvé.</td>
+             </tr>
+             {% endfor %}
+         </tbody>
+     </table>
+   </div>
     {% if is_paginated %}
     <div class="mt-4 flex justify-center space-x-2">
         {% if page_obj.has_previous %}

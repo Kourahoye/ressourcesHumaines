@@ -6,70 +6,17 @@ from crispy_forms.layout import Layout, Field, Submit, Div
 from datetime import date
 
 
-# class PaimentForm(forms.Form):
-#     employee = forms.ModelChoiceField(
-#         queryset=Employee.objects.filter(user__is_active=True),
-#         label="Employé actif"
-#     )
-#     bonus = forms.DecimalField(
-#         label="Prime (bonus)",
-#         max_digits=10,
-#         decimal_places=2,
-#         required=False,
-#         initial=0
-#     )
-#     date = forms.DateField(
-#         widget=forms.DateInput(attrs={'type': 'month'}),
-#         input_formats=['%Y-%m']
-#     )
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['employee'].widget.attrs.update({
-#             'class': 'select select-info',
-#         })
-#         self.fields['bonus'].widget.attrs.update({
-#             'class': 'input input-info',
-#             'placeholder': 'Montant du paiement',
-#         })
-#         self.fields['date'].widget.attrs.update({
-#             'class': 'input input-info'
-#         })
-
-#     def clean_employee(self):
-#         employee = self.cleaned_data.get('employee')
-
-#         if not employee or not Employee.objects.filter(pk=employee.pk, user__is_active=True).exists():
-#             raise forms.ValidationError("L’employé sélectionné n’est pas valide ou a été désactivé.")
-
-#         if not Salary.objects.filter(employee=employee).exists():
-#             raise forms.ValidationError("L’employé sélectionné n’a pas de salaire défini.")
-
-#         return employee
-
-#     def clean_date(self):
-#         value = self.cleaned_data['date']
-#         current_year = date.today().year
-
-#         if value.year > current_year:
-#             raise forms.ValidationError("L'année ne peut pas dépasser l'année actuelle.")
-#         if value.year < 2010:
-#             raise forms.ValidationError("L'année ne peut pas être antérieure à 2010.")
-#         return value
-
-
-
 class SalaryForm(forms.ModelForm):
     class Meta:
         model = Salary
         exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
         widgets = {
             'amount': forms.NumberInput(attrs={
-                'class': 'input input-info',
+                'class': 'input input-info input-sm w-fulll',
                 'placeholder': 'Montant du paiement',
                 }),
             'employee': forms.Select(attrs={
-                'class': 'select select-info',
+                'class': 'select select-info input-sm w-fulll',
                 }),
         }
     
@@ -86,7 +33,7 @@ class SalaryForm(forms.ModelForm):
             Div(
                 Field('employee'),
                 Field('amount'),
-                Submit('submit', 'Enregistrer', css_class="btn btn-info btn-sm"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-ghost btn-outline btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )
@@ -139,7 +86,7 @@ class BonusSlipForm(forms.ModelForm):
                 Field('amount'),
                 Field('date'),
                 Field('description'),
-                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-ghost btn-outline btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )
@@ -202,7 +149,7 @@ class PaimentForm(forms.ModelForm):
                 Field('employee'),
                 Field('bonus'),
                 Field('date'),
-                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-ghost btn-outline btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )

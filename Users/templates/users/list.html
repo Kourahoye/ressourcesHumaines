@@ -63,8 +63,8 @@
                             <ul tabindex="0"
                                 class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box glass">
                                 {% if "Users.view_user" in permissions %}
-                                <li><a class="btn btn-info btn-ghost btn-outline btn-sm"
-                                        href="{% url 'userDetail' person.pk %}">
+                                <li>
+                                    <a class="btn btn-info btn-ghost btn-outline btn-sm" href="{% url 'userDetail' person.pk %}">
                                         <i class="fas fa-info text-black dark:text-white "></i>
                                         <span>Détail</span>
                                     </a>

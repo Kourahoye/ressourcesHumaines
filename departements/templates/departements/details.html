@@ -54,7 +54,7 @@
           <td class="px-6 py-4 whitespace-nowrap">{{ employee.date_embauche|date:"d/m/Y" }}</td>
           {% if user.is_staff %}
           <td class="dropdown dropdown-bottom">
-            <label tabindex=0 class="btn m-1">Actions</label>
+            <label tabindex="0 "class="btn m-1">Actions</label>
             <ul tabindex=0
               class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
               {% if "employees.delete_employee" in permissions %}

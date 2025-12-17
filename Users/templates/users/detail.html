@@ -8,11 +8,11 @@ Detail Utilisateur
 <div class="w-3/5 p-3 mt-10 mx-auto text-black card glass dark:text-white">
     <h1 class="card-title uppercase w-full text-center block">Informations de l'Utilisateur</h1>
     <div class="flex gap-4 w-full container p-4 mx-auto card-body">
-        <div class="flex flex-col gap-4 justify-around flex-grow">
+        <div class="flex flex-col gap-4 justify-around ">
             <div class="avatar">
-                <div class="w-24 rounded-xl">
+                <div class="rounded-xl">
                     <img src="{{ object.avatar.url }}" alt='avatar'
-                        class="w-1/4  object-cover rounded-md shadow shadow-white border-2 border-black" />
+                        class="w-1/2 object-cover rounded-md shadow shadow-white border-2 border-black" />
                 </div>
             </div>
             <p class='bg-white/15 w-full font-semibold flex gap-4 justify-between p-2 rounded-md font-mono'><span
@@ -33,6 +33,7 @@ Detail Utilisateur
         <a href="{% url 'userEdit' object.id %}"
         class="btn btn-warning btn-outline btn-sm btn-ghost">Edit
         les informations</a>
+        <a href="{% url 'password_change' %}" class="btn btn-sm btn-info btn-ghost btn-outline">Modifier mot de passe</a>
     </div>
     {% endif %}
 </div>
