@@ -3,7 +3,7 @@
 
 {% block main %}
 
-<div class="w-full p-2 md:p-4">
+<div class="w-full p-2 md:p-4 glass text-black dark:text-white">
     <form class="p-2 w-full space-y-2">
         <div class="flex items-center space-x-2">
             <form class="p-2 w-full space-y-2">
@@ -16,10 +16,10 @@
     </form>
     <div class="p-2 w-full space-x-2 grid md:grid-cols-2 md:space-y-2">
         <div data-group-id="allperm"
-            class="grid grid-cols-1 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
+            class="grid grid-cols-1 gap-2 lg:grid-cols-2 border-2 border-dashed border-gray-400 rounded-xl p-4 shadow-md space-x-2 space-y-2">
 
             <div class="col-span-2 flex items-center justify-between space-y-2">
-                <h2 class="font-semibold text-gray-700 mb-3 col-span-2">All permissions</h2>
+                <h2 class="font-semibold 0 mb-3 col-span-2">All permissions</h2>
                 <button class="btn btn-outline btn-sm btn-info btn-ghost" id="addperms">
                     <i class="fa fa-plus"></i><span> Ajouter les permissions</span></label>
                 </button>
@@ -29,10 +29,10 @@
         </div>
         <!-- Groupe 2 -->
 
-        <div class="w-full border-2 border-dashed border-gray-400 rounded-xl p-4 bg-white shadow-md space-x-2 space-y-2">
+        <div class="w-full border-2 border-dashed border-gray-400 rounded-xl p-4 shadow-md space-x-2 space-y-2">
 
             <div class="col-span-2 flex items-center justify-between">
-                <h2 class="font-semibold text-gray-700 mb-3">User permissions</h2>
+                <h2 class="font-semibold 0 mb-3">User permissions</h2>
                 <div class="dropdown">
                     <label tabindex="0" class="btn btn-sm btn-outline btn-info btn-ghost m-1"><i
                             class="fa fa-minus"></i><span> Retirer les permissions</span></label>

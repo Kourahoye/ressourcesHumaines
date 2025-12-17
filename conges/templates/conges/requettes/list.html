@@ -3,7 +3,7 @@
 
 {% block main %}
 
-<div class="w-full xl:w-4/5 mx-auto glass shadow-md rounded p-6 md:w-3/4 overflow-auto">
+<div class="w-full xl:w-4/5 mx-auto glass shadow-md rounded p-6 md:w-3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block"><span>Liste des requettes</span>
     <a class="text-white btn btn-outline btn-ghost btn-xs btn-info justify-start"
       href="{% url 'conges_request_create' %}">
@@ -11,87 +11,100 @@
     </a>
   </h1>
 
-  <table class="table w-full min-w-full">
-    <thead>
-      <tr class="font-bold text-black dark:text-white">
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">User</th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de debut</th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de fin </th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Status </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for congesRequest in congesRequests %}
-      <tr>
-        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.employee.user }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.startDate|date:"d/m/Y" }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.endDate|date:"d/m/Y" }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          {% if congesRequest.status == "accepted" %}
-          <div class="badge badge-success gap-2">
-            Autorisé
-          </div>
-          {% elif congesRequest.status == "refused" %}
-          <div class="badge badge-error gap-2">
-            Refusé
-          </div>
-          {% elif congesRequest.status == "pending" %}
-          <div class="badge badge-warning gap-2">
-            En attente
-          </div>
-          {% endif %}
-        </td>
-
-        <td class="dropdown dropdown-bottom">
-          <label tabindex=0 class="btn m-1 btn-outline btn-info btn-ghost btn-sm">Actions</label>
-          <ul tabindex=0 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex-col gap-2 glass">
-            <li>
-              <a href="{% url 'conges_request_delete' congesRequest.pk %}"
-                class="btn btn-error btn-outline btn-sm btn-ghost">
-                <i class="fas fa-trash text-black dark:text-white "></i>
-                <span>Supprimer</span>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'conges_request_details' congesRequest.pk %}"
-                class="btn btn-info btn-outline btn-sm btn-ghost">
-                <i class="fas fa-info text-black dark:text-white "></i>
-                <span>Details</span></a>
-            </li>
-            {% if "conges.accept_congesrequest" in permissions %}
-            {% if congesRequest.status == "refused" or congesRequest.status == "pending" %}
-            <li>
-              <a href="{% url 'conges_request_accept' congesRequest.pk  %}"
-                class="btn btn-success btn-outline btn-sm btn-ghost">
-                <i class="fas fa-check text-green dark:text-white "></i>
-                <sapn>Accepter</sapn>
-              </a>
-            </li>
-            {% endif %}
-            {% endif %}
-            {% if "conges.refuse_congesrequest" in permissions %}
-            {% if congesRequest.status == "accepted" or congesRequest.status == "pending" %}
-            <li>
-              <a href="{% url 'conges_request_refuse' congesRequest.pk  %}"
-                class="btn btn-error btn-outline btn-ghost btn-sm">
-                <i class="fas fa-xmark text-black dark:text-white "></i>
-                <span>Refuser</span>
-              </a>
-            </li>
-            {% endif %}
-            {% endif %}
-          </ul>
-        </td>
-
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun requette trouvé.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+ <div>
+   <table class="table w-full min-w-full">
+     <thead>
+       <tr class="font-bold text-black dark:text-white">
+         <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">User</th>
+         <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de debut</th>
+         <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de fin </th>
+         <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Status </th>
+         <th></th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for congesRequest in congesRequests %}
+       <tr>
+         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.employee.user }}</td>
+         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.startDate|date:"d/m/Y" }}</td>
+         <td class="px-6 py-4 whitespace-nowrap">{{ congesRequest.endDate|date:"d/m/Y" }}</td>
+         <td class="px-6 py-4 whitespace-nowrap">
+           {% if congesRequest.status == "accepted" %}
+           <div class="badge badge-success gap-2">
+             Autorisé
+           </div>
+           {% elif congesRequest.status == "refused" %}
+           <div class="badge badge-error gap-2">
+             Refusé
+           </div>
+           {% elif congesRequest.status == "pending" %}
+           <div class="badge badge-warning gap-2">
+             En attente
+           </div>
+           {% endif %}
+         </td>
+  
+         <td class="relative">
+  <!-- Bouton Actions -->
+            <button
+              id="actionsBtn-{{ congesRequest.pk }}"
+              data-dropdown-toggle="actionsMenu-{{ congesRequest.pk }}"
+              data-dropdown-trigger="click"
+              type="button"
+              class="btn m-1 btn-outline btn-ghost btn-info btn-sm"
+            >
+              Actions
+            </button>
+           <div
+                id="actionsMenu-{{ congesRequest.pk }}"
+                class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2">
+             
+               <a href="{% url 'conges_request_delete' congesRequest.pk %}"
+                 class="btn btn-error btn-outline btn-sm btn-ghost">
+                 <i class="fas fa-trash text-black dark:text-white "></i>
+                 <span>Supprimer</span>
+               </a>
+             
+             
+               <a href="{% url 'conges_request_details' congesRequest.pk %}"
+                 class="btn btn-info btn-outline btn-sm btn-ghost">
+                 <i class="fas fa-info text-black dark:text-white "></i>
+                 <span>Details</span></a>
+             
+             {% if "conges.accept_congesrequest" in permissions %}
+             {% if congesRequest.status == "refused" or congesRequest.status == "pending" %}
+             
+               <a href="{% url 'conges_request_accept' congesRequest.pk  %}"
+                 class="btn btn-success btn-outline btn-sm btn-ghost">
+                 <i class="fas fa-check text-green dark:text-white "></i>
+                 <span>Accepter</span>
+               </a>
+             
+             {% endif %}
+             {% endif %}
+             {% if "conges.refuse_congesrequest" in permissions %}
+             {% if congesRequest.status == "accepted" or congesRequest.status == "pending" %}
+             
+               <a href="{% url 'conges_request_refuse' congesRequest.pk  %}"
+                 class="btn btn-error btn-outline btn-ghost btn-sm">
+                 <i class="fas fa-xmark text-black dark:text-white "></i>
+                 <span>Refuser</span>
+               </a>
+             
+             {% endif %}
+             {% endif %}
+           </div>
+         </td>
+  
+       </tr>
+       {% empty %}
+       <tr>
+         <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun requette trouvé.</td>
+       </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+ </div>
 
 
   {% if is_paginated %}

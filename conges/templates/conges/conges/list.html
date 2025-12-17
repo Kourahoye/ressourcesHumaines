@@ -2,80 +2,86 @@
 
 {% block main %}
 
-<div class="card glass bg-base-300 mx-4 overflow-auto p-3 w-full overflow-auto">
-  <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des conges</h1>
+<div class="card  overflow-auto p-3 w-full md:w-3/4 mx-auto">
+  <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">
+    <span>Liste des conges</span>
+    <a href="{% url 'conges_create' %}" class="text-white btn btn-outline btn-ghost btn-xs btn-info justify-start">
+       <i class="fas fa-plus text-black dark:text-white "></i>
+    </a>
+  </h1>
 
-    <table class="table w-full">
-      <thead>
-        <tr class="font-bold dark:text-white">
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Employee</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Debut</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Fin</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour</th>
-          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for conge in conges %}
-        <tr>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.employee.user }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.startDate }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.endDate }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_by.username }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_at|date:"d/m/Y" }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ conge.updated_at|date:"d/m/Y" }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            {% if conge.created_by == request.user %}
-            myself
-            {% else %}
-            {{ conge.created_by.username }}
-            {% endif %}
-          </td>
-          <td class="dropdown dropdown-left">
-            <label tabindex=0 class="btn m-1">Actions</label>
-            
-            <ul tabindex=0
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
-            {% if "conges.delete_conges" in permissions %}
-            <li>
-              <a  href="{% url 'deleteConges' %}" class="btn btn-error delete">Supprimer</a>
-            </li>
-            {% endif %}
-            {% if "conges.change_conges" in permissions %}
+    <div>
+      <table class="glass table w-full">
+        <thead>
+          <tr class="font-bold dark:text-white">
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Employee</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Debut</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Fin</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour</th>
+            <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for conge in conges %}
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.employee.user }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.startDate }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.endDate }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if conge.status == True %}
+                  <div class="badge badge-success">Terminer</div>
+                  {% else %}
+                  <div class="badge badge-primary">En cours</div>
+              {% endif %}
+                
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_by.username }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.created_at|date:"d/m/Y" }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ conge.updated_at|date:"d/m/Y" }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if conge.created_by == request.user %}
+              myself
+              {% else %}
+              {{ conge.created_by.username }}
+              {% endif %}
+            </td>
+            <td class="dropdown dropdown-left">
+              <label tabindex="0 "class="btn m-1">Actions</label>
+              
+              <ul tabindex=0
+              class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 flrx flex-col gap-2">
+              {% if "conges.delete_conge" in permissions %}
               <li>
-                <a href="" class="btn btn-warning">Modifier</a>
+                <a  href="{% url 'conges_delete' conge.id %}" class="btn btn-error btn-sm btn-outline btn-ghost delete">Supprimer</a>
               </li>
-            {% endif %}
-            {% if "conges.view_conges" in permissions %}  
-              <li>
-                <a href="" class="btn btn-info">Detail</a>
-              </li>
-            {% endif %}
-            {% if "conges.finish_conges" in permissions %}
-              <li>
-                <a href="{% url 'conges_finish' %}" class="btn btn-success">Terminer</a>
-              </li>
-            {% endif %}
-            {% if "conges.unfinish_conges" in permissions %}
-              <li>
-                <a href="{% url 'conges_unfinish' %}" class="btn btn-secondary">Annuler</a>
-              </li>
-            {% endif %}
-
-            </ul>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun conges trouvé.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
+              {% endif %}
+              {% if "conges.change_conge_status" in permissions %}
+                <li>
+                  <a href="{% url 'conges_finish' conge.id %}" class="btn btn-success btn-sm btn-outline btn-ghost">Terminer</a>
+                </li>
+              {% endif %}
+              {% if "conges.change_conge_status" in permissions %}
+                <li>
+                  <a href="{% url 'conges_unfinish' conge.id %}" class="btn btn-secondary btn-sm btn-outline btn-ghost">Annuler</a>
+                </li>
+              {% endif %}
+      
+              </ul>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun conges trouvé.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
 
   <!-- Pagination simple -->
   {% if is_paginated %}

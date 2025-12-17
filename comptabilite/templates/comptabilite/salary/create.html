@@ -2,13 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block main %}
-<div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
+<div class="glass p-6 text-black dark:text-white rounded shadow-md mx-auto w-full max-w-2xl">
     <h1 class="text-xl md:text-2xl font-bold mb-4 ">Fixer un salaire</h1>
-    <form method="post" class="dark:text-black">
-        {% crispy form %}
+    <form class="flex justify-center mt-4 flex-col space-y-2" method="post">
+         {% csrf_token %}
+        {{ form|crispy }}
+        <div class="flex space-x-2 justify-center mt-4">
+            <input type="submit" class="btn btn-ghost btn-outline btn-sm btn-info" value="Fixer">
+            <a href="{% url 'salary_list' %}" class="btn btn-neutral btn-sm btn-outline btn-ghost">Annuler</a>
+        </div>
     </form>
-</div>
-<div class="flex justify-center mt-4">
-    <a href="{% url 'salary_list' %}" class="btn btn-primary">Retour à la liste des salaires</a>
 </div>
 {% endblock main %}

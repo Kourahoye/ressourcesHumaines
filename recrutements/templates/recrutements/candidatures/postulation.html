@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="desk">
 
 <head>
   {% load tailwind_tags %}
   {% load static %}
-  <title>Django Tailwind</title>
+  <title>Postulations</title>
   <meta charset=" UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,14 +15,7 @@
   <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
 
   {% tailwind_css %}
-  <script>
-    (function () {
-      const theme = document.cookie.split('; ').find(row => row.startsWith('theme='));
-      if (theme) {
-        document.documentElement.setAttribute('data-theme', decodeURIComponent(theme.split('=')[1]));
-      }
-    })();
-  </script>
+
 </head>
 
 <body class=" bg-base-100 dark:text-white font-serif leading-normal tracking-normal min-h-screen text-slate-950">
@@ -111,7 +104,7 @@
       </div>
       {% endfor %}
 
-      <button type="submit" class="btn btn-primary w-full mt-4">Soumettre 
+      <button type="submit" class="btn btn-info btn-sm btn-ghost btn-outline w-full mt-4">Soumettre 
       <span id="spinner" class="loading loading-spinner loading-sm hidden"></span>
       </button>
     </form>

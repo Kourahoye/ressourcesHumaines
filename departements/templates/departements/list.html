@@ -3,7 +3,7 @@
 
 {% block main %}
 
-<div class="xl:w-5/6 mx-auto glass overflow-auto shadow-md rounded p-6 md:3/4">
+<div class="xl:w-5/6 mx-auto glass  shadow-md rounded p-2 md:3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">Liste des départements</h1>
   {% if "departements.add_departements" in permissions %}
   <a class="btn btn-info btn-outline btn-ghost btn-xs" href="{% url 'departement_add' %}">
@@ -11,68 +11,88 @@
   </a>
   {% endif %}
 
-  <table class="table  w-full min-w-full text-black dark:text-white ">
-    <thead class="table-header-group">
-      <tr class="dark:text-white border-b-2 text-black font-bold">
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Nom</th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour
-        </th>
-        <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody class="">
-      {% for departement in departements %}
-      <tr class="">
-        <td class="px-6 py-4 whitespace-nowrap">{{ departement.name }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">{{ departement.created_by.username }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">{{ departement.created_at|date:"d/m/Y" }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">{{ departement.updated_at|date:"d/m/Y" }}</td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          {% if departement.created_by == request.user %}
-          myself
-          {% else %}
-          {{ departement.created_by.username }}
-          {% endif %}
+  <div>
+    <table class="table  w-full min-w-full text-black dark:text-white ">
+      <thead class="table-header-group">
+        <tr class="dark:text-white border-b-2 text-black font-bold">
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Nom</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Créé par</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de création</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Date de mise à jour
+          </th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider">Mis à jour par</th>
+          <th class="px-6 py-3 text-left text-xs uppercase tracking-wider"></th>
+        </tr>
+      </thead>
+      <tbody class="">
+        {% for departement in departements %}
+        <tr class="">
+          <td class="px-6 py-4 whitespace-nowrap">{{ departement.name }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ departement.created_by.username }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ departement.created_at|date:"d/m/Y" }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ departement.updated_at|date:"d/m/Y" }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {% if departement.created_by == request.user %}
+            myself
+            {% else %}
+            {{ departement.created_by.username }}
+            {% endif %}
+          </td>
+          <td>
+
+          <td class="relative">
+  <!-- Bouton Actions -->
+            <button
+              id="actionsBtn-{{ departement.pk }}"
+              data-dropdown-toggle="actionsMenu-{{ departement.pk }}"
+              data-dropdown-trigger="click"
+              type="button"
+              class="btn m-1 btn-outline btn-ghost btn-info btn-sm"
+            >
+              Actions
+            </button>
+
+  <!-- Menu dropdown -->
+          <div
+            id="actionsMenu-{{ departement.pk }}"
+            class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2"
+          >
+            <a
+              href="{% url 'departements_profil' departement.pk %}"
+              class="btn btn-info btn-outline btn-ghost btn-sm justify-start"
+            >
+              <i class="fas fa-info text-black dark:text-white"></i>
+              <span>Details</span>
+            </a>
+
+            <a
+              href="{% url 'departements_delete' departement.pk %}"
+              class="btn btn-error btn-outline btn-ghost btn-sm justify-start"
+            >
+              <i class="fas fa-trash text-black dark:text-white"></i>
+              <span>Supprimer</span>
+            </a>
+
+            <a
+              href="{% url 'departements_update' departement.pk %}"
+              class="btn btn-warning btn-outline btn-ghost btn-sm justify-start"
+            >
+              <i class="fas fa-edit text-black dark:text-white"></i>
+              <span>Modifier</span>
+            </a>
+          </div>
         </td>
 
-        <td class="dropdown dropdown-bottom">
-          <label tabindex=0 class="btn m-1 btn-outline btn-ghost btn-info btn-sm">Actions</label>
-          <ul tabindex=0 class="dropdown-content z-[1] bg-base-100 menu p-2 shadow rounded-box flex flex-col gap-2">
-            <li>
-              <a href="{% url 'departements_delete' departement.pk %} "
-                class="btn btn-error btn-outline btn-ghost btn-sm">
-                <i class="fas fa-trash text-black dark:text-white "></i>
-                <span>Supprimer</span>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'departements_update' departement.pk %} "
-                class="btn btn-warning btn-outline btn-ghost btn-sm">
-                <i class="fas fa-edit text-black dark:text-white "></i>
-                <span>Modifier</span>
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'departements_profil' departement.pk %} "
-                class="btn btn-info btn-outline btn-ghost btn-sm">
-                <i class="fas fa-info text-black dark:text-white "></i>
-                <span>Details</span>
-              </a>
-            </li>
-          </ul>
-        </td>
-
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun département trouvé.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun département trouvé.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <!-- Pagination simple -->
   {% if is_paginated %}

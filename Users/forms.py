@@ -48,9 +48,9 @@ class LoginForm(forms.Form):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'w-full input input-info input-sm',
+        self.fields['username'].widget.attrs.update({'class': 'w-full input input-info input-sm dark:text-white',
                                                      'id': 'username'})
-        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info input-sm',
+        self.fields['password'].widget.attrs.update({'class': 'w-full input input-info input-sm dark:text-white',
                                                      'id': 'password'})
     
 

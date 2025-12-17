@@ -8,7 +8,7 @@
 
         <form method="post" class="mt-4">
             {% csrf_token %}
-            <button type="submit" class="btn btn-error">Supprimer</button>
+            <button type="submit" class="btn btn-error btn-outline btn-sm btn-ghost">Supprimer</button>
             <a href="{% url 'bonus_list' %}" class="btn btn-secondary ml-2">Annuler</a>
         </form>
     </div>

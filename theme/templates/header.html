@@ -5,26 +5,27 @@
     }
 </style>
 
-<header class="navbar bg-base-100 shadow-sm mb-4 pr-5 print:hidden">
+<header class="navbar bg-base-100 shadow-sm mb-4 pr-5 print:hidden dark:text-white">
     <div class="flex-1">
         <label for="my-drawer" role='button' class="btn btn-ghost btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
         </label>
-        <a class="btn btn-ghost text-xl" href="{% url 'dashbord' %}">Gestion RH/ <sub>
+        <a class="btn btn-ghost text-xl" href="{% url 'dashbord' %}"><span>Gestion RH/</span>
+            <sub>
                 <span class="text-xs">daisyUI</span>
             </sub>
         </a>
     </div>
     <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button"
+        <div tabindex="100" role="button"
             class="btn btn-circle btn-ghost avatar  avatar-online before:w-3 before:block before:h-3 before:rounded-full before:absolute before:top-o before:right-0 hover:ring-2 hover:ring-blue-800 ">
             <div class=" w-20 rounded-full">
                 <img alt="{{user}} image" src="{{user.avatar.url}}" />
             </div>
         </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <ul tabindex="100" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             {% if user.is_authenticated %}
 
             <li>
@@ -35,7 +36,9 @@
                 <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
             </li>
             {% else %}
-            <a href="{% url 'login' %}">LOGIN </a>
+            <li>
+                <a href="{% url 'login' %}">LOGIN </a>
+            </li>
             {% endif %}
         </ul>
     </div>
@@ -48,23 +51,22 @@
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu p-4 w-80 min-h-full flex flex-col gap-3 items-stretch glass text-base-content">
 
-            {% if user.is_authenticated %}
-            {% if user.avatar %}
-            <div style="background-image: url('{{user.avatar.url}}');"
-                class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+        {% if user.is_authenticated %}
+            {% if user.avatar.url %}
+            <li style="background-image: url('{{user.avatar.url}}');"
+                class="h-28 w-full bg-cover bg-center flex justify-end items-end">
                 <p class="w-full text-center text-4xl glass text-black">
                     {{user}}
-                    </span>
-            </div>
+                </p>
+            </li>
             {% else %}
-            <i class="scale-125 fas fa-image-portrait text-5xl" style="color: #ef4444;"></i>
-            {% endif %}
-            {% else %}
-            <div id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
+            <li id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
                 <p class="w-full text-center text-4xl glass text-black">
+                    <span>
                     {{user}}
                     </span>
-            </div>
+                </p>
+            </li>
             <li>
                 <a href="{% url 'login' %}" class="btn btn-info">
                     <i class="scale-125 fas fa-sign-in-alt mr-2" style="color: #0ea5e9;"></i>
@@ -80,13 +82,13 @@
                 </a>
             </li>
 
-            {% if user.is_authenticated %}
+
 
             {% if "employees.list_employee" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'employee_list' %}">
                     <i class="scale-125 fas fa-id-badge mr-2"></i>
-                    Liste des employes
+                    Employés
                 </a>
             </li>
             {% endif %}
@@ -94,12 +96,12 @@
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'userList' %}">
                     <i class="scale-125 fas fa-users mr-2"></i>
-                    <span>Liste des users</span>
+                    <span>Utilisateurs</span>
                 </a>
             </li>
             {% endif %}
              {% if "auth.add_permission" in permissions %}
-                <li>
+            <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'add_permissions' %}">
                     <i class="scale-125 fas fa-key mr-2" style="color: #11e811;"></i>
                     Permissons
@@ -120,7 +122,7 @@
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
                     href="{% url 'conges_request_create' %}">
                     <i class="scale-125 fas fa-calendar-plus mr-2"></i>
-                    Demande de conge
+                    Demander un conges
                 </a>
             </li>
             {% endif %}
@@ -129,12 +131,11 @@
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
                     href="{% url 'conges_request_list' %}">
                     <i class="scale-125 fas fa-calendar-alt mr-2"></i>
-                    Liste des demandes de conges
+                Demandes de conges
                 </a>
             </li>
             {% endif %}
-            {% if  'attendances_add_attendance'  %}
-              
+            {% if  'attendances_add_attendance' in permissions  %}        
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'attendances' %}">
                     <i class="scale-125 fas fa-clipboard-list mr-2"></i>
@@ -153,15 +154,15 @@
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
                     href="{% url 'subor_presences' %}">
                     <i class="scale-125 fas fa-user-clock mr-2"></i>
-                    Liste Absences
+                    Absences
                 </a>
             </li>
             {% endif %}
-            {% if "conges.list_conges" in permissions %}
+            {% if "conges.list_conge" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'conges_list' %}">
                     <i class="scale-125 fas fa-calendar-check mr-2" style="color: #22d3ee;"></i>
-                    Liste conges
+                    Conges
                 </a>
             </li>
             {% endif %}
@@ -210,14 +211,6 @@
                     Classement employee
                 </a>
             </li>
-            {% if "comptabilite.list_paiment" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'paiment_list' %}">
-                    <i class="scale-125 fas fa-money-check-alt mr-2" style="color: #16a34a;"></i>
-                    Liste des paiments
-                </a>
-            </li>
-            {% endif %}
             {% if "comptabilite.add_salary" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
@@ -227,7 +220,7 @@
                 </a>
             </li>
             {% endif %}
-            {% if "comptabilite.view_paiment" in permissions %}
+            {% if "comptabilite.view_payslip" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
                     href="{% url 'paiment_salary_list' %}">
@@ -259,11 +252,7 @@
                     Postulations
                 </a>
             </li>
-            {% endif %}
-            <!-- add permissions -->
-            
-                
-                
+            {% endif %}             
             <li>
                 <button onclick="my_modal_1.showModal()"
                     class="btn btn-block justify-start btn-accent btn-ghost text-white">
@@ -282,7 +271,7 @@
             </li>
             {% else %}
 
-            <div class="flex flex-col gap-4 w-full">
+            <li class="flex flex-col gap-4 w-full">
                 <div class="skeleton h-10 w-full rounded-md"></div>
                 <div class="skeleton h-10 w-full rounded-md"></div>
                 <div class="skeleton h-10 w-full rounded-md"></div>
@@ -290,7 +279,7 @@
                 <div class="skeleton h-10 w-full rounded-md"></div>
                 <div class="skeleton h-10 w-full rounded-md"></div>
                 <div class="skeleton h-10 w-full rounded-md"></div>
-            </div>
+            </li>
             {% endif %}
 
         </ul>
@@ -304,48 +293,48 @@
         <!-- Grid responsive pour les thèmes -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             <!-- Liste complète des thèmes -->
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Default" value="desk" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Light" value="light" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Cupcake"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Default" value="desk" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Light" value="light" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Cupcake"
                 value="cupcake" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Bumblebee"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Bumblebee"
                 value="bumblebee" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Emerald"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Emerald"
                 value="emerald" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Corporate"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Corporate"
                 value="corporate" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Winter" value="winter" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dark" value="dark" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Night" value="night" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Sunset" value="sunset" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Forest" value="forest" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Luxury" value="luxury" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dracula"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Winter" value="winter" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dark" value="dark" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Night" value="night" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Sunset" value="sunset" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Forest" value="forest" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Luxury" value="luxury" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dracula"
                 value="dracula" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Black" value="black" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Dim" value="dim" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Business"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Black" value="black" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dim" value="dim" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Business"
                 value="business" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Coffee" value="coffee" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Synthwave"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Coffee" value="coffee" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Synthwave"
                 value="synthwave" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Retro" value="retro" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Valentine"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Retro" value="retro" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Valentine"
                 value="valentine" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Aqua" value="aqua" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="CMYK" value="cmyk" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Halloween"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Aqua" value="aqua" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="CMYK" value="cmyk" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Halloween"
                 value="halloween" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Lofi" value="lofi" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Pastel" value="pastel" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Fantasy"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Lofi" value="lofi" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Pastel" value="pastel" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Fantasy"
                 value="fantasy" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Wireframe"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Wireframe"
                 value="wireframe" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Autumn" value="autumn" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Garden" value="garden" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Nord" value="nord" />
-            <input type="radio" name="theme-buttons" class="btn theme-controller" aria-label="Woodland"
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Autumn" value="autumn" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Garden" value="garden" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Nord" value="nord" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Woodland"
                 value="woodland" />
         </div>
 

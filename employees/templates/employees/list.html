@@ -2,7 +2,7 @@
 
 
 {% block main %}
-<div class="w-full xl:w-4/5 mx-auto glass shadow-md rounded p-6 md:3/4 overflow-auto  ">
+<div class="w-full xl:w-4/5 mx-auto shadow-md rounded p-6 md:3/4">
   <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">
     <span>Liste des employés</span>
       {% if "employees.add_employee" in permissions %}
@@ -12,75 +12,96 @@
   {% endif %}
   </h1>
 
-    <table class="table dark:text-white">
-      <thead>
-        <tr class="font-bold  dark:text-white text-black">
-          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Utilisateur</th>
-          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Poste</th>
-          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Manager</th>
-          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Département</th>
-          <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Date Embauche</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody class="">
-        {% for employee in employees %}
-        <tr>
-          {% if 'Users.view_user' in permissions %}
-          <td class="px-6 py-4 whitespace-nowrap"><a href="{{ employee.user.get_absolute_url }}">
-              {{ employee.user.username }}</a></td>
-          {% else %}
-          <td class="px-6 py-4 whitespace-nowrap">{{ employee.user.username }}</td>
-          {% endif %}
-          <td class="px-6 py-4 whitespace-nowrap">{{ employee.poste }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            {% if employee.manager %}
-            {{ employee.manager.user.username }}
-            {% else %} — {% endif %}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap"><a class="link"
-              href="{{ employee.departement.get_absolute_url }}">{{employee.departement}}</a></td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ employee.date_embauche|date:"d/m/Y" }}</td>
-    
-          <td class="dropdown dropdown-bottom">
-            <label tabindex=0 class="btn m-1 btn-outline btn-info btn-ghost btn-sm">Actions</label>
-            <ul tabindex=0 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box flex flex-col gap-2">
+   <div>
+     <table class="table dark:text-white">
+       <thead>
+         <tr class="font-bold  dark:text-white text-black">
+           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Utilisateur</th>
+           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Poste</th>
+           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Manager</th>
+           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Département</th>
+           <th class="px-6 py-3 text-left text-sm uppercase tracking-wider">Date Embauche</th>
+           <th></th>
+         </tr>
+       </thead>
+       <tbody class="">
+         {% for employee in employees %}
+         <tr>
+           {% if 'Users.view_user' in permissions %}
+           <td class="px-6 py-4 whitespace-nowrap"><a href="{{ employee.user.get_absolute_url }}">
+               {{ employee.user.username }}</a></td>
+           {% else %}
+           <td class="px-6 py-4 whitespace-nowrap">{{ employee.user.username }}</td>
+           {% endif %}
+           <td class="px-6 py-4 whitespace-nowrap">{{ employee.poste }}</td>
+           <td class="px-6 py-4 whitespace-nowrap">
+             {% if employee.manager %}
+             {{ employee.manager.user.username }}
+             {% else %} — {% endif %}
+           </td>
+           <td class="px-6 py-4 whitespace-nowrap"><a class="link"
+               href="{{ employee.departement.get_absolute_url }}">{{employee.departement}}</a></td>
+           <td class="px-6 py-4 whitespace-nowrap">{{ employee.date_embauche|date:"d/m/Y" }}</td>
+     
+           <td class="relative">
+  <!-- Bouton -->
+            <button
+              id="actionsBtn-{{ employee.pk }}"
+              data-dropdown-toggle="actionsMenu-{{ employee.pk }}"
+              type="button"
+              class="btn btn-outline btn-info btn-ghost btn-sm"
+            >
+              Actions
+            </button>
+
+            <!-- Menu dropdown -->
+            <div
+              id="actionsMenu-{{ employee.pk }}"
+              class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2"
+            >
               {% if "employees.delete_employee" in permissions %}
-              <li>
-                <a href="{% url 'employee_delete' employee.pk %} " class="btn btn-error btn-sm btn-ghost btn-outline">
-                  <i class="fas fa-trash text-black dark:text-white "></i>
-                  <span>Supprimer</span>
-                </a>
-              </li>
+              <a
+                href="{% url 'employee_delete' employee.pk %}"
+                class="btn btn-error btn-sm btn-ghost btn-outline justify-start"
+              >
+                <i class="fas fa-trash text-black dark:text-white"></i>
+                <span>Supprimer</span>
+              </a>
               {% endif %}
+
               {% if "employees.change_employee" in permissions %}
-              <li>
-                <a href="{% url 'employee_update' employee.pk %} " class="btn btn-warning btn-sm btn-ghost btn-outline">
-                  <i class="fas fa-edit text-black dark:text-white "></i>
-                  <span>Modifier</span>
-                </a>
-              </li>
+              <a
+                href="{% url 'employee_update' employee.pk %}"
+                class="btn btn-warning btn-sm btn-ghost btn-outline justify-start"
+              >
+                <i class="fas fa-edit text-black dark:text-white"></i>
+                <span>Modifier</span>
+              </a>
               {% endif %}
+
               {% if "employees.view_employee" in permissions %}
-              <li>
-                <a href="{% url 'employee_profil' employee.pk %} " class="btn btn-info btn-sm btn-ghost btn-outline">
-                  <i class="fas fa-info text-black dark:text-white "></i>
-                  <span>Detail</span>
-                </a>
-              </li>
+              <a
+                href="{% url 'employee_profil' employee.pk %}"
+                class="btn btn-info btn-sm btn-ghost btn-outline justify-start"
+              >
+                <i class="fas fa-info text-black dark:text-white"></i>
+                <span>Détail</span>
+              </a>
               {% endif %}
-            </ul>
+            </div>
           </td>
+
+     
+         </tr>
+         {% empty %}
+         <tr>
+           <td colspan="6" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun employé trouvé.</td>
+         </tr>
+         {% endfor %}
+       </tbody>
+     </table>
     
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="6" class="px-6 py-4 text-center text-red-500 text-2xl">Aucun employé trouvé.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
- 
+   </div>
 
   <!-- Pagination simple -->
   {% if is_paginated %}

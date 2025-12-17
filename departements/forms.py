@@ -28,7 +28,7 @@ class DepartementsForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field('name'),
-                Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
+                # Submit('submit', 'Enregistrer', css_class="btn btn-sm btn-info"),
                 css_class="space-y-4"
             )
         )

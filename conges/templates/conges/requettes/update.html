@@ -6,7 +6,9 @@
 <div class="glass p-6 rounded shadow-md mx-auto lg:w-3/4 w-full max-w-2xl">
     <h1 class="text-2xl font-bold mb-4">Modification du requette {{ object.name }}</h1>
     <form method="post">
-        {% crispy form %}
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Modifier" class="btn btn-warning btn-outline btn-sm btn-ghost">
     </form>
 </div>
 

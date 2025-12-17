@@ -14,11 +14,11 @@ class CongeRequestForm(forms.ModelForm):
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-info w-full',
+                'class': 'input input-info input-sm  w-full',
             }),
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
-                'class': 'input input-info w-full',
+                'class': 'input input-info input-sm w-full',
             }),
          }
 
@@ -36,7 +36,8 @@ class CongeRequestForm(forms.ModelForm):
             Div(
                 Field('startDate',css_class="input input-info"),
                 Field('endDate',css_class="input input-info"),
-                Submit('submit', 'Enregistrer', css_class="m-3 btn btn-info btn-sm"),
+                Field('employee',css_class="select select-info"),
+                # Submit('submit', 'Enregistrer', css_class="m-3 btn btn-info btn-sm"),
                 css_class="space-y-4"
             )
         )
@@ -56,7 +57,7 @@ class CongeForm(forms.ModelForm):
     class Meta:
         model = Conge
         fields = '__all__'
-        exclude = ['created_by', 'created_at', 'updated_at', 'updated_by']
+        exclude = ['created_by', 'created_at', 'updated_at', 'updated_by','status']
         widgets = {
             'startDate': forms.DateInput(attrs={
                 'type': 'date',
@@ -65,6 +66,9 @@ class CongeForm(forms.ModelForm):
             'endDate': forms.DateInput(attrs={
                 'type': 'date',
                 'class': 'input input-info w-full',
+            }),
+            'employee': forms.Select(attrs={
+                'class': 'select select-info input-sm w-full',
             }),
          }
 

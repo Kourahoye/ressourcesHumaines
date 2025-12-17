@@ -3,10 +3,12 @@
 
 
 {% block main %}
-<div class="xl:w-4/5  glass p-6 rounded shadow-md mx-auto w-full">
+<div class="max-w-2xl glass p-6 rounded shadow-md mx-auto w-full">
     <h1 class="text-2xl font-bold mb-4">Modification des requettes {{ object.name }}</h1>
-    <form method="post">
-        {% crispy form %}
+    <form method="post" class="space-y-2">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Modifier" class="btn btn-warning btn-outline btn-sm btn-ghost">
     </form>
 </div>
 

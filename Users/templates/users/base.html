@@ -10,6 +10,8 @@
     <meta name="description" content="Gestion des user.Gestion du personnel et suivez les performances en temps réel.">
 	<meta name="keywords" content="GRH, Ressources Humaines, recrutement, présence, gestion employés, RH">
 	<meta name="robots" content="index, follow">
+    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+
     {% tailwind_css %}
     <script>
         (function () {
@@ -21,7 +23,7 @@
     </script>
 </head>
 
-<body class="bg-base-100 min-h-screen">
+<body class="bg-base-100 dark:text-white min-h-screen">
     {% block main %}
     {% endblock %}
 </body>
