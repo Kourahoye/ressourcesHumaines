@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.shortcuts import render
 from departements.models import Departements
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
@@ -73,3 +74,4 @@ class Postulation(models.Model):
 
     def __str__(self):
         return f"{self.candidat} → {self.offre}"
+

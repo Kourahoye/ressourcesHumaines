@@ -4,7 +4,7 @@ Modification
 {% endblock %}
 {% block main %}
 
-<form class="w-3/5 p-1 mt-10 mx-auto card glass text-black dark:text-white" method="post" enctype="multipart/form-data"">
+<form class="w-3/5 p-1 mt-10 mx-auto card glass text-black dark:text-white" method="post" enctype="multipart/form-data">
         <h1 class=" text-xl text-red-700 font-bold block w-full text-center">Edition</h1>
     {% csrf_token %}
     {{form.as_div}}

@@ -23,7 +23,7 @@ from django.shortcuts import redirect
 
 # Create your views here.
 class RegisterView(PermissionRequiredMixin,CreateView):
-    permission_required =['users.add_user']
+    permission_required =['Users.add_user']
     model = User
     template_name = "users/register.html"
     form_class = RegisterForm
@@ -44,7 +44,7 @@ class RegisterView(PermissionRequiredMixin,CreateView):
 
 
 class UserupdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
-    permission_required =['users.change_user']
+    permission_required =['Users.change_user']
     login_url = 'login'
     model = User
     form_class = UserUpdateForm
@@ -93,7 +93,7 @@ def Logout(request):
 
 
 class UserDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
-    permission_required =['users.view_user']
+    permission_required =['Users.view_user']
     login_url ='login'
     model = User
     template_name = "users/detail.html"
@@ -104,7 +104,7 @@ class UserDetailView(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         return context
     
 class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    permission_required = ['users.list_users']
+    permission_required = ['Users.list_users']
     model = User
     context_object_name = 'users'
     template_name = "users/list.html"
@@ -200,7 +200,7 @@ class UserDeleteView(DeleteView):
 
 
 @login_required
-@permission_required('users.change_user',raise_exception=True)
+@permission_required('Users.change_user',raise_exception=True)
 def toggle_user_active(request, user_id):
 
     try:
@@ -228,7 +228,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.views.generic import FormView
 
 class change_password(FormView,LoginRequiredMixin,PermissionRequiredMixin):
-    permission_required =['users.change_user']
+    permission_required =['Users.change_user']
     login_url = 'login'
     form_class = CustomPasswordChangeForm
     template_name = "users/change_password.html"

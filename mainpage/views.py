@@ -8,6 +8,7 @@ from comptabilite.models import Salary
 from conges.models import CongesRequest, User
 from departements.models import Departements
 from employees.models import Employee
+from informations.models import Notification
 from presences.models import Abcence 
 from django.db.models import Count
 from django.db.models import Q
@@ -19,7 +20,8 @@ from django.db.models.functions import ExtractMonth
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 from recrutements.models import *
-
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 
 class Dasboard(LoginRequiredMixin,TemplateView):
@@ -130,6 +132,7 @@ class Dasboard(LoginRequiredMixin,TemplateView):
             "absent_today": employees_absent.count(),
             'absence_label': list(result.keys()),
             'absence_data': list(result.values()),
+            'absence_data_exist': not  (list(result.values()) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
             'logged_in':logged_in,
             'conges_stats': {
                 'accepted': qs2.get('accepted', 0),
@@ -185,3 +188,16 @@ def dasbord_chart(request):
     return JsonResponse({
     })
                     
+
+
+
+@login_required
+def notification_count(request):
+    count = Notification.objects.filter(
+        to=request.user,
+        is_read=False
+    ).count()
+
+    return JsonResponse({
+        "count": count
+    })

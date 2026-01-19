@@ -127,52 +127,6 @@ class EmployeeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
 
-
-# class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    # permission_required = ['employees.view_employee']
-    # login_url = reverse_lazy("login")
-    # model = Employee
-    # template_name = 'employees/profil.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['permissions'] = list(self.request.user.get_all_permissions())
-
-    #     employee = self.get_object()
-    #     current_year = now().year
-
-    #     mois_dict = {
-    #         1: 'Janvier', 2: 'Février', 3: 'Mars', 4: 'Avril',
-    #         5: 'Mai', 6: 'Juin', 7: 'Juillet', 8: 'Août',
-    #         9: 'Septembre', 10: 'Octobre', 11: 'Novembre', 12: 'Décembre'
-    #     }
-
-  
-
-    #     presences_qs = Abcence.objects.filter(
-    #         employee=employee,
-    #         date__year=current_year
-    #     )
-
-    #     presences_par_mois = (
-    #         presences_qs
-    #         .annotate(month=ExtractMonth('date'))
-    #         .values('month')
-    #         .annotate(count=Count('id'))
-    #         .order_by('month')
-    #     )
-
-    #     mois_to_count = {entry['month']: entry['count'] for entry in presences_par_mois}
-
-    #     labels = [mois_dict[i] for i in range(1, 13)]
-    #     data = [mois_to_count.get(i, 0) for i in range(1, 13)]
-
-    #     context['chart_labels'] = labels
-    #     context['chart_data'] = data
-
-    #     return context
-    
-    
     
 class EmployeeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = ["employees.change_employee"]
