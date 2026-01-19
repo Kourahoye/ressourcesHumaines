@@ -7,7 +7,7 @@
 
 <header class="navbar bg-base-100 shadow-sm mb-4 pr-5 print:hidden dark:text-white">
     <div class="flex-1">
-        <label for="my-drawer" role='button' class="btn btn-ghost btn-circle">
+        <label for="my-drawer" role="button" class="btn btn-ghost btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
@@ -18,19 +18,23 @@
             </sub>
         </a>
     </div>
+    <a class="btn btn-ghost btn-circle" href="{% url 'notifications_list' %}">
+    <div class="indicator">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /> </svg>
+      <span class="badge badge-xs badge-error indicator-item hidden" id="notification-count"></span>
+    </div>
+</a>
     <div class="dropdown dropdown-end">
         <div tabindex="100" role="button"
-            class="btn btn-circle btn-ghost avatar  avatar-online before:w-3 before:block before:h-3 before:rounded-full before:absolute before:top-o before:right-0 hover:ring-2 hover:ring-blue-800 ">
+            class="btn btn-circle btn-ghost avatar avatar-online before:w-3 before:block before:h-3 before:rounded-full before:absolute before:top-o before:right-0 hover:ring-2 hover:ring-blue-800 ">
             <div class=" w-20 rounded-full">
                 <img alt="{{user}} image" src="{{user.avatar.url}}" />
             </div>
         </div>
         <ul tabindex="100" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             {% if user.is_authenticated %}
-
             <li>
                 <a class="justify-between" href="{{user.get_absolute_url}}">Profil</a>
-            
             </li>
             <li>
                 <a href="{% url 'logout' %}" class="text-red-600 font-medium">Logout</a>
@@ -43,6 +47,7 @@
         </ul>
     </div>
 </header>
+
 <div class="drawer z-30">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
@@ -50,8 +55,7 @@
     <div class="drawer-side">
         <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
         <ul class="menu p-4 w-80 min-h-full flex flex-col gap-3 items-stretch glass text-base-content">
-
-        {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
             {% if user.avatar.url %}
             <li style="background-image: url('{{user.avatar.url}}');"
                 class="h-28 w-full bg-cover bg-center flex justify-end items-end">
@@ -62,9 +66,7 @@
             {% else %}
             <li id="offline" class="h-28 w-full bg-cover bg-center flex justify-center items-end">
                 <p class="w-full text-center text-4xl glass text-black">
-                    <span>
-                    {{user}}
-                    </span>
+                    <span>{{user}}</span>
                 </p>
             </li>
             <li>
@@ -76,192 +78,289 @@
             {% endif %}
 
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'dashbord' %}">
-                    <i class="scale-125 fas fa-tachometer-alt mr-2" style="color: #f59e42;"></i>
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'dashbord' %}">
+                    <i class="scale-125 fas fa-tachometer-alt mr-2" style="color: #F5E8DAFF;"></i>
                     Dashbord
                 </a>
             </li>
 
-
-
             {% if "employees.list_employee" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'employee_list' %}">
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'employee_list' %}">
                     <i class="scale-125 fas fa-id-badge mr-2"></i>
                     Employés
                 </a>
             </li>
             {% endif %}
+
             {% if "Users.view_user" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'userList' %}">
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'userList' %}">
                     <i class="scale-125 fas fa-users mr-2"></i>
                     <span>Utilisateurs</span>
                 </a>
             </li>
             {% endif %}
-             {% if "auth.add_permission" in permissions %}
+
+            {% if "auth.add_permission" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'add_permissions' %}">
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'add_permissions' %}">
                     <i class="scale-125 fas fa-key mr-2" style="color: #11e811;"></i>
                     Permissons
                 </a>
             </li>
             {% endif %}
+
             {% if "departements.view_departements" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white"
                     href="{% url 'liste_departements' %}">
-                    <i class="scale-125 fas fa-building mr-2"></i>
-                    <span class="text-white">Departements</span>
+                    <span>
+                        <i class="scale-125 fas fa-building mr-2"></i>
+                        <span class="text-white">Departements</span>
+                    </span>
                 </a>
             </li>
             {% endif %}
-            {% if "conges.add_congesrequest" in permissions %}
+             {% if "informations.add_message" in permissions %}
             <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'conges_request_create' %}">
-                    <i class="scale-125 fas fa-calendar-plus mr-2"></i>
-                    Demander un conges
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white"
+                    href="{% url 'send_message' %}">
+                    <span>
+                        <i class="scale-125 fa-solid fa-envelope mr-2"></i>
+                        <span class="text-white">Messages</span>
+                    </span>
                 </a>
+            </li>
+                
+            {% endif %}
+
+            <!-- Conges Dropdown -->
+            {% if "conges.add_congesrequest" in permissions or "conges.list_congesrequest" in permissions %}
+            <li class="w-full">
+                <button id="dropdownConges" data-dropdown-toggle="dropdownCongesMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                        <i class="scale-125 fas fa-calendar mr-2"></i>
+                        Conges
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownCongesMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {% if "conges.add_congesrequest" in permissions %}
+                    <li>
+                        <a href="{% url 'conges_request_create' %}">
+                            Demander un conges
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "conges.list_congesrequest" in permissions %}
+                    <li>
+                        <a href="{% url 'conges_request_list' %}">
+                            Demandes de conges
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "conges.list_conge" in permissions %}
+                    <li>
+                        <a href="{% url 'conges_list' %}">
+                            Conges
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </li>
             {% endif %}
-            {% if "conges.list_congesrequest" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'conges_request_list' %}">
-                    <i class="scale-125 fas fa-calendar-alt mr-2"></i>
-                Demandes de conges
-                </a>
+
+            <!-- Attendances Dropdown -->
+            {% if 'attendances_add_attendance' in permissions or "presences.view_presence" in permissions %}
+            <li class="w-full">
+                <button id="dropdownAttendances" data-dropdown-toggle="dropdownAttendancesMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                        <i class="scale-125 fas fa-clipboard-list mr-2"></i>
+                        Presences
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownAttendancesMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {% if 'attendances_add_attendance' in permissions %}
+                    <li>
+                        <a href="{% url 'attendances' %}">
+                         <i class="scale-125 fas fa-clipboard-list mr-2"></i>
+                            Markage presences
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "presences.view_presence" in permissions %}
+                    <li>
+                        <a href="{% url 'presence_page' %}">
+                            Fiches de presences
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'subor_presences' %}">
+                            Absences
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </li>
             {% endif %}
-            {% if  'attendances_add_attendance' in permissions  %}        
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'attendances' %}">
-                    <i class="scale-125 fas fa-clipboard-list mr-2"></i>
-                    Markage presences
-                </a>
+
+            <!-- Evaluations Dropdown -->
+            {% if "evaluations.add_employeerating" in permissions or "evaluations.add_departementrating" in permissions %}
+            <li class="w-full">
+                <button id="dropdownEvaluations" data-dropdown-toggle="dropdownEvaluationsMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                        <i class="scale-125 fas fa-star mr-2" style="color: #facc15;"></i>
+                        Evaluations
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownEvaluationsMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {% if "evaluations.add_employeerating" in permissions %}
+                    <li>
+                        <a href="{% url 'note_employee' %}">
+                            Evaluation employés
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "evaluations.add_departementrating" in permissions %}
+                    <li>
+                        <a href="{% url 'note_departement' %}">
+                            Evaluations departements
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </li>
             {% endif %}
-            {% if "presences.view_presence" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'presence_page' %}">
-                    <i class="scale-125 fas fa-clipboard-list mr-2"></i>
-                    Fiches de presences
-                </a>
+
+            <!-- Notes Dropdown -->
+            <li class="w-full">
+                <button id="dropdownNotes" data-dropdown-toggle="dropdownNotesMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                        <i class="scale-125 fas fa-line-chart mr-2"></i>
+                        Notes
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownNotesMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                        <a href="{% url 'departements_notes' %}">
+                            Notes departement
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'employees_notes' %}">
+                            Notes employee
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'subor_presences' %}">
-                    <i class="scale-125 fas fa-user-clock mr-2"></i>
-                    Absences
-                </a>
+
+            <!-- Classement Dropdown -->
+            <li class="w-full">
+                <button id="dropdownClassement" data-dropdown-toggle="dropdownClassementMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                        <i class="scale-125 fas fa-trophy mr-2" style="color: #fbbf24;"></i>
+                        Classement
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownClassementMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                        <a href="{% url 'classement_departement' %}">
+                            Classement departement
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'classement_employees' %}">
+                            Classement employee
+                        </a>
+                    </li>
+                </ul>
             </li>
-            {% endif %}
-            {% if "conges.list_conge" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'conges_list' %}">
-                    <i class="scale-125 fas fa-calendar-check mr-2" style="color: #22d3ee;"></i>
-                    Conges
-                </a>
-            </li>
-            {% endif %}
-            {% if "evaluations.add_employeerating" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'note_employee' %}">
-                    <i class="scale-125 fas fa-star mr-2" style="color: #facc15;"></i>
-                    Evaluation employés
-                </a>
-            </li>
-            {% endif %}
-            {% if "evaluations.add_departementrating" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'note_departement' %}">
-                    <i class="scale-125 fas fa-chart-line mr-2"></i>
-                    Evaluations departements
-                </a>
-            </li>
-            {% endif %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'departements_notes' %}">
-                    <i class="scale-125 fas fa-line-chart mr-2"></i>
-                    Notes departement
-                </a>
-            </li>
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'employees_notes' %}">
-                    <i class="scale-125 fas fa-line-chart mr-2"></i>
-                    Notes employee
-                </a>
-            </li>
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'classement_departement' %}">
-                    <i class="scale-125 fas fa-trophy mr-2" style="color: #fbbf24;"></i>
-                    Classement departement
-                </a>
-            </li>
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'classement_employees' %}">
-                    <i class="scale-125 fas fa-trophy mr-2" style="color: #eab308;"></i>
-                    Classement employee
-                </a>
-            </li>
-            {% if "comptabilite.add_salary" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'salary_list' %}">
-                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #eab308;"></i>
-                    Salaires
-                </a>
-            </li>
-            {% endif %}
-            {% if "comptabilite.view_payslip" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white"
-                    href="{% url 'paiment_salary_list' %}">
-                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #11e811;"></i>
-                    Paiments
-                </a>
-            </li>
-            {% endif %}
-            {% if "comptabilite.view_bonusslip" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'bonus_list' %}">
-                    <i class="scale-125 fas fa-plus-circle mr-2" style="color: #11e811;"></i>
-                    Primes
-                </a>
+
+            <!-- Comptabilite Dropdown -->
+            {% if "comptabilite.add_salary" in permissions or "comptabilite.view_payslip" in permissions or "comptabilite.view_bonusslip" in permissions %}
+            <li class="w-full">
+                <button id="dropdownComptabilite" data-dropdown-toggle="dropdownComptabiliteMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                {% comment %} <i class="scale-125 fas fa-plus-circle mr-2" style="color: #eab308;"></i> {% endcomment %}
+                    <svg style="color: #11e811;display: inline;" class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-6 4h6m-6 4h6M6 3v18l2-2 2 2 2-2 2 2 2-2 2 2V3l-2 2-2-2-2 2-2-2-2 2-2-2Z"/>
+                    </svg>
+                        Comptabilite
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownComptabiliteMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {% if "comptabilite.add_salary" in permissions %}
+                    <li>
+                        <a href="{% url 'salary_list' %}">
+                            Salaires
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "comptabilite.view_payslip" in permissions %}
+                    <li>
+                        <a href="{% url 'paiment_salary_list' %}">
+                            Paiments
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "comptabilite.view_bonusslip" in permissions %}
+                    <li>
+                        <a href="{% url 'bonus_list' %}">
+                            Primes
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </li>
             {% endif %}
-            {% if "recrutements.list_offre" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'offre-list' %}">
-                    <i class="scale-125 fas fa-briefcase mr-2" style="color: #11e811;"></i>
-                    Offres
-                </a>
+
+            <!-- Recrutement Dropdown -->
+            {% if "recrutements.list_offre" in permissions or "recrutements.list_postulation" in permissions %}
+            <li class="w-full">
+                <button id="dropdownRecrutement" data-dropdown-toggle="dropdownRecrutementMenu" class="btn btn-block justify-between btn-primary btn-ghost font-bold text-white">
+                    <span>
+                         <i class="scale-125 fas fa-briefcase mr-2" style="color: #11e811;"></i>
+                        Recrutement
+                    </span>
+                    <svg class="w-4 h-4 ms-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul style="z-index: 50;" id="dropdownRecrutementMenu" class="hidden dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    {% if "recrutements.list_offre" in permissions %}
+                    <li>
+                        <a href="{% url 'offre-list' %}">
+
+                            Offres
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if "recrutements.list_postulation" in permissions %}
+                    <li>
+                        <a href="{% url 'postulation_list' %}">
+                            Postulations
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </li>
             {% endif %}
-            {% if "recrutements.list_postulation" in permissions %}
-            <li>
-                <a class="btn btn-block justify-start btn-accent btn-ghost text-white" href="{% url 'postulation_list' %}">
-                    <i class="scale-125 fas fa-file-signature mr-2" style="color: #11e811;"></i>
-                    Postulations
-                </a>
-            </li>
-            {% endif %}             
+
+            
+
             <li>
                 <button onclick="my_modal_1.showModal()"
-                    class="btn btn-block justify-start btn-accent btn-ghost text-white">
+                    class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white">
                     <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt">
                             <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-linecap="square"
                                 stroke-miterlimit="10" stroke-width="2"></circle>
                             <path
-                                d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515-1.073.682-1.654l2.318-.966Z"
+                                d="m22,13.25v-2.5l-2.318-.966c-.167-.581-.395-1.135-.682-1.654l.954-2.318-1.768-1.768-2.318.954c-.518-.287-1.073-.515-1.654-.682l-.966-2.318h-2.5l-.966,2.318c-.581.167-1.135.395-1.654.682l-2.318-.954-1.768,1.768.954,2.318c-.287.518-.515,1.073-.682,1.654l-2.318.966v2.5l2.318.966c.167.581.395,1.135.682,1.654l-.954,2.318,1.768,1.768,2.318-.954c.518.287,1.073.515,1.654.682l.966,2.318h2.5l.966-2.318c.581-.167,1.135-.395,1.654-.682l2.318.954,1.768-1.768-.954-2.318c.287-.518.515,1.073.682,1.654l2.318.966Z"
                                 fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10"
                                 stroke-width="2"></path>
                         </g>
@@ -269,8 +368,8 @@
                     <span>Settings</span>
                 </button>
             </li>
-            {% else %}
 
+            {% else %}
             <li class="flex flex-col gap-4 w-full">
                 <div class="skeleton h-10 w-full rounded-md"></div>
                 <div class="skeleton h-10 w-full rounded-md"></div>
@@ -281,7 +380,6 @@
                 <div class="skeleton h-10 w-full rounded-md"></div>
             </li>
             {% endif %}
-
         </ul>
     </div>
 </div>
@@ -289,55 +387,39 @@
 <dialog id="my_modal_1" class="modal">
     <div class="modal-box max-w-5xl">
         <h3 class="text-lg font-bold mb-4 text-black dark:text-white">🎨 Choisissez un thème</h3>
-
-        <!-- Grid responsive pour les thèmes -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-            <!-- Liste complète des thèmes -->
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Default" value="desk" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Light" value="light" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Cupcake"
-                value="cupcake" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Bumblebee"
-                value="bumblebee" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Emerald"
-                value="emerald" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Corporate"
-                value="corporate" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Cupcake" value="cupcake" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Bumblebee" value="bumblebee" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Emerald" value="emerald" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Corporate" value="corporate" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Winter" value="winter" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dark" value="dark" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Night" value="night" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Sunset" value="sunset" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Forest" value="forest" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Luxury" value="luxury" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dracula"
-                value="dracula" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dracula" value="dracula" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Black" value="black" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Dim" value="dim" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Business"
-                value="business" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Business" value="business" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Coffee" value="coffee" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Synthwave"
-                value="synthwave" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Synthwave" value="synthwave" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Retro" value="retro" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Valentine"
-                value="valentine" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Valentine" value="valentine" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Aqua" value="aqua" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="CMYK" value="cmyk" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Halloween"
-                value="halloween" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Halloween" value="halloween" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Lofi" value="lofi" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Pastel" value="pastel" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Fantasy"
-                value="fantasy" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Wireframe"
-                value="wireframe" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Fantasy" value="fantasy" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Wireframe" value="wireframe" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Autumn" value="autumn" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Garden" value="garden" />
             <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Nord" value="nord" />
-            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Woodland"
-                value="woodland" />
+            <input type="radio" name="theme-buttons" class="btn btn-sm btn-outline btn-primary theme-controller" aria-label="Woodland" value="woodland" />
         </div>
-
         <div class="modal-action mt-4">
             <form method="dialog">
                 <button class="btn">Fermer</button>
@@ -346,14 +428,11 @@
     </div>
 </dialog>
 
-
 {% block sripts %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const savedTheme = getCookie("theme") || "desk";
-
         document.documentElement.setAttribute("data-theme", savedTheme);
-
         const themeInputs = document.querySelectorAll('input[name="theme-buttons"]');
         themeInputs.forEach(input => {
             if (input.value === savedTheme) {
@@ -367,7 +446,6 @@
         });
     });
 
-    // Cookies helpers
     function setCookie(name, value, days) {
         const expires = new Date(Date.now() + days * 864e5).toUTCString();
         document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
@@ -380,6 +458,75 @@
         }, '');
     }
 </script>
+<script>
+            document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const menuId = this.getAttribute('data-dropdown-toggle');
+                    const menu = document.getElementById(menuId);
+                    menu.classList.toggle('hidden');
+                });
+            });
 
+            document.addEventListener('click', function(event) {
+                document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
+                    const menuId = button.getAttribute('data-dropdown-toggle');
+                    const menu = document.getElementById(menuId);
+                    if (!button.contains(event.target) && !menu.contains(event.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+       
+ <script src='{% static "jquery\jquery.min.js" %}'></script>
+<script>
+$(function () {
+
+    function checkNotifications() {
+        $.ajax({
+            url: "/notifications/count/",
+            method: "GET",
+            success: function (data) {
+                updateNotificationBadge(data.count);
+            },
+            error: function () {
+                console.warn("Impossible de récupérer les notifications");
+            }
+        });
+    }
+
+    function updateNotificationBadge(count) {
+        const badge = $("#notification-count")[0];
+
+        if (count > 0) {
+            if(badge.classList.contains('hidden')) badge.classList.remove('hidden');
+            //console.log(badge);
+            badge.textContent = count
+        } else {
+            if(badge.classList.contains('hidden')) return;
+            badge.classList.add('hidden');
+        }
+    }
+    
+    
+    
+    // appel immédiat
+    checkNotifications();
+    
+    // toutes les 60 secondes
+    //setInterval(checkNotifications, 60000);
+    let interval = setInterval(checkNotifications, 60000);
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            clearInterval(interval);
+        } else {
+            interval = setInterval(checkNotifications, 60000);
+            checkNotifications();
+        }
+    });
+});
+</script>
 
 {% endblock sripts %}

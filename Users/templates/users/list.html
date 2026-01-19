@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block main %}
-<div class="w-full mx-auto glass shadow-md rounded p-6 md:w-3/4 overflow-auto">
+<div class="w-full mx-auto glass shadow-md rounded p-6 md:w-3/4">
     <h1 class="text-2xl font-bold dark:text-white">
         <span>Liste users</span>
         {% if "Users.add_user" in permissions %}
@@ -12,106 +12,110 @@
         {% endif %}
     </h1>
 
-        <table class="table dark:text-white">
-            <thead>
-                <tr class="uppercase text-sm text-left font-bold text-black dark:text-white">
-                    <th>Utilisateur</th>
-                    <th>Email</th>
-                    <th>Nom complet</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for person in users %}
-                <tr>
-                    <td>
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="avatar {% if person.online %} avatar-online {% else %} avatar-offline {% endif %}">
-                                <div class="mask mask-squircle w-12 h-12">
-                                    <img src="{{ person.avatar.url }}" alt="{{ person.username }}" />
-                                </div>
-                            </div>
-                            <div>
-                                <div class="font-bold">
-                                    {% if "users.view_user" in permissions %}
-                                    <a href="{{ person.get_absolute_url }}" class="link">{{ person.username }}</a>
-                                    {% else %}
-                                    {{ person.username }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-
-                    <td>{{ person.email }}</td>
-                    <td>{{ person.get_full_name }}</td>
-                    <!-- Statut user.is_active -->
-                    <td>
-                        {% if person.is_active %}
-                        <span class="badge badge-success gap-2">Actif</span>
-                        {% else %}
-                        <span class="badge badge-error gap-2">Inactif</span>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        <div class="dropdown dropdown-left">
-                            <div tabindex="0" role="button" class="btn btn-sm btn-outline btn-info">Actions</div>
-                            <ul tabindex="0"
-                                class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box glass">
-                                {% if "Users.view_user" in permissions %}
-                                <li>
-                                    <a class="btn btn-info btn-ghost btn-outline btn-sm" href="{% url 'userDetail' person.pk %}">
-                                        <i class="fas fa-info text-black dark:text-white "></i>
-                                        <span>Détail</span>
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if "Users.change_user" in permissions %}
-                                <li><a class="btn btn-warning btn-sm btn-outline btn-ghost"
-                                        href="{% url 'userEdit' person.pk %}">
-                                        <i class="fas fa-edit text-black dark:text-white "></i>
-                                        <span>Modifier</span></a>
-                                </li>
-                                {% endif %}
-                                {% if "Users.delete_user" in permissions %}
-                                <li><a class="btn btn-error btn-sm btn-outline btn-ghost"
-                                        href="{% url 'userDelete' person.pk %}">
-                                        <i class="fas fa-trash text-black dark:text-white "></i>
-                                        <span>Supprimer</span>
-                                    </a></li>
-                                {% endif %}
-                                {% if "Users.change_user" in permissions %}
-                                <li>
-                                    <a href="{% url 'toggle_user_active' person.pk %}">
-                                        {% if person.is_active %}
-                                        <button type="submit" class="btn btn-sm btn-outline btn-error btn-ghost">
-                                            <i class="fas fa-user-slash text-black dark:text-white "></i>
-                                            <span>Désactiver</span>
-                                        </button>
-                                        {% else %}
-                                        <button type="submit" class="btn btn-sm btn-outline btn-success btn-ghost">
-                                            <i class="fas fa-user-check text-black dark:text-white "></i>
-                                            <span>Activer</span>
-                                        </button>
-                                        {% endif %}
-                                    </a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center text-red-500 text-lg py-4">Aucun employé trouvé.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+       <div>
+         <table class="table dark:text-white">
+             <thead>
+                 <tr class="uppercase text-sm text-left font-bold text-black dark:text-white">
+                     <th>Utilisateur</th>
+                     <th>Email</th>
+                     <th>Nom complet</th>
+                     <th>Statut</th>
+                     <th>Actions</th>
+                 </tr>
+             </thead>
+        
+             <tbody>
+                 {% for person in users %}
+                 <tr>
+                     <td>
+                         <div class="flex items-center gap-3">
+                             <div
+                                 class="avatar {% if person.online %} avatar-online {% else %} avatar-offline {% endif %}">
+                                 <div class="mask mask-squircle w-12 h-12">
+                                     <img src="{{ person.avatar.url }}" alt="{{ person.username }}" />
+                                 </div>
+                             </div>
+                             <div>
+                                 <div class="font-bold">
+                                     {% if "users.view_user" in permissions %}
+                                     <a href="{{ person.get_absolute_url }}" class="link">{{ person.username }}</a>
+                                     {% else %}
+                                     {{ person.username }}
+                                     {% endif %}
+                                 </div>
+                             </div>
+                         </div>
+                     </td>
+        
+                     <td>{{ person.email }}</td>
+                     <td>{{ person.get_full_name }}</td>
+                     <!-- Statut user.is_active -->
+                     <td>
+                         {% if person.is_active %}
+                         <span class="badge badge-success gap-2">Actif</span>
+                         {% else %}
+                         <span class="badge badge-error gap-2">Inactif</span>
+                         {% endif %}
+                     </td>
+        
+                     <td>
+                         <div class="dropdown dropdown-left">
+                             <div tabindex="0" role="button" class="btn btn-sm btn-outline btn-info">Actions</div>
+                             <ul tabindex="0"
+                                 class="dropdown-content gap-2 z-10 menu p-2 shadow bg-base-100 rounded-box glass">
+                                 {% if "Users.view_user" in permissions %}
+                                 <li>
+                                     <a class="btn btn-info btn-ghost btn-outline btn-sm" href="{% url 'userDetail' person.pk %}">
+                                         <i class="fas fa-info text-black dark:text-white "></i>
+                                         <span>Détail</span>
+                                     </a>
+                                 </li>
+                                 {% endif %}
+                                 {% if "Users.change_user" in permissions %}
+                                 <li><a class="btn btn-warning btn-sm btn-outline btn-ghost"
+                                         href="{% url 'userEdit' person.pk %}">
+                                         <i class="fas fa-edit text-black dark:text-white "></i>
+                                         <span>Modifier</span></a>
+                                 </li>
+                                 {% endif %}
+                                 {% if "Users.delete_user" in permissions %}
+                                 <li><a class="btn btn-error btn-sm btn-outline btn-ghost"
+                                         href="{% url 'userDelete' person.pk %}">
+                                         <i class="fas fa-trash text-black dark:text-white "></i>
+                                         <span>Supprimer</span>
+                                     </a></li>
+                                 {% endif %}
+                                 {% if "Users.change_user" in permissions %}
+                                 <li>
+                                     {% if person.is_active %}
+                                     <a href="{% url 'toggle_user_active' person.pk %}" class="btn btn-sm btn-outline btn-error btn-ghost">
+                                         {% comment %} <button type="submit" class="btn btn-sm btn-outline btn-error btn-ghost"> {% endcomment %}
+                                             <i class="fas fa-user-slash text-black dark:text-white "></i>
+                                             <span>Désactiver</span>
+                                         {% comment %} </button> {% endcomment %}
+                                     </a>
+                                         {% else %}
+                                    <a href="{% url 'toggle_user_active' person.pk %}" class="btn btn-sm btn-outline btn-success btn-ghost">
+                                         {% comment %} <button type="submit"> {% endcomment %}
+                                             <i class="fas fa-user-check text-black dark:text-white "></i>
+                                             <span>Activer</span>
+                                         {% comment %} </button> {% endcomment %}
+                                         {% endif %}
+                                     </a>
+                                 </li>
+                                 {% endif %}
+                             </ul>
+                         </div>
+                     </td>
+                 </tr>
+                 {% empty %}
+                 <tr>
+                     <td colspan="6" class="text-center text-red-500 text-lg py-4">Aucun employé trouvé.</td>
+                 </tr>
+                 {% endfor %}
+             </tbody>
+         </table>
+       </div>
 
  {% if messages %}
  {% for message in messages %}

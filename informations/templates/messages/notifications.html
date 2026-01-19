@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+    <div class="w-3/4 mx-auto glass p-4 dark:text-white">
+        <div class="max-w-3xl mx-auto px-4 py-6">
+
+    <h2 class="text-2xl font-semibold mb-6">
+        Mes notifications
+    </h2>
+
+    {% if notifications %}
+        <ul class="space-y-4">
+            {% for notif in notifications %}
+                <li class="rounded-lg border p-4 transition
+                           {% if notif.is_read %}
+                               bg-white border-gray-200
+                           {% else %}
+                               bg-blue-50 border-blue-300
+                           {% endif %}">
+
+                   {% if notif.get_url %}
+                        <a href="{{ notif.get_url }}" class="block">
+                    {% endif %}
+
+
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="font-medium text-gray-900">
+                                {{ notif.title }}
+                            </h3>
+                            <span class="text-xs text-gray-500">
+                                {{ notif.created_at|date:"d/m/Y H:i" }}
+                            </span>
+                        </div>
+
+                        <p class="text-sm text-gray-700">
+                            {{ notif.content }}
+                        </p>
+
+                    {% if notif.link %}
+                        </a>
+                    {% endif %}
+
+                    {% if not notif.is_read %}
+                        <form method="post"
+                              action="{% url 'notification_read' notif.id %}"
+                              class="mt-3">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="text-xs text-blue-600 hover:underline">
+                                Marquer comme lu
+                            </button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-500 text-center">
+            Aucune notification.
+        </p>
+    {% endif %}
+
+</div>
+    </div>
+{% endblock %}

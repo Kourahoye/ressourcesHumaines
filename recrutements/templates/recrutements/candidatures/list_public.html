@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="desk">
+
+<head>
+  {% load tailwind_tags %}
+  {% load static %}
+  <title>Postulations</title>
+  <meta charset=" UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+  <script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+  <script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+  <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+
+  {% tailwind_css %}
+
+</head>
+
+<body class=" bg-base-100 dark:text-white font-serif leading-normal tracking-normal min-h-screen text-slate-950">
+        <ul class="list max-w-3xl mx-auto bg-base-100 rounded-box space-y-2 shadow-md">
+
+  <li class="p-4 pb-2  opacity-60 tracking-wide">
+    Offres disponibles
+  </li>
+
+  {% for offre in offres %}
+  <li class="list-row">
+
+    <!-- Compteur -->
+    <div class="text-4xl font-thin opacity-30 tabular-nums">
+      {{ forloop.counter|stringformat:"02d" }}
+    </div>
+
+    <!-- Icône / image générique -->
+    <div>
+      <div class="size-10 rounded-box bg-primary/10 flex items-center justify-center font-bold">
+        {{ offre.departement.name|slice:":1"|upper }}
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="list-col-grow">
+      <div class="text-xl">{{ offre.titre }}</div>
+      <div class="text-sm uppercase font-semibold opacity-60">
+        {{ offre.departement.name }}
+      </div>
+    </div>
+
+    <!-- Lien vers l'offre -->
+    
+    {% if offre.active %}
+    
+    <a href="{% url 'postuler_offre'  offre.pk %}"
+    class="btn btn-square btn-ghost"
+    title="postuler">
+    <i class="fa-solid fa-briefcase"></i>
+  </a>
+  {% else %}
+  <div class="badge badge-error gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    Termine
+  </div>
+  {% endif %}
+
+  </li>
+  {% empty %}
+  <li class="p-4 text-sm opacity-60">
+    Aucune offre disponible pour le moment.
+  </li>
+  {% endfor %}
+
+</ul>
+
+
+</body>
+</html>

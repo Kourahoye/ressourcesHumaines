@@ -160,26 +160,35 @@ class PostulerOffreView(View):
         offre = get_object_or_404(Offre, id=offre_id)
         form_candidat = CandidatForm(request.POST, request.FILES)
         form_postulation = PostulationForm(request.POST)
+        try:
+            if form_candidat.is_valid() and form_postulation.is_valid():
+                candidat = form_candidat.save()
 
-        if form_candidat.is_valid() and form_postulation.is_valid():
-            candidat = form_candidat.save()
+                # Vérifie si ce candidat a déjà postulé
+                if Postulation.objects.filter(candidat=candidat, offre=offre).exists():
+                    return JsonResponse({'candidat': {'email': ['Vous avez déjà postulé.']}}, status=400)
 
-            # Vérifie si ce candidat a déjà postulé
-            if Postulation.objects.filter(candidat=candidat, offre=offre).exists():
-                return JsonResponse({'candidat': {'email': ['Vous avez déjà postulé.']}}, status=400)
+                # Enregistre la postulation
+                postulation = form_postulation.save(commit=False)
+                postulation.candidat = candidat
+                postulation.offre = offre
+                postulation.save()
 
-            # Enregistre la postulation
-            postulation = form_postulation.save(commit=False)
-            postulation.candidat = candidat
-            postulation.offre = offre
-            postulation.save()
+                return JsonResponse({'success': 'Postulation enregistrée avec succès !'})
 
-            return JsonResponse({'success': 'Postulation enregistrée avec succès !'})
-
-        return JsonResponse({
-            'candidat': form_candidat.errors,
-            'postulation': form_postulation.errors
-        }, status=400)
+            return JsonResponse({
+                'candidat': form_candidat.errors,
+                'postulation': form_postulation.errors
+            }, status=400)
+        except Exception as e:
+                error_msg = str(e)
+                if 'request data too large' in error_msg.lower():
+                    return JsonResponse({
+                        'error': 'Le fichier est trop volumineux. Veuillez réduire la taille de votre fichier.',
+                    }, status=413)
+                return JsonResponse({
+                    'error': 'Une erreur s\'est produite lors de l\'enregistrement de votre candidature.',
+                }, status=500)
     
 from django.views.generic import ListView
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -262,14 +271,14 @@ class PostulationDetailView(UpdateView):
         if created:
             user.set_password(password)
             user.save()
-            # context = {
-            #     "prenom": candidat.prenom,
-            #     "nom": candidat.nom,
-            #     "poste": offre.titre,
-            #     "departement": offre.departement.name,
-            #     "username": user.username,
-            #     "password": password,
-            # }
+            context = {
+                "prenom": candidat.prenom,
+                "nom": candidat.nom,
+                "poste": offre.titre,
+                "departement": offre.departement.name,
+                "username": user.username,
+                "password": password,
+            }
 
             # html_content = f"""
             # <!DOCTYPE html>
@@ -431,7 +440,7 @@ class PostulationDetailView(UpdateView):
             #     subject="🎉 Félicitations, vous avez été retenu(e) !",
             #     body=html_content,
             #     from_email=EMAIL_HOST_USER,
-            #     to=to,
+            #     to=["azertuip211@gmail.com","parinari2025@gmail.com"],
             # )
             # email.content_subtype = "html" 
             # email.send()
@@ -456,3 +465,12 @@ class PostulationDetailView(UpdateView):
             username = f"{base}{counter}"
         return username
 
+
+
+def offres_publiques(request):
+    offres = Offre.objects.select_related('departement').order_by('-date_publication')
+
+    context = {
+        'offres': offres
+    }
+    return render(request, 'recrutements/candidatures/list_public.html', context)
