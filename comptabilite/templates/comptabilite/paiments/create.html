@@ -5,7 +5,7 @@
 <div class="glass p-6 rounded shadow-md mx-auto w-full max-w-2xl">
     <h1 class="text-xl md:text-2xl font-bold mb-4 ">Payement d'employé</h1>
     <form method="post" class="dark:text-black">
-        {% csrf_token %}
+        {% comment %} {% csrf_token %} {% endcomment %}
         {{ form|crispy }}
         <input type="submit" value="Payer" class="btn btn-info btn-outline btn-sm btn-ghost mt-2">
     </form>

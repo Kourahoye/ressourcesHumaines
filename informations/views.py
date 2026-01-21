@@ -246,9 +246,19 @@ class SendFormview(FormView):
             )
 
             email.attach_alternative(html_content, "text/html")
-            email.send(fail_silently=False)
-
-            
+            email.send(fail_silently=True)
+            #bluck create notification
+            Notification.objects.bulk_create([
+                Notification(
+                    to=user,
+                    title=f"Nouveau message dans le département {departement.name}",
+                    content="Vous avez reçu un nouveau message. Consultez vos mails",
+                )
+                for user in User.objects.filter(
+                    is_active=True,
+                    profil_employee__departement_id=departement.id
+                )
+            ])
             
             # print("Emails to send:", list(emails))
 

@@ -10,9 +10,9 @@ from .models import User
 
 @receiver(post_save, sender=User)
 def add_default_permissions(sender, instance, created, **kwargs):
-    """
-    Ajoute des permissions par défaut à chaque nouvel utilisateur.
-    """
+    
+    #Ajoute des permissions par défaut à chaque nouvel utilisateur.
+    
     if not created:
         return  
 
@@ -47,3 +47,32 @@ def add_default_permissions(sender, instance, created, **kwargs):
         print("⚠️ Certaines permissions par défaut n'ont pas été trouvées.")
     except Exception as e:
         print(f"Erreur lors de l'ajout des permissions par défaut : {e}")
+
+@receiver(post_save, sender=User)
+def send_notification_user_must_change_password(sender, instance, created, **kwargs):
+    # Notifie l'utilisateur de changer son mot de passe à la première connexion
+    if created and instance.must_change_password:
+        from informations.services import notify_user
+
+        notify_user(
+            user=instance,
+            title="Changement de mot de passe requis",
+            content=(
+                "Pour des raisons de sécurité, veuillez changer votre mot de passe lors de votre première connexion."
+            ),
+        )
+        
+@receiver(post_save, sender=User)
+def send_notif_user_profile_updated(sender, instance, created, **kwargs):
+    # Notifie l'utilisateur lorsque son profil est mis à jour
+    if not created:
+        from informations.services import notify_user
+
+        notify_user(
+            user=instance,
+            title="Profil mis à jour",
+            content=(
+                "Votre profil utilisateur a été mis à jour avec succès."
+            ),
+            link=""
+        )

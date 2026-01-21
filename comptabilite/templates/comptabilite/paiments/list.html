@@ -35,7 +35,7 @@
                         <div
                             id="actionsMenu-{{ paiment.pk }}"
                             class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2">
-                            {% if 'comptabilite.view_paiment' in permissions %}
+                            {% if 'comptabilite.view_payslip' in permissions %}
                                 <a href="{% url 'payslip_detail' paiment.pk %}"
                                     class="btn btn-sm btn-accent btn-outline btn-ghost">
                                     <i class="fas fa-info text-black dark:text-white "></i>
@@ -43,7 +43,7 @@
                                 </a>
                             
                             {% endif %}
-                            {% if 'comptabilite.delete_paiment' in permissions %}
+                            {% if 'comptabilite.delete_payslip' in permissions %}
                            
                                 <a href="{% url 'payslip_delete' paiment.pk %}"
                                     class="btn btn-sm btn-error btn-outline btn-ghost">
