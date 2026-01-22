@@ -87,5 +87,8 @@ def send_notif_user_profile_updated(sender, instance, created, **kwargs):
             content=(
                 "Votre profil utilisateur a été mis à jour avec succès."
             ),
-            link=""
+            link={
+            "url_name": "userDetail",
+            "kwargs": {"pk": instance.pk}
+            }    
         )

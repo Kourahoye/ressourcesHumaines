@@ -19,6 +19,9 @@ class Conge(models.Model):
     def __str__(self):
         return f'conge de {self.employee.user.username} du {self.startDate} au {self.endDate}'
     
+    def number_of_days(self):
+        return (self.endDate -  self.startDate).days + 1
+    
     class Meta:
          permissions = [("list_conge", "Can list conges"),("change_conge_status","Can change conges status")]
 

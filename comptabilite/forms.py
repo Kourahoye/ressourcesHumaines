@@ -73,6 +73,11 @@ class BonusSlipForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            existing_classes = field.widget.attrs.get('class', '')
+            error_class = 'border-red-600'
+            field.widget.attrs['class'] = f"{existing_classes} {error_class}" if self.errors.get(field_name) else existing_classes
+
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

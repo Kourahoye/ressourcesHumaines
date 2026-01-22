@@ -128,7 +128,7 @@ class CongesCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     login_url = reverse_lazy("login")
     model = Conge
     template_name = "conges/conges/create.html"
-    success_url = reverse_lazy('conges_request_list')
+    success_url = reverse_lazy('conges_list')
     form_class = CongeForm
 
     def get_context_data(self, **kwargs):

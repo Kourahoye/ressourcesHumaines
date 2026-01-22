@@ -42,10 +42,10 @@ def payslip_notify(sender,instance,created,**kwargs):
             to=employee_user,
             title="Nouveau paiement",
             content=f"Une nouvelle fiche de paie pour {instance.month}/{instance.year} a été générée avec un total de {instance.total}.",
-            # link={
-            #     "url_name": "payslip_detail",
-            #     "kwargs": {"pk": instance.pk}
-            # }
+            link={
+                "url_name": "payslip_detail",
+                "kwargs": {"pk": instance.pk}
+            }
         )
 
 @receiver(post_save,sender=BonusSlip)
@@ -57,8 +57,8 @@ def bonus_notify(sender,instance,created,**kwargs):
             to=employee_user,
             title="Paiment de prime",
             content=f"Nouvelle prime pour {instance.month}/{instance.year} a été créée avec un montant de {instance.amount}.",
-            # link={
-            #     "url_name": "bonusslip_detail",
-            #     "kwargs": {"pk": instance.pk}
-            # }
+            link={
+                "url_name": "bonus_details",
+                "kwargs": {"pk": instance.pk}
+            }
         )
