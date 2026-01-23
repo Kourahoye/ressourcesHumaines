@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
 from django.db import transaction
 from django.contrib.auth.models import Permission
@@ -92,3 +92,25 @@ def send_notif_user_profile_updated(sender, instance, created, **kwargs):
             "kwargs": {"pk": instance.pk}
             }    
         )
+        
+@receiver(pre_save, sender=User)
+def notify_password_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return
+
+    try:
+        old_user = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        return
+
+    if old_user.password != instance.password:
+
+        def on_commit_callback():
+            from informations.services import notify_user
+            notify_user(
+                user=instance,
+                title="Changement de mot de passe réussi",
+                content="Votre mot de passe a été changé avec succès.",
+            )
+
+        transaction.on_commit(on_commit_callback)
