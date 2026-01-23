@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+    <div class="p-6 rounded shadow-md mx-auto w-full max-w-2xl card bg-base-300/40 glass space-y-2">
+        <h1 class="text-3xl font-bold">Assigner un chef de departement</h1>
+        <form class="flex flex-col space-y-4" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div>
+                <button type="submit" class="btn btn-info btn-sm btn-outline btn-ghost">Assigner</button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}
+
+
+{% block scripts %}
+    {% comment %} <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> {% endcomment %}
+ <script src='{% static "jquery\jquery.min.js" %}'></script>
+<script>
+$(document).ready(function () {
+
+    $("#id_departement").change(function () {
+        const departementId = $(this).val();
+        const employeeSelect = $("#id_employee");
+
+        employeeSelect.empty();
+        employeeSelect.append(
+            $('<option></option>').text("Chargement...")
+        );
+
+        if (!departementId) {
+            employeeSelect.empty();
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'ajax_load_employees' %}",
+            data: {
+                'departement': departementId
+            },
+            success: function (data) {
+                employeeSelect.empty();
+
+                if (data.length === 0) {
+                    employeeSelect.append(
+                        $('<option></option>').text("Aucun employé")
+                    );
+                    return;
+                }
+
+                $.each(data, function (index, employee) {
+                    employeeSelect.append(
+                        $('<option></option>')
+                            .val(employee.id)
+                            .text(employee.user__first_name + " " + employee.user__last_name)
+                    );
+                });
+            },
+            error: function () {
+                employeeSelect.empty();
+                employeeSelect.append(
+                    $('<option></option>').text("Erreur de chargement")
+                );
+            }
+        });
+    });
+
+});
+</script>
+
+{% endblock %}
+    

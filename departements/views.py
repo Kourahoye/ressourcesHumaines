@@ -1,11 +1,12 @@
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView,DeleteView,UpdateView
 from employees.models import Employee
-from .models import Departements
-from .forms import DepartementsForm
+from .models import DepartementHead, Departements
+from .forms import DepartementHeadFrom, DepartementsForm
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from collections import defaultdict
 from django.utils.timezone import now
 from evaluations.models import DepartementRating
@@ -154,3 +155,81 @@ class DepartementsUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateVi
         form.instance.updated_by = self.request.user
         return super().form_valid(form)
 
+
+class DepartementAssign(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
+    permission_required =["departements.assign_departement_head"]
+    login_url = reverse_lazy("login")
+
+    model = DepartementHead
+    form_class = DepartementHeadFrom
+    template_name = 'departements/heads/assign.html'
+    success_url = reverse_lazy('departements_list_head')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions'] = list(self.request.user.get_all_permissions())
+        return context
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.updated_by = self.request.user
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+    
+from django.http import JsonResponse
+from employees.models import Employee
+@login_required()
+def load_employees(request):
+    departement_id = request.GET.get('departement')
+
+    employees = Employee.objects.filter(
+        departement_id=departement_id,
+        user__is_active=True
+    ).values('id', 'user__first_name', 'user__last_name')
+
+    return JsonResponse(list(employees), safe=False)
+    
+    
+class DepartementHeadsListView(LoginRequiredMixin,PermissionRequiredMixin, ListView):
+    permission_required =["departements.view_departementhead"]
+
+    login_url = reverse_lazy("login")
+    model = DepartementHead
+    template_name = 'departements/heads/list.html'
+    context_object_name = 'departement_heads'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions'] = list(self.request.user.get_all_permissions())
+        return context
+    
+
+
+class DepartementHeadDeleteView(DeleteView):
+    model = DepartementHead
+    template_name = "departements/heads/delete.html"
+    success_url = reverse_lazy('departements_list_head')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['permissions'] = list(self.request.user.get_all_permissions())
+        return context
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return super().delete(request, *args, **kwargs)
+    
+    
+def desativate_departement_head(request, pk):
+    departement_head = DepartementHead.objects.get(pk=pk)
+    departement_head.active = False
+    departement_head.end_date = timezone.now().date()
+    departement_head.updated_by = request.user
+    departement_head.save()
+    
+    referrer = request.META.get('HTTP_REFERER')
+    return redirect(referrer) if referrer else redirect('departements_list_head')
