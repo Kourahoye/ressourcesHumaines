@@ -49,11 +49,11 @@
             </div>
             <div class="stat order-6 lg:order-7 flex flex-col justify-center items-center h-72 col-span-2 row-span-2 sm:col-span-3 md:col-span-2 md:row-span-2 shadow-md">
                 
-                {% if  general.accepted == 0 and general.refused == 0 and general.pending == 0 and general.aborted  == 0 %}
+                {% if  general.conges_stats.accepted == 0 and general.conges_stats.refused == 0 and general.conges_stats.pending == 0 and general.conges_stats.aborted  == 0 %}
                     <div class="stat-title font-semibold text-[9px] xs:text-[11px] md:text-xs dark:text-white">Stat conges</div>
                 {% endif %}
                     
-                    <canvas id="statRequetteConges" style="{% if  general.accepted == 0 and general.refused == 0 and general.pending == 0 and general.aborted  == 0 %}
+                    <canvas id="statRequetteConges" style="{% if  general.conges_stats.accepted == 0 and general.conges_stats.refused == 0 and general.conges_stats.pending == 0 and general.conges_stats.aborted  == 0 %}
                     display: none;
                     {% endif %}
                     "></canvas>

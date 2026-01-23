@@ -111,6 +111,25 @@
             </li>
             {% endif %}
 
+            {% if "departements.assign_departement_head" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'departements_assign_head' %}">
+                    <i class="scale-125 fas fa-user-tie mr-2"></i>
+                    Assignation Chefs de Département
+                </a>
+            </li>
+            {% endif %}
+
+            {% if "departements.assign_departement_head" in permissions %}
+            <li>
+                <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white" href="{% url 'departements_list_head' %}">
+                    <i class="scale-125 fas fa-user-tie mr-2"></i>
+                    Chefs de Départements
+                </a>
+            </li>
+            {% endif %}
+                
+                
             {% if "departements.view_departements" in permissions %}
             <li>
                 <a class="btn btn-block justify-start btn-primary btn-ghost font-bold text-white"

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+<div class="mx-auto w-3/4 glass p-4">
+    <h1 class="text-2xl font-bold mb-6 inline-block dark:text-white">
+    <span>Liste des chefs de departement</span>
+      {% if "employees.add_employee" in permissions %}
+  <a class="btn btn-info btn-outline btn-ghost btn-xs text-white" href="{% url 'departements_assign_head' %}">
+    <i class="fas fa-plus text-black dark:text-white "></i>
+  </a>
+  {% endif %}
+  </h1>
+    <div>
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th></th>
+            <th>Departement</th>
+            <th>Chef</th>
+            <th>Debut</th>
+            <th>Fin</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+
+            {% for dephead in departement_heads %}
+                <tr>
+                    <th>{{ forloop.counter }}</th>
+                    <td>{{ dephead.departement }}</td>
+                    <td>{{ dephead.employee.user }}</td>
+                    <td>{{ dephead.start_date }}</td>
+                    <td>{{ dephead.end_date }}</td>
+                    <td>
+                        {% if dephead.active == True %}
+                            <span class="badge badge-success">Actif</span>
+                        {% else %}
+                            <span class="badge badge-error">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td class="relative">
+                        <button
+                            id="actionsBtn-{{ dephead.pk }}"
+                            data-dropdown-toggle="actionsMenu-{{ dephead.pk }}"
+                            type="button"
+                            class="btn btn-outline btn-info btn-ghost btn-sm"
+                            >Actions</button>
+                        <div
+                            id="actionsMenu-{{ dephead.pk }}"
+                            class="hidden absolute right-0 mt-2 z-20 bg-base-100 rounded-box shadow p-2 flex flex-col gap-2"
+                        >
+                            <a
+                                href="{% url 'departement_head_delete' dephead.pk %}"
+                                class="btn btn-error btn-sm btn-ghost btn-outline justify-start">
+                                <i class="fas fa-trash text-black dark:text-white"></i>
+                                <span>Supprimer</span>
+                            </a>
+                            {% if dephead.active == True %}
+                            <a href="{% url 'departement_head_desactive' dephead.pk %}" class="btn btn-neutral btn-sm btn-ghost btn-outline justify-start">
+                                <i class="fas fa-times"></i>
+                                <span>Désactiver</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+                
+          
+        </tbody>
+      </table>
+    </div>
+</div>
+    
+{% endblock main %}
+    
