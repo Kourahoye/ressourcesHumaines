@@ -70,6 +70,10 @@ def send_notification_user_must_change_password(sender, instance, created, **kwa
         notify_user(
             user=instance,
             title="Changement de mot de passe requis",
+            link={
+            "url_name": "userDetail",
+            "kwargs": {"pk": instance.pk}
+            }  ,
             content=(
                 "Pour des raisons de sécurité, veuillez changer votre mot de passe lors de votre première connexion."
             ),

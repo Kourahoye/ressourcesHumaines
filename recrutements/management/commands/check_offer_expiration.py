@@ -7,13 +7,13 @@ class Command(BaseCommand):
     help = 'Vérifie les offres expirées et les désactive'
 
     def handle(self, *args, **options):
-        today = timezone.now().date()
-        expired_offers = Offre.objects.filter(date_expiration__lt=today, active=True)
+        today = timezone.now()
+        expired_offers = Offre.objects.filter(date_expiration__lte=today, active=True)
         
         count = expired_offers.count()
         
         if count > 0:
             expired_offers.update(active=False)
-            self.stdout.write(self.style.SUCCESS(f'{count} offre(s) expirée(s) ont été désactivée(s)'))
+            self.stdout.write(self.style.SUCCESS(f'{count} offre{"s" if count>1 else ""} expirée{"s" if count>1 else ""} ont été désactivée{"s" if count>1 else ""}'))
         else:
             self.stdout.write('Aucune offre à désactiver')

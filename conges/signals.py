@@ -54,8 +54,4 @@ def conge_gifted_notification(sender,instance,created,**kwargs):
                 f"du {instance.startDate} au {instance.endDate}."
             ),
             link=""
-            # link={
-            #     "url_name": "conge_details",
-            #     "kwargs": {"pk": instance.pk}
-            # }
         )
