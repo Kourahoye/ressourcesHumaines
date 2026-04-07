@@ -114,6 +114,7 @@ def notify_password_change(sender, instance, **kwargs):
             notify_user(
                 user=instance,
                 title="Changement de mot de passe réussi",
+                link="",
                 content="Votre mot de passe a été changé avec succès.",
             )
 
