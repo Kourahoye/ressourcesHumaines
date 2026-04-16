@@ -10,7 +10,13 @@
       <i class="fas fa-plus text-black dark:text-white "></i>
     </a>
   </h1>
-
+  {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
  <div>
    <table class="table w-full min-w-full">
      <thead>
@@ -124,3 +130,21 @@
 </div>
 
 {% endblock main %}
+
+{% block scripts %}
+  
+
+<script>
+  {% if messages %}
+  {% for message in messages %}
+  Toastify({
+    text: '{{ message }}',
+    duration: 3000,
+    gravity: "bottom",
+    position: "right",
+    backgroundColor: "#22c55e",
+  }).showToast();
+  {% endfor %}
+  {% endif %}
+</script>
+{% endblock scripts %}

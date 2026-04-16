@@ -36,7 +36,8 @@ class MarkAttendanceAjaxView(View):
                 attendances.save()
                 return JsonResponse({'message': f"Pointage enregistré avec succès."})
         except Exception as e:
-            print(e)
+            # print(e)
+            pass
 
 
 @method_decorator(csrf_exempt, name='dispatch')

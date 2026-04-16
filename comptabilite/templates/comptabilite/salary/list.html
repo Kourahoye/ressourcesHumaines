@@ -81,3 +81,20 @@
 </div>
 
 {% endblock main %}
+{% block scripts %}
+  
+
+<script>
+  {% if messages %}
+  {% for message in messages %}
+  Toastify({
+    text: '{{ message }}',
+    duration: 3000,
+    gravity: "bottom",
+    position: "right",
+    backgroundColor: "#22c55e",
+  }).showToast();
+  {% endfor %}
+  {% endif %}
+</script>
+{% endblock scripts %}

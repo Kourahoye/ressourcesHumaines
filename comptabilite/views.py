@@ -25,6 +25,8 @@ class PaimentCreateView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView)
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message ="Le salaire pour {} a été créé avec succès.".format(form.instance.employee.user)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
 class PaimentUpdateView(LoginRequiredMixin,PermissionsRequiredMixins,UpdateView):
@@ -42,6 +44,8 @@ class PaimentUpdateView(LoginRequiredMixin,PermissionsRequiredMixins,UpdateView)
     
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        message ="Le salaire pour {} a été modifié avec succès.".format(form.instance.employee.user)
+        messages.success(self.request, message)
         return super().form_valid(form)
     
 
@@ -77,6 +81,8 @@ class PaimentDeleteView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView)
         if paiment:
             paiment.delete()
             return redirect(self.success_url)
+        message ="Le salaire pour {} a été supprimé avec succès.".format(paiment.employee.user)
+        messages.success(self.request, message)
         return super().post(request, *args, **kwargs)
 
 
@@ -100,6 +106,8 @@ class BonusCreateView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView):
         # print(date)
         form.instance.month = date.month
         form.instance.year = date.year
+        message ="Le bonus pour {} a été créé avec succès.".format(form.instance.employee.user)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
 
@@ -149,6 +157,8 @@ class BonusDeleteView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView):
         if paiment:
             paiment.delete()
             return redirect(self.success_url)
+        message ="Le bonus pour {} a été supprimé avec succès.".format(paiment.employee.user)
+        messages.success(self.request, message)
         return super().post(request, *args, **kwargs)
     
 
@@ -182,6 +192,8 @@ class PayEmployeeView(LoginRequiredMixin, PermissionsRequiredMixins, CreateView)
         form.instance.base_salary = employee.salary.amount
         form.instance.month = month
         form.instance.year = year
+        message ="Le paiment pour {} a été effectué avec succès.".format(form.instance.employee.user)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
 class PaymentList(LoginRequiredMixin, PermissionsRequiredMixins,ListView):
@@ -223,5 +235,7 @@ class PayslipDeleteView(DeleteView):
         paiment = self.get_object()
         if paiment:
             paiment.delete()
+            message ="La fiche de paie pour {} a été supprimée avec succès.".format(paiment.employee.user)
+            messages.success(self.request, message)
             return redirect(self.success_url)
         return super().post(request, *args, **kwargs)

@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
 from django.core.mail import EmailMessage 
+from django.contrib import messages
 
 # Generic class-based views
 from django.views.generic import (
@@ -52,6 +53,8 @@ class OffreCreateView(CreateView):
         form.instance.acitve = True
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "Offre pour le poste de {} a été créée avec succès.".format(form.instance.titre)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -94,6 +97,8 @@ class OffreUpdateView(UpdateView):
     
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        message = "Offre pour le poste de {} a été mise à jour avec succès.".format(form.instance.titre)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
     def form_invalid(self, form):

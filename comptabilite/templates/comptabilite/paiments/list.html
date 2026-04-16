@@ -3,6 +3,7 @@
 
 {% block main %}
 <div class="glass p-6 rounded shadow-md mx-auto w-full md:w-3/4 lg:w-1/2 overflow-auto">
+        
     <h1 class="text-2xl font-bold mb-4">
         <span>Liste des paiments</span>
         <a href="{% url 'paiment_salary' %}" class="btn btn-info btn-outline btn-ghost btn-sm">Payer Salaire</a>
@@ -90,3 +91,19 @@
 </div>
 {% endif %}
 {% endblock main %}
+{% block scripts %}
+  
+<script>
+  {% if messages %}
+  {% for message in messages %}
+  Toastify({
+    text: '{{ message }}',
+    duration: 3000,
+    gravity: "bottom",
+    position: "right",
+    backgroundColor: "#22c55e",
+  }).showToast();
+  {% endfor %}
+  {% endif %}
+</script>
+{% endblock scripts %}

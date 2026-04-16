@@ -33,6 +33,8 @@ class EmployeeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        messages = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee)
+        messages.success(self.request, messages)
         return super().form_valid(form)
 
 
@@ -125,6 +127,8 @@ class EmployeeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
+        messages = "L'employé {} a été supprimé avec succès.".format(self.get_object())
+        messages.success(self.request, messages)
         return context
 
     
@@ -144,6 +148,8 @@ class EmployeeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        messages = "L'employé {} a été modifié avec succès.".format(form.instance.employee)
+        messages.success(self.request, messages)
         return super().form_valid(form)
     
 

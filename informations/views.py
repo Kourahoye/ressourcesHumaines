@@ -1,19 +1,16 @@
-# views.py
 import bleach
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 from Users.models import User
 from departements.models import Departements
 from employees.models import Employee
 from .forms import MessageForm
 from .models import Message, Notification
 from django.views.generic import FormView
-# from .models import Message, MessageRecipient
-
 from bleach.css_sanitizer import CSSSanitizer
+from django.contrib import messages
 
 ALLOWED_CSS_PROPERTIES = [
     'color',
@@ -31,27 +28,14 @@ ALLOWED_CSS_PROPERTIES = [
 ]
 
 ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS.union([
-    # Texte de base
     'p', 'br', 'span', 'hr',
-
-    # Titres
     'h1', 'h2', 'h3',
-
-    # Mise en forme
     'strong', 'em', 'u', 's',
     'sub', 'sup', 'mark',
     'code', 'pre',
-
-    # Listes
     'ul', 'ol', 'li',
-
-    # Citations
     'blockquote',
-
-    # Liens
     'a',
-
-    # Tableaux
     'table', 'thead', 'tbody',
     'tr', 'th', 'td',
 ])
@@ -110,22 +94,6 @@ def send_message(request):
                     content_html=clean_html
                 )
                 emails = form.cleaned_data.get('target_departement')
-                
-                print("Emails to send:", form.data.get('target_departement'))
-                # if data['target_type'] == 'user':
-                #     MessageRecipient.objects.create(
-                #         message=message,
-                #         recipient=data['target_user']
-                #     )
-                # else:
-                #     users = data['target_department'].users.exclude(
-                #         id=request.user.id
-                #     )
-                #     MessageRecipient.objects.bulk_create([
-                #         MessageRecipient(message=message, recipient=u)
-                #         for u in users
-                #     ])
-
             return render(request, 'messages/send.html', {'form': form})
     else:
         form = MessageForm()
@@ -166,7 +134,6 @@ class SendFormview(FormView):
                 is_active=True,
                 profil_employee__departement_id=departement
             ).exclude(email__isnull=True).exclude(email="").values_list('email', flat=True)
-            #send emails
             html_content = f"""
                     <!DOCTYPE html>
                     <html>
@@ -232,9 +199,6 @@ class SendFormview(FormView):
                     </body>
                     </html>
                     """
-                    
-            print("HTML Content:", html_content);
-
             from django.core.mail import EmailMultiAlternatives
             from django.conf import settings
 
@@ -247,7 +211,6 @@ class SendFormview(FormView):
 
             email.attach_alternative(html_content, "text/html")
             email.send(fail_silently=True)
-            #bluck create notification
             Notification.objects.bulk_create([
                 Notification(
                     to=user,
@@ -259,10 +222,8 @@ class SendFormview(FormView):
                     profil_employee__departement_id=departement.id
                 )
             ])
-            
-            # print("Emails to send:", list(emails))
-
-
+            message = "Message envoyé avec succès au département {}.".format(departement.name)
+            messages.success(self.request, message)
         return super().form_valid(form)
     
 from django.contrib.auth.decorators import login_required

@@ -5,6 +5,7 @@ from conges.forms import CongeForm, CongeRequestForm
 from .models import Conge, CongesRequest
 from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.contrib import messages
 # Create your views here.
  
 class CongesRequestCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
@@ -26,6 +27,8 @@ class CongesRequestCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateV
         form.instance.employee = self.request.user.profil_employee
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "La requette de congé pour {} a été créée avec succès.".format(form.instance.employee)
+        messages.success(self.request, message)
         return super().form_valid(form)
     
 
@@ -53,6 +56,8 @@ class CongesRequetsDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
+        message = "La requette de congé pour {} a été supprimée avec succès.".format(self.get_object().employee)
+        messages.success(self.request, message)
         return context
 
 class CongesRequestDetails(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
@@ -75,6 +80,8 @@ def acceptRequest(request,pk):
     conges.created_by = request.user
     conges.updated_by = request.user
     conges.save()
+    message = "La requette de congé pour {} a été acceptée avec succès.".format(requette.employee)
+    messages.success(request, message)
     return redirect(reverse_lazy('conges_request_list'))
 
 # @login_required(login_url='login')
@@ -83,6 +90,8 @@ def refuseRequest(request,pk):
     requette = CongesRequest.objects.get(pk=pk)
     requette.status = 'refused'
     requette.save()
+    message = "La requette de congé pour {} a été refusée avec succès.".format(requette.employee)
+    messages.success(request, message)
     return redirect(reverse_lazy('conges_request_list'))
 
 @login_required(login_url='login')
@@ -91,6 +100,8 @@ def finishConges(request,pk):
     conge = Conge.objects.get(pk=pk)
     conge.status = True
     conge.save()
+    message = "Le congé pour {} a été terminé avec succès.".format(conge.employee)
+    messages.success(request, message)
     return redirect(reverse_lazy('conges_list'))
 
 @login_required(login_url='login')
@@ -99,6 +110,8 @@ def unfinishConges(request,pk):
     conge = Conge.objects.get(pk=pk)
     conge.status = False
     conge.save()
+    message = "Le congé pour {} a été réactivé avec succès.".format(conge.employee)
+    messages.success(request, message)
     return redirect(reverse_lazy('conges_list'))
 
 @login_required(login_url='login')
@@ -106,6 +119,8 @@ def unfinishConges(request,pk):
 def deleteConges(request,pk):
     conge = Conge.objects.get(pk=pk)
     conge.delete()
+    message = "Le congé pour {} a été supprimé avec succès.".format(conge.employee)
+    messages.success(request, message)
     return redirect(reverse_lazy('conges_list'))
 
 
@@ -139,4 +154,6 @@ class CongesCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "Le congé pour {} a été créé avec succès.".format(form.instance.employee)
+        messages.success(self.request, message)
         return super().form_valid(form)

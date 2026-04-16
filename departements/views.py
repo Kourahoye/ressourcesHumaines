@@ -1,3 +1,5 @@
+from pyexpat.errors import messages
+
 from django.utils import timezone
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -32,6 +34,8 @@ class DepartementsCreateView(LoginRequiredMixin,PermissionRequiredMixin, CreateV
 
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "Le département {} a été créé avec succès.".format(form.instance.name)
+        messages.success(self.request, message)
         return super().form_valid(form)
     
     
@@ -50,11 +54,6 @@ class DepartementsListView(LoginRequiredMixin,PermissionRequiredMixin, ListView)
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
-
-
-
-
-
 
 class DepartementsDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = ["departements.view_departements"]
@@ -135,6 +134,8 @@ class DepartementsDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteVi
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
+        message = "Le département {} a été supprimé avec succès.".format(self.get_object().name)
+        messages.success(self.request, message)
         return context
     
 
@@ -153,6 +154,8 @@ class DepartementsUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateVi
     
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        message = "Le département {} a été modifié avec succès.".format(form.instance.name)
+        messages.success(self.request, message)
         return super().form_valid(form)
 
 
@@ -173,6 +176,8 @@ class DepartementAssign(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "Le chef de département {} a été assigné avec succès.".format(form.instance.employee)
+        messages.success(self.request, message)
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -221,6 +226,8 @@ class DepartementHeadDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
+        message = "Le chef de département {} a été supprimé avec succès.".format(self.object.employee)
+        messages.success(request, message)
         return super().delete(request, *args, **kwargs)
     
     
@@ -230,6 +237,7 @@ def desativate_departement_head(request, pk):
     departement_head.end_date = timezone.now().date()
     departement_head.updated_by = request.user
     departement_head.save()
-    
     referrer = request.META.get('HTTP_REFERER')
+    message = "Le chef de département {} a été désactivé avec succès.".format(departement_head.employee)
+    messages.success(request, messages)
     return redirect(referrer) if referrer else redirect('departements_list_head')
