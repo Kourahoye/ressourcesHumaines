@@ -17,7 +17,6 @@ mois_fr = {
 
 mois_courant = mois_fr[timezone.now().month]
 
-# Create your views here.
 class DepartementRatingCreateView(CreateView):
     model = DepartementRating
     form_class = DepartementRateForm
@@ -27,8 +26,6 @@ class DepartementRatingCreateView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
-        # form.instance.month = timezone.now().month
-        # form.instance.year = timezone.now().year
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -95,7 +92,7 @@ def classement_departement_annee_en_cours():
     return (
         DepartementRating.objects
         .filter(year=current_year)
-        .order_by('-note')  # Classement de l'année en cours
+        .order_by('-note')
     )
 
 def classement_departement_annees_prec():
@@ -103,8 +100,8 @@ def classement_departement_annees_prec():
     return (
         DepartementRating.objects
         .exclude(year=current_year)
-        .values('departement', 'year')  # Grouper par departement + année
-        .annotate(moyenne_note=Avg('note'))  # Calculer moyenne
+        .values('departement', 'year')
+        .annotate(moyenne_note=Avg('note'))
         .order_by('-moyenne_note')
     )
 
@@ -112,7 +109,6 @@ def classement_departement_annees_prec():
 
 class ClassementEmployee(TemplateView):
     template_name="evaluations/employees/classement.html"
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_year = str(now().year)
@@ -121,7 +117,6 @@ class ClassementEmployee(TemplateView):
             .filter(employee=OuterRef("employee"),year=OuterRef('year'))
             .exclude(year=current_year)
             .annotate(moyenne=Avg("note"))
-            # .values("employee__user__username")
             .values('moyenne')[:1]
                 )
         notes = EmployeeRating.objects.all().annotate(moyenne_note=Subquery(subquery)).order_by('-moyenne_note').exclude(year=current_year)
@@ -139,10 +134,7 @@ class ClassementEmployee(TemplateView):
         return context
 
 class ClassementDepartement(TemplateView):
-    
     template_name="evaluations/departements/classement.html"
-    
-   
     def get_context_data(self, **kwargs):
         current_year = str(now().year)
         moyenne_sousrequete = (
@@ -153,11 +145,9 @@ class ClassementDepartement(TemplateView):
         )
         queryset = (
             DepartementRating.objects
-            # .distinct('departement','year')
             .exclude(year=current_year)
             .annotate(moyenne_note=Subquery(moyenne_sousrequete))
             .order_by('-moyenne_note')
-            # .select_related('departement')  # Pour accéder à nom, etc.
         )
         seen = set()
         grouped_by_year = defaultdict(list)
@@ -172,5 +162,3 @@ class ClassementDepartement(TemplateView):
         context['grouped_by_year']= list(grouped_by_year.items())
         context['current'] = DepartementRating.objects.all().filter(year=current_year,month=mois_courant).order_by('-note','departement_id')
         return context
-
-

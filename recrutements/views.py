@@ -70,7 +70,6 @@ class DeleteOffreView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMix
     success_message = "L'offre a été supprimée avec succès"
 
     def test_func(self):
-        """Vérifie que l'utilisateur a le droit de supprimer l'offre"""
         offre = self.get_object()
         return (
             self.request.user.is_superuser or 
@@ -79,7 +78,6 @@ class DeleteOffreView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMix
         )
 
     def get_context_data(self, **kwargs):
-        """Ajoute des informations supplémentaires au contexte"""
         context = super().get_context_data(**kwargs)
         context['title'] = "Confirmer la suppression"
         return context
@@ -124,24 +122,15 @@ from django.http import Http404
 
 class PostulerOffreView(View):
     def get(self, request, offre_id):
-        # Récupération de l'offre ou 404
         offre = get_object_or_404(Offre, id=offre_id)
-
-        # Normalisation date_expiration en datetime
         if isinstance(offre.date_expiration, date) and not isinstance(offre.date_expiration, datetime):
             date_exp = timezone.make_aware(datetime.combine(offre.date_expiration, time.min))
         else:
             date_exp = offre.date_expiration
-
-        # Vérification de disponibilité
         if not offre.active or date_exp < timezone.now():
             raise Http404("Cette offre n'est plus disponible")
-
-        # Préparation des formulaires
         form_candidat = CandidatForm()
         form_postulation = PostulationForm()
-
-        # Calcul du temps restant
         maintenant = timezone.now()
         temps_restant = date_exp - maintenant
         jours = temps_restant.days
@@ -168,12 +157,8 @@ class PostulerOffreView(View):
         try:
             if form_candidat.is_valid() and form_postulation.is_valid():
                 candidat = form_candidat.save()
-
-                # Vérifie si ce candidat a déjà postulé
                 if Postulation.objects.filter(candidat=candidat, offre=offre).exists():
                     return JsonResponse({'candidat': {'email': ['Vous avez déjà postulé.']}}, status=400)
-
-                # Enregistre la postulation
                 postulation = form_postulation.save(commit=False)
                 postulation.candidat = candidat
                 postulation.offre = offre
@@ -201,7 +186,7 @@ from .models import Postulation
 
 class PostulationListView(PermissionRequiredMixin, ListView):
     model = Postulation
-    template_name = 'recrutements/candidatures/list.html'  # adapte selon ton arborescence
+    template_name = 'recrutements/candidatures/list.html' 
     context_object_name = 'postulations'
     paginate_by = 10
     permission_required = 'recrutements.list_postulation'
@@ -211,7 +196,6 @@ class PostulationListView(PermissionRequiredMixin, ListView):
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
     def get_queryset(self):
-        # Optionnel : filtre par utilisateur ou autres critères
         qs = super().get_queryset().select_related('candidat', 'offre', 'offre__departement')
         return qs.order_by('-date_postulation')
 
@@ -252,14 +236,8 @@ class PostulationDetailView(UpdateView):
     def create_user_and_employee(self, postulation):
         candidat = postulation.candidat
         offre = postulation.offre
-
-        # Créer un username unique
         username = self.generate_username(candidat)
-
-        # Générer un mot de passe aléatoire
         password = get_random_string(10)
-
-        # Créer ou récupérer un utilisateur
         user, created = User.objects.get_or_create(
             email=candidat.email,
             defaults={
@@ -450,8 +428,6 @@ class PostulationDetailView(UpdateView):
             # email.content_subtype = "html" 
             # email.send()
             
-
-        # Créer un employé s’il n’existe pas déjà
         if not hasattr(user, 'profil_employee'):
             Employee.objects.create(
                 user=user,

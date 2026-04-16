@@ -13,20 +13,15 @@ class MarkAttendanceAjaxView(View):
     def post(self, request):
         try:
             employee_id = request.POST.get('employee_id')
-
-
             if not employee_id :
                 return JsonResponse({'error': 'Selectionner un employer.'}, status=400)
-
             employee = get_object_or_404(Employee, id=employee_id)
             today = datetime.date.today()
             now_time = now().time()
-
             attendances, created = Attendance.objects.get_or_create(
                 employee=employee,
                 date=today,
             )
-
             if created :
                 attendances.heure_arrivee = now_time()
                 attendances.save()
@@ -45,7 +40,6 @@ class PresencesTodayAjaxView(View):
     def get(self, request):
         today = datetime.date.today()
         attendancess = Attendance.objects.filter(date=today).select_related('employee__user')
-
         data = [
             {
                 'employee': p.employee.user.get_full_name(),
@@ -55,11 +49,10 @@ class PresencesTodayAjaxView(View):
             for p in attendancess
         ]
         return JsonResponse({'Attendancess': data})
-
+    
 
 class AttendanceView(TemplateView):
     template_name = "attendances/suivi.html"
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())

@@ -20,8 +20,6 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
-
-# Create your views here.
 class RegisterView(PermissionRequiredMixin,CreateView):
     permission_required =['Users.add_user']
     model = User
@@ -57,10 +55,8 @@ class UserupdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
         return context
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        #print(user)
         if self.request.POST['password']:
             user = authenticate(username=self.request.user.username,password=self.request.POST['password'])
-            #print(self.request.user.pk)
             if user:
                 form.save()
                 return super().form_valid(form)
@@ -72,7 +68,6 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = reverse_lazy("dashbord")
     
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
@@ -132,17 +127,13 @@ class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
     
-
-
-
 class UserDeleteForm(forms.Form):
-    # formulaire vide, juste pour gérer l'erreur
     pass
 
 class UserDeleteView(DeleteView):
     model = User
     success_url = reverse_lazy('user-list')
-    template_name = 'users/delete.html'  # ton template delete
+    template_name = 'users/delete.html'
 
     def dispatch(self, request, *args, **kwargs):
         user = self.get_object()
@@ -151,14 +142,12 @@ class UserDeleteView(DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # afficher le formulaire vide (confirmation)
         form = UserDeleteForm()
         return render(request, self.template_name, {'object': self.get_object(), 'form': form})
 
     def post(self, request, *args, **kwargs):
         form = UserDeleteForm(request.POST)
         if not form.is_valid():
-            # jamais arrivé car pas de champs, mais à titre d'exemple
             return self.form_invalid(form)
 
         user = self.get_object()
@@ -182,20 +171,17 @@ class UserDeleteView(DeleteView):
 
         if relations_bloquantes:
             form.add_error(None, ValidationError(
-                "Suppression interdite : utilisateur a effectuer des actions" #+ ", ".join(relations_bloquantes)
+                "Suppression interdite : utilisateur a effectuer des actions" 
             ))
             user.is_active = False
             user.save()
             form.add_error(None, ValidationError(
-                "Utilisateur desactivé" #+ ", ".join(relations_bloquantes)
+                "Utilisateur desactivé"
             ))
             return self.form_invalid(form)
-
-        # pas de relations bloquantes, suppression normale
         return self.delete(request, *args, **kwargs)
 
     def form_invalid(self, form):
-        # afficher le template avec erreurs
         return render(self.request, self.template_name, {'form': form, 'object': self.get_object()})
 
 
@@ -245,7 +231,7 @@ class change_password(FormView,LoginRequiredMixin,PermissionRequiredMixin):
         if hasattr(user, 'must_change_password'):
             user.must_change_password = False
         user.save()
-        update_session_auth_hash(self.request, user)  # garde l'utilisateur connecté
+        update_session_auth_hash(self.request, user)
         return super().form_valid(form)
     
     def form_invalid(self, form):

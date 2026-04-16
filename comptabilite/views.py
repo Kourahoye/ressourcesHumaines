@@ -8,7 +8,7 @@ from django.contrib import messages
 from .forms import PaimentForm
 from .models import Payslip, Salary
 
-# Create your views here.
+
 class PaimentCreateView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView):
     permission_required =['comptabilite.add_paiment']
     model = Salary
@@ -103,7 +103,6 @@ class BonusCreateView(LoginRequiredMixin,PermissionsRequiredMixins,CreateView):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
         date = form.cleaned_data.get('date')
-        # print(date)
         form.instance.month = date.month
         form.instance.year = date.year
         message ="Le bonus pour {} a été créé avec succès.".format(form.instance.employee.user)
@@ -117,7 +116,6 @@ class BonusDetailsView(LoginRequiredMixin,PermissionsRequiredMixins,DetailView):
     template_name = 'comptabilite/bonus/details.html'
     success_url = reverse_lazy('bonus_list')
     context_object_name ='payslip'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -187,7 +185,6 @@ class PayEmployeeView(LoginRequiredMixin, PermissionsRequiredMixins, CreateView)
         if Payslip.objects.filter(employee=employee, month=month, year=year).exists():
             form.add_error(None, "Une fiche de paie pour ce mois existe déjà.")
             return self.form_invalid(form)
-
         form.instance.generated_by= self.request.user
         form.instance.base_salary = employee.salary.amount
         form.instance.month = month

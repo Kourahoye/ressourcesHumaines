@@ -22,20 +22,15 @@ class Permissions(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
             perm_ids = request.POST.getlist('permissions[]')
             if not user_id or not perm_ids:
                 return JsonResponse({'error': 'Missing user or permissions'}, status=400)
-
-            # Prevent self-permission assignment
             if int(user_id) == self.request.user.id:
                 return JsonResponse({'error': 'Cannot assign permissions to yourself'}, status=403)
-
             user = User.objects.get(id=user_id)
             permissions = Permission.objects.filter(id__in=perm_ids)
-
             current_user_perms = set(user.get_all_permissions())
             existing_perms = [
                 perm.codename for perm in permissions
                 if f"{perm.content_type.app_label}.{perm.codename}" in current_user_perms
             ]
-
             if existing_perms:
                 return JsonResponse({
                     'error': f'Permissions already exist: {", ".join(existing_perms)}'
@@ -43,7 +38,6 @@ class Permissions(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
 
             user.user_permissions.add(*permissions)
             return JsonResponse({'success': True})
-
         except Permission.DoesNotExist:
             return JsonResponse({'error': 'Invalid permission'}, status=404)
         except User.DoesNotExist:

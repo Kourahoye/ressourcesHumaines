@@ -14,12 +14,9 @@ from django.db.models import Count
 import calendar
 
 
-    
-
 class EmployeeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     permission_required =['employees.add_employee']
     login_url = reverse_lazy("login")
-    
     model = Employee
     form_class = EmployeeForm
     template_name = 'employees/create.html'
@@ -29,8 +26,7 @@ class EmployeeCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
-
-
+    
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         messages = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee)
@@ -54,46 +50,31 @@ class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
             5: 'Mai', 6: 'Juin', 7: 'Juillet', 8: 'Aout',
             9: 'Septembre', 10: 'Octobre', 11: 'Novembre', 12: 'Decembre'
         }
-
-        # Récupérer toutes les notes pour ce département et année courante
         notes_qs = EmployeeRating.objects.filter(
             employee=employee,
             year=current_year
         ).order_by('month')
-
-        # Conversion mois texte -> numéro
         def mois_texte_to_num(mois):
             mapping = {v: k for k, v in mois_dict.items()}
             return mapping.get(mois, 0)
-
-        # Créer un mapping mois_num -> note (moyenne par mois s'il y a plusieurs)
-        # Ici, on prend la moyenne par mois
         from django.db.models import Avg
         notes_par_mois = (
             notes_qs.values('month')
             .annotate(moyenne=Avg('note'))
             .order_by('month')
         )
-        # Dictionnaire mois_num -> moyenne
         mois_to_note = {mois_texte_to_num(entry['month']): entry['moyenne'] for entry in notes_par_mois}
-
         labels = [mois_dict[i] for i in range(1, 13)]
         data = [mois_to_note.get(i, 0) for i in range(1, 13)]
-
         context['chart_labels'] = labels
         context['chart_data'] = data
-
         notes_qs = EmployeeRating.objects.filter(
             employee=employee
         ).values('year').annotate(moyenne=Avg('note')).order_by('year')
-
         years = [entry['year'] for entry in notes_qs]
         moyennes = [round(entry['moyenne'], 2) for entry in notes_qs]
-
         context['chart_labels_year'] = years
         context['chart_data_year'] = moyennes
-
-        # Requête ORM
         absences_raw = (
             Abcence.objects
             .filter(employee_id=self.get_object(), is_absent=True)
@@ -109,7 +90,6 @@ class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
             }
             for item in absences_raw
         ]
-        # print(absences_raw)
         context['absence_label'] = [item["periode"] for item in absences_formatees]
         context['absence_data'] = [item["absences"] for item in absences_formatees]
 
@@ -119,7 +99,6 @@ class EmployeeDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
 class EmployeeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     permission_required =['employees.delete_employee']
     login_url = reverse_lazy("login")
-    
     model = Employee
     template_name = "employees/delete.html"
     success_url = reverse_lazy('employee_list')
@@ -135,7 +114,6 @@ class EmployeeDeleteView(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
 class EmployeeUpdateView(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = ["employees.change_employee"]
     login_url = reverse_lazy("login")
-    
     model = Employee
     form_class = EmployeeForm
     template_name='employees/update.html'

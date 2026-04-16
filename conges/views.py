@@ -6,7 +6,7 @@ from .models import Conge, CongesRequest
 from django.contrib.auth.decorators import login_required,permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.contrib import messages
-# Create your views here.
+
  
 class CongesRequestCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     permission_required =["conges.add_congesrequest"]
@@ -23,7 +23,6 @@ class CongesRequestCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateV
  
 
     def form_valid(self, form):
-        
         form.instance.employee = self.request.user.profil_employee
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
@@ -43,7 +42,6 @@ class CongesRequestList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
         return context
-
 
 
 class CongesRequetsDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
@@ -72,7 +70,6 @@ def acceptRequest(request,pk):
     requette = CongesRequest.objects.get(pk=pk)
     requette.status = 'accepted'
     requette.save()
-
     conges = Conge()
     conges.employee = request.user.profil_employee
     conges.startDate = requette.startDate
@@ -84,7 +81,7 @@ def acceptRequest(request,pk):
     messages.success(request, message)
     return redirect(reverse_lazy('conges_request_list'))
 
-# @login_required(login_url='login')
+
 @permission_required(['conges.refuse_congesrequest'])
 def refuseRequest(request,pk):
     requette = CongesRequest.objects.get(pk=pk)
@@ -122,7 +119,6 @@ def deleteConges(request,pk):
     message = "Le congé pour {} a été supprimé avec succès.".format(conge.employee)
     messages.success(request, message)
     return redirect(reverse_lazy('conges_list'))
-
 
 
 class CongesList(LoginRequiredMixin,PermissionRequiredMixin,ListView):

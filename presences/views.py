@@ -32,22 +32,6 @@ def presences_data(request):
         employees = Employee.objects.all().exclude(user__is_active=False)
         presences = Abcence.objects.filter(date=date2)
         presence_map = {p.employee_id: p for p in presences}
-
-        # Liste des nouvelles présences à créer (présence absente => créer avec is_absent=False)
-        # new_presences = [
-        #     Abcence(employee=emp, date=date2, is_absent=False,created_by=request.user)
-        #     for emp in employees
-        #     if emp.id not in presence_map
-        # ]
-
-        # if new_presences:
-        #     Abcence.objects.bulk_create(new_presences)
-
-        #     # Recharger les présences après insertion
-        #     presences = Abcence.objects.filter(date=date2)
-        #     presence_map = {p.employee_id: p for p in presences}
-        
-        # Préparer les données pour la réponse
         data = [
             {
                 'employee_id': emp.id,
