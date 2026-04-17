@@ -59,7 +59,7 @@ class EmployeeRatingCreateView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
-        messages = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee)
+        message = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee)
         messages.success(self.request, messages)
         return super().form_valid(form)
     
