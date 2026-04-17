@@ -26,6 +26,8 @@ class DepartementRatingCreateView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
+        message = "Note pour le département {} a été créée avec succès.".format(form.instance.departement)
+        messages.success(self.request, message)
         return super().form_valid(form)
     
     def form_invalid(self, form):
@@ -34,8 +36,6 @@ class DepartementRatingCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permissions'] = list(self.request.user.get_all_permissions())
-        message = "Note pour le département {} a été créée avec succès.".format(form.instance.departement)
-        messages.success(self.request, message)
         return context
     
 class DepartementRatingList(ListView):
@@ -59,7 +59,7 @@ class EmployeeRatingCreateView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.instance.updated_by = self.request.user
-        messages = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee)
+        message = "Note pour l'employé {} a été créée avec succès.".format(form.instance.employee.user)
         messages.success(self.request, messages)
         return super().form_valid(form)
     
