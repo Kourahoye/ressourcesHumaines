@@ -247,3 +247,9 @@ def mark_notification_read(request, pk):
     notif.is_read = True
     notif.save(update_fields=["is_read"])
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+@login_required
+def mark_notification_read(request):
+    notifs = Notification.objects.filter(to=request.user, is_read=False)
+    notifs.update(is_read=True)
+    return redirect(request.META.get("HTTP_REFERER", "/"))
